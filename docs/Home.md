@@ -30,6 +30,7 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[ADR-0010 Superpowers Workflow]]
 - [[ADR-0011 Inline CSS]]
 - [[ADR-0012 Nav Indicator]]
+- [[ADR-0013 Version Tracking]]
 
 ## Specs
 - [[2026-10-29-home-page-design]] — home page architecture, done 2026-11-02
@@ -47,7 +48,7 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[2026-10-30]] — home page: photo, Blob store, image optimization
 - [[2026-10-31]] — home page: Experience block closed
 - [[2026-11-01]] — home page: My top skills and Blog blocks, accent wipe, verification
-- [[2026-11-02]] — home page closed: iOS check, sliding navigation, selected menu item, contact buttons
+- [[2026-11-02]] — home page closed: iOS check, sliding navigation, selected menu item, contact buttons; version tracking
 
 ## Templates
 - [[ADR Template]] · [[Journal Template]]

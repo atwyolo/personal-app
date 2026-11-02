@@ -16,7 +16,7 @@ Each stage ends with a working build.
 - [ ] **Stage 4 — Blog**: posts + translations in DB, dynamic `[slug]` route, static params, Tiptap JSON → React renderer, view counter.
 - [ ] **Stage 5 — Contact form**: Server Action, React Hook Form + Zod on the client, same schema on the server, honeypot, `useActionState`, messages table.
 - [ ] **Stage 6 — Admin**: Auth.js v5 credentials login, route protection, admin layout mirroring site structure, CRUD per entity, Tiptap editor, TanStack Table lists, per-locale editing with fallback indicator.
-- [ ] **Stage 7 — Deploy**: Vercel project, env vars, Neon integration (single database, no preview branches), Vercel Blob for uploads. *In progress:* the public Blob store holds the photo and CV, uploaded by hand (2026-10-30).
+- [ ] **Stage 7 — Deploy**: Vercel project, env vars, Neon integration (single database, no preview branches), Vercel Blob for uploads. *In progress:* the public Blob store holds the photo and CV, uploaded by hand (2026-10-30); builds show their version, and pull requests into `develop` must raise it ([[ADR-0013 Version Tracking]], 2026-11-02).
 - [ ] **Stage 8 — Polish**: sitemap/robots, OG images, loading/error boundaries, Suspense streaming, Lighthouse pass.
 
 Later / optional: email notification for contact messages (Resend), machine-translation helper in admin (DeepL), analytics.
