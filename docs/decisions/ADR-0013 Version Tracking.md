@@ -52,6 +52,6 @@ The owner picks the level at the end of a step, and the rule in `CLAUDE.md` runs
 - No git tags are created. Add them on `main` if a release history becomes useful.
 - On the 404 page the tag exists only in the DOM. The response is an error shell of about 1.2 KB, an effect of `partialPrefetching` with `cacheComponents`, so View Source and `curl` show nothing there, measured on a local production build. Check it in the Elements panel.
 - Prerendered pages hold the commit of the build, which is the intent: the tag describes the build that produced the page.
-- `VERCEL_GIT_COMMIT_SHA` needs "Enable access to System Environment Variables" in the Vercel project. Not yet confirmed on a deployment. Without it the tag shows the bare version and no test notices.
+- `VERCEL_GIT_COMMIT_SHA` needs "Enable access to System Environment Variables" in the Vercel project. Confirmed on a deployment: the tag showed `0.2.0+76ea562`. Without it the tag shows the bare version and no test notices.
 - Playwright builds with a fixed commit from `e2e/build-commit.ts`, so `.next` after an e2e run holds a fake commit.
-- The workflow's script was run against simulated merges and a local remote, not on GitHub, before its first pull request.
+- The workflow's script was run against simulated merges and a local remote, then passed on GitHub on its first pull request, PR #7.

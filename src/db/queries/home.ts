@@ -40,6 +40,8 @@ export const homeCacheTags = {
 export type HomeProfile = {
   name: string;
   headline: string;
+  /** Plain job title for structured data. */
+  jobTitle: string;
   photoUrl: string | null;
   cvUrl: string | null;
   aboutShort: RichTextDoc;
@@ -71,6 +73,7 @@ export async function getProfile(locale: Locale): Promise<HomeProfile> {
         linkedinUrl: profile.linkedinUrl,
         name: localized(tr.name, en.name),
         headline: localized(tr.headline, en.headline),
+        jobTitle: localized(tr.jobTitle, en.jobTitle),
         aboutShort: localized(tr.aboutShort, en.aboutShort),
         metaDescription: localized(tr.metaDescription, en.metaDescription),
         cvUrl: localizedOptional(tr.cvUrl, en.cvUrl),
@@ -90,6 +93,7 @@ export async function getProfile(locale: Locale): Promise<HomeProfile> {
   return {
     name: row.name,
     headline: row.headline,
+    jobTitle: row.jobTitle,
     photoUrl: row.photoUrl,
     cvUrl: row.cvUrl,
     aboutShort: row.aboutShort,

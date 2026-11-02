@@ -1,4 +1,14 @@
 {
+  "Common": {
+    "back": "Back"
+  },
+  "About": {
+    "metaTitle": "About",
+    "label": "About",
+    "title": "About me",
+    "intro": "A short interview with myself: the questions recruiters ask most, answered properly.",
+    "questionsNav": "Questions"
+  },
   "Header": {
     "navLabel": "Main navigation",
     "nav": {

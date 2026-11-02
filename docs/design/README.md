@@ -97,7 +97,6 @@ Build order:
 
 - **Page name.** The admin calls the page "Experience", while the site nav and route say "Projects". Pick one name for the nav, the route and the admin.
 - **"Main" skills.** The admin has a "Main" flag next to "Top". The proposal is that it drives the hero chips on Home (the admin no longer edits hero tags). Note that "Express", currently a hero chip, is not in the skills list.
-- **About contact buttons.** The "What I'm looking for" answer shows contact buttons, but the admin has no switch for them yet (`showContacts` in `content.ts`).
 
 ## Kickoff prompt (one page at a time)
 
