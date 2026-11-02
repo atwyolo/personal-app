@@ -4,7 +4,7 @@
  * and merge the @theme additions into the existing `@theme inline` block.
  *
  * shadcn variable names keep their shadcn meaning (so generated components keep working).
- * Extra tokens (card-border, foreground-soft, brand, deco, shutter, selected, contact brands)
+ * Extra tokens (card-border, foreground-soft, brand, deco, shutter, selected, success)
  * cover what the design needs beyond shadcn's set.
  *
  * Contrast (WCAG 2.x, text on its usual surface):
@@ -28,13 +28,8 @@
   --color-selected-foreground: var(--selected-foreground);
   --color-placeholder: var(--placeholder);
 
-  --color-whatsapp: #25d366;
-  --color-whatsapp-foreground: #10142a;
-  --color-whatsapp-icon: #128c7e;
-  --color-gmail: #d93025;
-  --color-gmail-foreground: #ffffff;
-  --color-linkedin: #0a66c2;
-  --color-linkedin-foreground: #ffffff;
+  /* contact buttons use theme colors now (card + brand icons), so there are no brand-color tokens */
+  --color-success: var(--success);
 
   /* tiles: 20px on mobile, 24px from lg */
   --radius-tile: 1.25rem;
@@ -59,7 +54,8 @@
   --muted-foreground: #5b6280;
   --accent: #eef1f8; /* shadcn meaning: hover/active surface */
   --accent-foreground: #10142a;
-  --destructive: oklch(0.577 0.245 27.325);
+  --destructive: #c62828; /* form errors (Contact): 5.6:1 on white */
+  --success: #13804b; /* valid fields (Contact) */
   --border: #e1e5ee;
   --input: #bfcbf4;
   --ring: #2347e8;
@@ -91,7 +87,8 @@
   --muted-foreground: #8e96b5;
   --accent: #222a50;
   --accent-foreground: #edeff7;
-  --destructive: oklch(0.704 0.191 22.216);
+  --destructive: #ff8a80; /* form errors (Contact) */
+  --success: #5be49b; /* valid fields (Contact) */
   --border: #2a3360;
   --input: #2a3360;
   --ring: #c6f432;

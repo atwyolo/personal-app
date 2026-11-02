@@ -1,18 +1,25 @@
 ---
 tags: [design, handoff, about]
 status: approved
-updated: 2026-11-01
+updated: 2026-11-02
 ---
 
 # About Page Handoff
 
 `/[locale]/about` presents the extended bio as a short **interview**. Each section heading is a question a recruiter would ask, and the answer appears as a chat reply. Approved variant: **C (Interview)** on the design canvas.
 
-See [[README]] for shared rules and files. Data: `aboutSections` and `profile.about.results` in `shared/content.ts`. Messages: the `About` namespace.
+See [[README]] for shared rules and files. Data: `aboutSections` in `shared/content.ts`. Messages: the `About` namespace.
+
+## Changes since 2026-11-01
+
+- **"‹ Back" link** above the hero label (style in [[README]]).
+- **The pairs are data, not a fixed six.** The admin can add, delete and reorder question–answer pairs. Each pair has `title` (chip label), `question` (the h2), `answerTitle` (the first line, shown larger) and `answerBody` (rich text). Render however many there are.
+- **The "results" section is ordinary rich text now:** its bullets live in its `answerBody`, not in `profile.about.results`.
+- **The contact buttons** under "What I'm looking for" use the themed style: `bg-card`, a `card-border` border, `text-foreground`, a `brand` ↗ after the label, and a `brand` border on hover. Download CV stays `primary`. They show where `showContacts` is set (see Open questions in [[README]]).
 
 ## Scope and order
 
-1. Static route: hero plus six `<section id>` blocks from `aboutSections`.
+1. Static route: hero plus one `<section id>` per entry in `aboutSections`.
 2. Question and answer bubbles (server components).
 3. Sticky question chips (client: active state, smooth scroll, auto-scrolling the chip row).
 4. Reveal on scroll (CSS, or a tiny observer), with reduced motion respected.
@@ -37,10 +44,9 @@ See [[README]] for shared rules and files. Data: `aboutSections` and `profile.ab
 - **Answer**, left-aligned, max width 88% (100% on phone):
   - an avatar, a 40 px circle (32 px on phone), with a `card` fill, a `card-border` border and the initials "MA" in `brand` mono. Swap in the real photo later;
   - a bubble: `card` with a `card-border` border, radius `20 20 20 6`, padding 18 × 20 px, and a 12 px gap between its parts:
-    - the `statement`: 19 px / 1.45 / 500 (16 px on phone);
-    - the `body` paragraphs: 16 px / 1.7, `foreground-soft`;
-    - section `results`: `profile.about.results` as the bullet list with `deco` squares;
-    - section `next`: also the contact buttons, compact (40 px, radius 12): WhatsApp, Mail, LinkedIn in brand colors, and Download CV in `primary`. The page has no footer, so this is the call to action.
+    - `answerTitle`: 19 px / 1.45 / 500 (16 px on phone);
+    - `answerBody` with `<RichText>`: paragraphs at 16 px / 1.7 in `foreground-soft`, lists with `deco` squares;
+    - when `showContacts` is set: the compact contact buttons (40 px, radius 12): WhatsApp, Mail and LinkedIn themed as above, Download CV in `primary`. The page has no footer, so this is the call to action.
 
 ## Motion
 

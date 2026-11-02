@@ -1,7 +1,7 @@
 ---
 tags: [design, handoff, blog]
 status: approved
-updated: 2026-11-01
+updated: 2026-11-02
 ---
 
 # Blog Page Handoff
@@ -9,6 +9,12 @@ updated: 2026-11-01
 `/[locale]/blog` lists posts with a topic filter, tag search with multiple selection, and date sorting. For now it shows the same 3 demo posts as Home.
 
 See [[README]] for shared rules and files. Data: `latestPosts` and `postTopics` in `shared/content.ts` (posts have `topic` and `tags`). Messages: the `Blog` namespace.
+
+## Changes since 2026-11-01
+
+- **"‹ Back" link** above the hero label (style in [[README]]).
+- **Topics are data.** The admin can rename, add and delete them. `postTopics` is now `{ id, name }[]`. Build the topic chips and counts from it; topic names are localized content (the `Blog.topics.*` messages are only a fallback).
+- Cards link to the new post page `/[locale]/blog/[slug]` ([[Post Page Handoff]]).
 
 ## Scope and order
 
@@ -82,7 +88,7 @@ See [[README]] for shared rules and files. Data: `latestPosts` and `postTopics` 
 
 ## Data notes
 
-- Topics are tables, not an enum (owner's decision, 2026-11-01): `post_topics`, `post_topic_translations` and `posts.topic_id`, see [[Data Model]]. Labels are read from the database, so `Blog.topics.*` keeps only `all`; topic counts come from a join, a topic with no posts counts as 0.
-- Add tags as a `tags` table plus `post_tags`, so counts come from a join. Open: today tags are a per-locale array in `post_translations`; decided with this page.
+- Add `posts.topic`: an enum `technical | software | hobby`, extensible. Add tags as a `tags` table plus `post_tags`, so counts come from a join.
+- Topic labels live in messages (`Blog.topics.*`), not in the DB, until topics need to be editable in the admin.
 
 Owner TODOs: real posts. Confirm how Technical and Software differ: currently Technical means hands-on technical deep dives, and Software means team process and engineering practice.

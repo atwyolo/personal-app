@@ -79,8 +79,7 @@
     "metaTitle": "Projects",
     "label": "Experience · {from} — {to}",
     "navLabel": "Places of work",
-    "whatIDid": "What I did",
-    "stack": "Stack",
+    "stack": "Skills",
     "duration": "{years, plural, one {# year} other {# years}}",
     "progressAria": "{company}: {percent}% read"
   },
@@ -143,5 +142,113 @@
     "emptyHobby": "Hobby posts are coming soon.",
     "resetFilters": "Reset filters",
     "readMore": "Read more"
+  },
+  "Common": {
+    "back": "Back",
+    "backAria": "Back to the previous page"
+  },
+  "ContactPage": {
+    "metaTitle": "Contact — Mikhail Aleksandrov",
+    "label": "Contact",
+    "title": "Contact",
+    "intro": "Write directly, or leave a note below and tell me how you'd like me to reply.",
+    "contacts": {
+      "phone": "Phone",
+      "email": "Email",
+      "linkedin": "LinkedIn",
+      "copyAria": "Copy {label}: {value}",
+      "copied": "Copied"
+    },
+    "form": {
+      "name": "Name",
+      "namePlaceholder": "Your name",
+      "nameError": "Please enter your name",
+      "message": "Message",
+      "messagePlaceholder": "A role, a project, a question — a few lines are enough",
+      "messageError": "Please write a short message",
+      "replyVia": "How should I reply?",
+      "channels": {
+        "email": "Email",
+        "phone": "Phone",
+        "whatsapp": "WhatsApp",
+        "telegram": "Telegram",
+        "linkedin": "LinkedIn"
+      },
+      "contactLabel": {
+        "email": "Your email",
+        "phone": "Your phone",
+        "whatsapp": "WhatsApp number",
+        "telegram": "Telegram username",
+        "linkedin": "LinkedIn profile"
+      },
+      "contactPlaceholder": {
+        "email": "name@company.com",
+        "phone": "+374 93 310 039",
+        "whatsapp": "+374 93 310 039",
+        "telegram": "@username",
+        "linkedin": "linkedin.com/in/your-name"
+      },
+      "contactHint": {
+        "email": "I'll reply to this address.",
+        "phone": "I'll call this number. Include the country code.",
+        "whatsapp": "I'll message you on WhatsApp.",
+        "telegram": "Your @username or a t.me link.",
+        "linkedin": "Paste the link to your profile."
+      },
+      "contactError": {
+        "email": "Enter a valid email, like name@company.com",
+        "phone": "Enter a phone number with country code, like +374 93 310 039",
+        "whatsapp": "Enter your WhatsApp number with country code",
+        "telegram": "Usernames are 5–32 letters, digits or underscores",
+        "linkedin": "Paste your profile link: linkedin.com/in/…"
+      },
+      "contactEmpty": "Tell me where to reply",
+      "consent": "I agree to the processing of my personal data to get a reply.",
+      "privacy": "Privacy policy",
+      "consentError": "Please confirm to continue",
+      "send": "Send",
+      "sending": "Sending…",
+      "needAttention": "{count, plural, one {# field needs attention} other {# fields need attention}}",
+      "thanks": "Thanks, {name}!",
+      "success": "Your message is on its way. I'll reply via {channel} within 24 hours.",
+      "sendAnother": "Send another"
+    },
+    "ready": {
+      "title": "Ready to send",
+      "steps": {
+        "name": "Your name",
+        "message": "Message",
+        "contact": "Where to reply",
+        "consent": "Consent"
+      },
+      "stepsShort": {
+        "name": "Name",
+        "message": "Message",
+        "contact": "Reply",
+        "consent": "Consent"
+      },
+      "idle": "Move the cursor over the form, then start typing.",
+      "started": "Nice, keep going.",
+      "valid": "{step} ✓",
+      "allSet": "All set. Hit Send!",
+      "left": "{count, plural, one {# step} other {# steps}} left before I can reply.",
+      "sent": "Sent! Talk soon."
+    },
+    "request": {
+      "file": "contact.request.ts",
+      "idle": "idle",
+      "editing": "editing…",
+      "valid": "valid",
+      "typeError": "type error",
+      "hint": "// Fill in the form — the request builds itself here.",
+      "sending": "→ sending…"
+    }
+  },
+  "Post": {
+    "readTime": "{minutes} min read",
+    "copyCode": "Copy code",
+    "copied": "Copied",
+    "tags": "Tags",
+    "authorRole": "Senior Frontend Software Engineer"
   }
 }
