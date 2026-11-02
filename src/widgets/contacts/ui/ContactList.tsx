@@ -3,8 +3,10 @@ import { useTranslations } from "next-intl";
 import { type FC, Fragment } from "react";
 
 import { cn } from "@/shared/lib/utils";
-import { EnvelopeIcon, LinkedInIcon, WhatsAppIcon } from "./BrandIcons";
+import { EnvelopeIcon, LinkedInIcon, WhatsAppIcon } from "./ContactIcons";
 import { ContactLink } from "./ContactLink";
+
+const CHANNEL_ICON = "size-[26px] text-brand";
 
 interface Contact {
   href: string;
@@ -40,14 +42,10 @@ export const ContactList: FC<ContactListProps> = (props) => {
             href={whatsapp.href}
             label={t("whatsappAria", { phone: whatsapp.display })}
             title={whatsapp.display}
-            tone="whatsapp"
+            tone="channel"
             external
             className="reveal"
-            mark={
-              <span className="inline-flex size-9 shrink-0 items-center justify-center">
-                <WhatsAppIcon className="size-7" />
-              </span>
-            }
+            mark={<WhatsAppIcon className={CHANNEL_ICON} />}
           >
             {t("whatsapp")}
           </ContactLink>
@@ -59,12 +57,12 @@ export const ContactList: FC<ContactListProps> = (props) => {
             href={email.href}
             label={t("mailAria", { email: email.display })}
             title={email.display}
-            tone="mail"
-            mark={<EnvelopeIcon className="size-10 shrink-0" />}
-            className="reveal reveal-left py-2 pl-2"
+            tone="channel"
+            mark={<EnvelopeIcon className={CHANNEL_ICON} />}
+            className="reveal reveal-left"
           >
-            {/* 14px keeps the address on one line in the 268px column; narrower ones wrap it at the dots, nowhere else. */}
-            <span className="block text-base leading-tight lg:text-sm">
+            {/* The design's 15px keeps the address on one line from a 288px column; narrower ones wrap it at the dots, nowhere else. */}
+            <span className="block text-base leading-tight lg:text-[15px]">
               {email.mailbox.split(".").map((part, index, parts) => (
                 <Fragment key={index}>
                   {part}
@@ -85,14 +83,10 @@ export const ContactList: FC<ContactListProps> = (props) => {
             href={linkedin.href}
             label={t("linkedinAria")}
             title={linkedin.display}
-            tone="linkedin"
+            tone="channel"
             external
             className="reveal"
-            mark={
-              <span className="inline-flex size-9 shrink-0 items-center justify-center">
-                <LinkedInIcon className="size-6" />
-              </span>
-            }
+            mark={<LinkedInIcon className={CHANNEL_ICON} />}
           >
             {t("linkedin")}
           </ContactLink>
@@ -105,11 +99,7 @@ export const ContactList: FC<ContactListProps> = (props) => {
             label={t("downloadCvAria")}
             tone="cv"
             className="reveal reveal-left"
-            mark={
-              <span className="inline-flex size-9 shrink-0 items-center justify-center">
-                <DownloadIcon aria-hidden className="size-6" />
-              </span>
-            }
+            mark={<DownloadIcon aria-hidden className="size-6" />}
             trailing={<span className="font-mono text-xs font-medium tracking-[0.06em] opacity-85">{t("pdf")}</span>}
           >
             {t("downloadCv")}

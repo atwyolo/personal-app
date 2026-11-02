@@ -7,7 +7,7 @@
 /*
  * Design tokens: docs/design/shared/tokens.css (approved handoff, docs/design/Home Page Handoff.md).
  * shadcn variable names keep their shadcn meaning, so generated components pick up the palette.
- * Extra tokens (card-border, foreground-soft, brand, deco, shutter, selected, placeholder, contact brands)
+ * Extra tokens (card-border, foreground-soft, brand, deco, shutter, selected, placeholder)
  * cover what the design needs beyond shadcn's set.
  *
  * `inline` makes each utility reference the CSS variable directly (bg-card -> var(--card)),
@@ -53,14 +53,6 @@
   --color-selected: var(--selected);
   --color-selected-foreground: var(--selected-foreground);
   --color-placeholder: var(--placeholder);
-
-  /* Contact brand colors are the same in both themes. */
-  --color-whatsapp: #188842; /* The brand's hue, darkened for 4.5:1 with white; the official #25d366 gives 1.98:1. */
-  --color-whatsapp-foreground: #ffffff;
-  --color-gmail: #d93025;
-  --color-gmail-foreground: #ffffff;
-  --color-linkedin: #0a66c2;
-  --color-linkedin-foreground: #ffffff;
 
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
@@ -202,6 +194,61 @@
     }
     .reveal-left::after {
       transform-origin: 0 50%;
+    }
+  }
+
+  .nav-indicator {
+    display: none;
+  }
+}
+
+/*
+ * The highlight of the desktop navigation: one bar that slides between items, see docs/decisions/ADR-0012 Nav Indicator.md.
+ * All of its behavior is inside `@supports`, so a browser without anchor positioning keeps the underline from `NavLink`;
+ * outside there is only the rule above that hides the bar.
+ * `utilities`, because these rules have to beat that underline, and a utility wins over any earlier layer.
+ * Each item reserves its semibold width: without it the items around the current one move by up to 4 px.
+ */
+@layer utilities {
+  @supports (anchor-name: --nav-current) and (left: anchor(left)) {
+    .site-nav a {
+      text-align: center;
+    }
+    /* `visibility: hidden` keeps the repeated label out of the accessible name. */
+    .site-nav a::after {
+      content: attr(data-label);
+      display: block;
+      height: 0;
+      overflow: hidden;
+      visibility: hidden;
+      font-weight: var(--font-weight-semibold);
+    }
+    .site-nav a[aria-current="page"] {
+      anchor-name: --nav-current;
+      text-decoration-line: none;
+    }
+    .nav-indicator {
+      display: block;
+      position: absolute;
+      position-anchor: --nav-current;
+      top: calc(anchor(bottom) + 2px);
+      left: anchor(left);
+      right: anchor(right);
+      /* Above the header's background and under the focus ring, which takes the same 3 px. */
+      z-index: -1;
+      pointer-events: none;
+      /* A border, not a background: forced colors mode and printing drop backgrounds. */
+      border-top: 3px solid var(--deco);
+    }
+    .site-nav:not(:has([aria-current="page"])) .nav-indicator {
+      opacity: 0;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .nav-indicator {
+        transition:
+          left 0.3s cubic-bezier(0.75, 0, 0.2, 1),
+          right 0.3s cubic-bezier(0.75, 0, 0.2, 1);
+      }
     }
   }
 }

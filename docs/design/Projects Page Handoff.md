@@ -1,7 +1,7 @@
 ---
 tags: [design, handoff, projects]
 status: approved
-updated: 2026-11-01
+updated: 2026-11-02
 ---
 
 # Projects Page Handoff
@@ -9,6 +9,17 @@ updated: 2026-11-01
 `/[locale]/projects` shows the full story of every place of work on one page. All jobs are in the HTML at once, so they are all indexed. The presentation is "scrollytelling": a pinned column tracks which job you are reading. Approved variant: **C v2** on the design canvas.
 
 See [[README]] for shared rules and files. Data: `experience` in `shared/content.ts`. Messages: the `Projects` namespace.
+
+## Changes since 2026-11-01
+
+- **"‹ Back" link**: on desktop it sits at the top of the sticky aside, above the label; on phone it sits in a row (padding 12 × 18 × 6 px) above the sticky progress bar. Style is in [[README]].
+- **Content follows the admin** ("Experience" section). Each job now has:
+  - a short description (`description`, the same text as the Home card);
+  - a rich-text full description (`body`);
+  - picked skills;
+  - an image.
+- **Removed:** the separate lead, the context paragraph, the two stat tiles and the "What I did" list. The screens still show them; ignore those blocks. The section content is listed below.
+- **Naming**: the admin calls this page "Experience". See Open questions in [[README]].
 
 ## Scope and order
 
@@ -43,11 +54,9 @@ Grid `minmax(0, .9fr) minmax(0, 1.1fr)`, no outer gutter: the page is a full-wid
   - the years as a mono label;
   - `h2` with the company name, 34 px;
   - a mono meta line: role · period · duration;
-  - the lead, 20 px / 1.45;
-  - the context, 15–16 px / 1.6, `foreground-soft`;
-  - two **stat tiles** in a 2-column grid: the value at 34 px in `brand`, the label at 13 px in `muted-foreground`, inside a `card` tile with a 16 px radius;
-  - `h3` "What I did" (mono 13 px uppercase, `muted-foreground`), then the achievement bullets (8 px `deco` squares, like on Home);
-  - `h3` "Stack", then tag chips;
+  - the short description (`description`), 20 px / 1.45 (the old "lead" style);
+  - the full description (`body`), rendered with the shared `<RichText>` component at 16 px / 1.6 in `foreground-soft`. Lists use the 8 px `deco` squares, like on Home;
+  - `h3` "Skills" (mono 13 px uppercase, `muted-foreground`), then tag chips for the job's skills;
   - the company image: 200 px tall, radius 16, with the striped placeholder until real images exist.
 
 ## Phone
@@ -74,6 +83,6 @@ Grid `minmax(0, .9fr) minmax(0, 1.1fr)`, no outer gutter: the page is a full-wid
 
 ## Data notes
 
-The page shows work experience, while the Data Model also has a separate `projects` entity. For now the Projects page reads `experience` with the extra fields: `role`, `lead`, `context`, `achievements[]`, `stats[2]`, a `skills` relation and `image`. Record this in [[Data Model]] / [[Open Questions]] at Stage 3, together with whether a separate "projects" list is still needed.
+The page shows work experience, while the Data Model also has a separate `projects` entity. For now the Projects page reads `experience` with the extra fields `role`, `body` (rich text), a `skills` relation and `image`. Record this in [[Data Model]] / [[Open Questions]] at Stage 3, together with whether a separate "projects" list is still needed.
 
-Owner TODOs in `content.ts`: roles, context paragraphs, all Omega-R content, and company images.
+Owner TODOs in `content.ts`: roles, all Omega-R content, and company images.

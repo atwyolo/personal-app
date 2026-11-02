@@ -26,12 +26,14 @@ export const Header: FC = async () => {
         >
           {profile.name}
         </Link>
-        <nav aria-label={t("navLabel")} className="hidden gap-7 text-[15px] lg:flex">
+        <nav aria-label={t("navLabel")} className="site-nav relative hidden gap-7 text-[15px] lg:flex">
           {siteNav.map((item) => (
             <NavLink key={item.key} href={item.href}>
               {t(`nav.${item.key}`)}
             </NavLink>
           ))}
+          {/* Slides under the current item, CSS only: see `.nav-indicator` in globals.css. */}
+          <span aria-hidden className="nav-indicator" />
         </nav>
         {/* Client leaves; the header itself stays a Server Component. */}
         <div className="flex gap-2">

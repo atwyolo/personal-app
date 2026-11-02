@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Blog post — страница поста</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}
+.bar{display:flex;align-items:center;gap:16px;height:56px;padding:0 24px;box-sizing:border-box;background:#FFFFFF;border-bottom:1px solid #DADDE6;font-family:'Geist',system-ui,sans-serif;color:#1E2230}
+.grp{display:inline-flex;padding:4px;border-radius:12px;background:#EEF0F5;gap:4px}
+.sb{min-height:32px;padding:0 12px;border:0;border-radius:9px;background:transparent;color:#454B66;font:500 13px/1 'Geist',sans-serif;cursor:pointer}
+.sb.on{background:#FFFFFF;color:#10142A;box-shadow:0 1px 2px rgba(16,20,42,.12)}
+.stage{display:flex;gap:24px;padding:20px 24px;align-items:flex-start}
+.cap{font:500 12px/1 'Geist Mono',monospace;letter-spacing:.06em;text-transform:uppercase;color:#5B6280;margin:0 0 8px 4px}
+.frame{position:relative;overflow:hidden;border:1px solid #C9CEDB;border-radius:14px;background:var(--bg);color:var(--ink);font-family:'Geist',system-ui,sans-serif;box-sizing:border-box}
+.frame.ph{border-radius:32px}
+.hd{position:absolute;left:0;right:0;top:0;z-index:20;display:flex;align-items:center;gap:24px;height:56px;padding:0 28px;box-sizing:border-box;background:var(--tile);border-bottom:1px solid var(--tile-line);font-size:15px}
+.hd b{flex-grow:1;font-weight:600;letter-spacing:-.02em;font-size:17px}
+.hd nav{display:flex;gap:22px;font-size:14px;color:var(--ink2)}
+.hd nav .on{color:var(--accent);font-weight:600;text-decoration:underline;text-decoration-color:var(--deco);text-decoration-thickness:3px;text-underline-offset:7px}
+.ph .hd{height:52px;padding:0 16px}
+.scr{position:absolute;left:0;right:0;bottom:0;top:56px;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin}
+.ph .scr{top:52px}
+.lbl{font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.meta{font-family:'Geist Mono',monospace;font-size:13px;letter-spacing:.04em;color:var(--mute)}
+.lead{margin:0;font-size:20px;line-height:1.45}
+.ctx{margin:0;font-size:15px;line-height:1.6;color:var(--ink2)}
+.did{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px}
+.did li{display:flex;gap:10px;font-size:15px;line-height:1.5;color:var(--ink2)}
+.did li::before{content:'';flex:0 0 8px;height:8px;margin-top:8px;border-radius:2px;background:var(--deco)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-family:'Geist Mono',monospace;font-size:12px;line-height:1;padding:7px 10px;border:1px solid var(--tile-line);border-radius:999px;color:var(--accent);font-weight:500}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stat{display:flex;flex-direction:column;gap:6px;padding:16px;border:1px solid var(--tile-line);border-radius:16px;background:var(--tile)}
+.stat b{font-size:34px;line-height:1;letter-spacing:-.03em;color:var(--accent)}
+.stat span{font-size:13px;color:var(--mute)}
+.img{background:repeating-linear-gradient(135deg,var(--line) 0 1px,transparent 1px 10px);border:1px dashed var(--line);border-radius:16px;display:flex;align-items:center;justify-content:center;font-family:'Geist Mono',monospace;font-size:11px;color:var(--mute)}
+.co{margin:0;font-weight:700;letter-spacing:-.04em;line-height:.95}
+.yr{font-weight:800;letter-spacing:-.05em;line-height:.8;color:transparent;-webkit-text-stroke:1.5px var(--line);white-space:nowrap;pointer-events:none;user-select:none}
+.ph .lead{font-size:16px}
+.ph .did li{font-size:14px}
+.ph .stat{padding:12px}.ph .stat b{font-size:24px}
+.more{font-size:15px;font-weight:600;color:var(--accent);text-decoration:underline;text-decoration-color:var(--deco);text-decoration-thickness:2px;text-underline-offset:5px}
+.nextsec{padding:48px;display:flex;flex-direction:column;gap:12px;border-top:1px solid var(--tile-line)}
+.ph .nextsec{padding:28px 20px}
+
+.post{max-width:760px;margin:0 auto;padding:28px 40px 72px;box-sizing:border-box}
+.ph .post{padding:18px 18px 48px}
+.back{display:inline-flex;align-items:center;gap:6px;min-height:32px;color:var(--accent);font:600 15px/1 'Geist',sans-serif;text-decoration:underline;text-decoration-color:var(--deco);text-decoration-thickness:2px;text-underline-offset:5px;cursor:pointer}
+.back:hover{opacity:.85}
+.back svg{transition:transform .2s}
+.back:hover svg{transform:translateX(-3px)}
+.phead{display:flex;flex-direction:column;gap:14px;margin-top:22px}
+.phead h1{margin:0;font-size:44px;line-height:1.1;letter-spacing:-.035em}
+.ph .phead h1{font-size:30px}
+.meta3{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.topic{font:600 11px/1 'Geist Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);padding:6px 9px;border-radius:6px;background:color-mix(in srgb,var(--accent) 14%,transparent);text-decoration:none}
+.meta3 time,.meta3 span.rt{font:400 13px/1 'Geist Mono',monospace;letter-spacing:.04em;color:var(--mute)}
+.meta3 .dot{width:4px;height:4px;border-radius:50%;background:var(--line)}
+.ptags{display:flex;flex-wrap:wrap;gap:6px}
+.ptags a{font:500 12px/1 'Geist Mono',monospace;padding:8px 11px;border:1px solid var(--tile-line);border-radius:999px;color:var(--accent);text-decoration:none}
+.ptags a:hover{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.cover{margin:28px -40px 0;aspect-ratio:16/9;border-radius:24px}
+.ph .cover{margin:22px 0 0;border-radius:18px}
+.cover.img{font-size:12px}
+.figcap{margin:10px 0 0;font-size:13px;color:var(--mute);text-align:center}
+.body{margin-top:34px;font-size:18px;line-height:1.75;color:var(--ink2)}
+.ph .body{font-size:16.5px;line-height:1.7;margin-top:26px}
+.body > *{margin:0 0 22px}
+.body .lede{font-size:21px;line-height:1.6;color:var(--ink)}
+.ph .body .lede{font-size:18.5px}
+.body h2{margin:44px 0 14px;font-size:28px;line-height:1.2;letter-spacing:-.02em;color:var(--ink)}
+.ph .body h2{font-size:23px;margin-top:36px}
+.body strong{color:var(--ink)}
+.body a{color:var(--accent);text-decoration:underline;text-decoration-color:var(--deco);text-decoration-thickness:2px;text-underline-offset:4px}
+.body code{font:400 .86em/1 'Geist Mono',monospace;padding:3px 6px;border-radius:6px;background:var(--tile);border:1px solid var(--tile-line);color:var(--ink)}
+.body pre{margin:0;padding:16px 20px 18px;overflow-x:auto;font:400 14px/1.65 'Geist Mono',monospace;color:#C9D1F0}
+.ph .body pre{font-size:12.5px;padding:14px}
+.body pre .cl{display:block;white-space:pre}
+.body pre code{padding:0;border:0;background:none;color:inherit;font:inherit}
+.body pre .k{color:#8FB4FF}.body pre .s{color:#C6F432}.body pre .c{color:#5B6280}
+.body ul{padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+.body ul li{position:relative;padding-left:22px}
+.body ul li::before{content:'';position:absolute;left:2px;top:.62em;width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.body ol{padding:0;list-style:none;counter-reset:n;display:flex;flex-direction:column;gap:10px}
+.body ol li{counter-increment:n;position:relative;padding-left:38px}
+.body ol li::before{content:counter(n);position:absolute;left:0;top:.1em;width:26px;height:26px;border-radius:50%;background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent);font:600 13px/26px 'Geist Mono',monospace;text-align:center}
+.body h3{margin:36px 0 12px;font-size:22px;line-height:1.25;letter-spacing:-.015em;color:var(--ink)}
+.body h4{margin:28px 0 10px;font-size:18px;line-height:1.3;color:var(--ink)}
+.ph .body h3{font-size:20px}.ph .body h4{font-size:17px}
+.body em{font-style:italic;color:var(--ink)}
+.body u{text-decoration-color:var(--deco);text-decoration-thickness:2px;text-underline-offset:4px}
+.codebox{margin:0 0 26px;border-radius:16px;background:#0B0F22;border:1px solid var(--tile-line);overflow:hidden}
+.ph .codebox{margin-left:-4px;margin-right:-4px}
+.cbar{display:flex;justify-content:space-between;align-items:center;padding:8px 10px 8px 16px;border-bottom:1px solid #222A50;font:400 12px/1 'Geist Mono',monospace;color:#8E96B5}
+.copy{position:relative;display:inline-flex;align-items:center;gap:6px;min-height:30px;padding:0 10px;border:1px solid #2A3360;border-radius:8px;background:transparent;color:#B4BAD2;font:500 12px/1 'Geist Mono',monospace;cursor:pointer}
+.copy:hover{color:#EDEFF7;border-color:#8E96B5}
+.copy[data-copied="true"]{color:#5BE49B;border-color:#5BE49B}
+.body blockquote{margin:30px 0;padding:4px 0 4px 22px;border-left:3px solid var(--accent);font-size:22px;line-height:1.5;color:var(--ink);font-weight:500}
+.ph .body blockquote{font-size:19px}
+.endrule{height:1px;background:var(--tile-line);margin:44px 0 22px}
+.author{display:flex;gap:14px;align-items:center}
+.author .av{width:48px;height:48px;border-radius:50%;background:var(--tile);border:1px solid var(--tile-line);display:flex;align-items:center;justify-content:center;font:600 13px/1 'Geist Mono',monospace;color:var(--accent)}
+.author b{display:block;color:var(--ink);font-size:16px}
+.author span{font-size:14px;color:var(--mute)}
+</style>
+</helmet>
+<div style="width: 1552px; height: 816px; box-sizing: border-box; background: #E3E6EE; font-family: 'Geist', system-ui, sans-serif; --bg: {{t.bg}}; --tile: {{t.tile}}; --line: {{t.line}}; --tile-line: {{t.tileLine}}; --ink: {{t.ink}}; --ink2: {{t.ink2}}; --mute: {{t.mute}}; --accent: {{t.accent}}; --deco: {{t.deco}}; --on-accent: {{t.onAccent}}">
+<div class="bar"><strong style="font-size: 15px">Blog post — страница поста</strong>
+<div class="grp" role="group" aria-label="Theme"><button class="{{darkCls}}" onClick="{{toDark}}">Тёмная</button><button class="{{lightCls}}" onClick="{{toLight}}">Светлая</button></div>
+<span style="margin-left: auto; font-size: 13px; color: #5B6280">Нажмите Play и крутите колесо внутри экранов</span></div>
+<div class="stage">
+<div><p class="cap">Desktop</p><div class="frame" style="width: 1120px; height: 700px"><div class="hd"><b>Mikhail Aleksandrov</b><nav><span>Home</span><span>About</span><span>Projects</span><span>Skills</span><span class="on">Blog</span><span>Contact</span></nav></div><div class="scr" data-fx="post"><article class="post"><a class="back" href="/blog" data-back><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>Back</a><header class="phead"><h1>Moving an e-commerce store from PHP to Next.js without losing SEO</h1><div class="meta3"><a class="topic" href="/blog?topic=technical">Technical</a><time datetime="2026-10-12">Oct 12, 2026</time><i class="dot"></i><span class="rt">4 min read</span></div><div class="ptags" aria-label="Tags"><a href="/blog?tags=next.js">Next.js</a><a href="/blog?tags=seo">SEO</a><a href="/blog?tags=migration">Migration</a></div></header><figure style="margin: 0"><div class="img cover">COVER IMAGE · 16:9</div><figcaption class="figcap">[Image caption]</figcaption></figure><div class="body">
+<p class="lede">We moved a large e-commerce store from a PHP monolith to Next.js without a single day of lost search traffic. Conversion went up 12.4% and pages loaded 37% faster. Here is how we did it, and what I would do differently.</p>
+<h2>Why we didn't rewrite everything at once</h2>
+<p>A big-bang rewrite would have frozen product work for months and put every ranking page at risk on launch day. Instead, we put a thin proxy in front of the old site and moved the storefront <strong>one route at a time</strong>. Each route went live only when its numbers <em>matched or beat</em> the PHP version, and the rule was <u>no exceptions</u>.</p>
+<h3>The proxy did the heavy lifting</h3>
+<p>Every request first hit an edge proxy. A small routing table decided whether a path was served by Next.js or passed through to PHP, so rolling back a route meant changing one line:</p>
+<div class="codebox"><div class="cbar"><span>routes.ts</span><button class="copy" type="button" data-copy-code aria-label="Copy code"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 9h10v10H9z"></path><path d="M5 15V5h10"></path></svg><span data-copy-label>Copy</span></button></div><pre><code><span class="cl"><span class="c">// routes.ts — which paths Next.js already owns</span></span><span class="cl"><span class="k">export const</span> migrated = [</span><span class="cl">  <span class="s">"/"</span>,</span><span class="cl">  <span class="s">"/category/:slug"</span>,</span><span class="cl">  <span class="s">"/product/:slug"</span>,</span><span class="cl">];</span></code></pre></div>
+<h4>What the users saw</h4>
+<p>Nothing. Both stacks served the same domain, so cookies, sessions and the cart kept working across the boundary.</p>
+<h2>Keeping SEO intact</h2>
+<p>Search traffic was the main risk, so every migrated route had to pass the same checklist:</p>
+<ul><li>Identical URLs, including trailing slashes and the query parameters that mattered.</li><li>The same titles, descriptions and canonical tags, generated with the <code>generateMetadata</code> API.</li><li>Sitemaps rebuilt from one source of truth, so no page fell out of the index.</li></ul>
+<blockquote>If you can't measure a route before and after the move, you're not migrating it — you're gambling with it.</blockquote>
+<h3>Three mistakes I would avoid next time</h3>
+<ol><li>Measure Core Web Vitals per route <em>before</em> writing any code.</li><li>Export every redirect from the old system first; many lived only inside PHP.</li><li>Keep the routing table in config, not in code, so the team can change it without a deploy.</li></ol>
+<p>The result was worth it. Read more in the <a href="https://nextjs.org/docs">Next.js documentation</a>, or <a href="#">get in touch</a> if you're planning a similar move.</p>
+</div><div class="endrule"></div><div class="author"><span class="av" aria-hidden="true">MA</span><span><b>Mikhail Aleksandrov</b><span>Senior Frontend Software Engineer</span></span></div></article></div></div></div>
+<div><p class="cap">Phone</p><div class="frame ph" style="width: 360px; height: 700px"><div class="hd"><b>Mikhail Aleksandrov</b><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></div><div class="scr" data-fx="post"><article class="post"><a class="back" href="/blog" data-back><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>Back</a><header class="phead"><h1>Moving an e-commerce store from PHP to Next.js without losing SEO</h1><div class="meta3"><a class="topic" href="/blog?topic=technical">Technical</a><time datetime="2026-10-12">Oct 12, 2026</time><i class="dot"></i><span class="rt">4 min read</span></div><div class="ptags" aria-label="Tags"><a href="/blog?tags=next.js">Next.js</a><a href="/blog?tags=seo">SEO</a><a href="/blog?tags=migration">Migration</a></div></header><figure style="margin: 0"><div class="img cover">COVER IMAGE · 16:9</div><figcaption class="figcap">[Image caption]</figcaption></figure><div class="body">
+<p class="lede">We moved a large e-commerce store from a PHP monolith to Next.js without a single day of lost search traffic. Conversion went up 12.4% and pages loaded 37% faster. Here is how we did it, and what I would do differently.</p>
+<h2>Why we didn't rewrite everything at once</h2>
+<p>A big-bang rewrite would have frozen product work for months and put every ranking page at risk on launch day. Instead, we put a thin proxy in front of the old site and moved the storefront <strong>one route at a time</strong>. Each route went live only when its numbers <em>matched or beat</em> the PHP version, and the rule was <u>no exceptions</u>.</p>
+<h3>The proxy did the heavy lifting</h3>
+<p>Every request first hit an edge proxy. A small routing table decided whether a path was served by Next.js or passed through to PHP, so rolling back a route meant changing one line:</p>
+<div class="codebox"><div class="cbar"><span>routes.ts</span><button class="copy" type="button" data-copy-code aria-label="Copy code"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 9h10v10H9z"></path><path d="M5 15V5h10"></path></svg><span data-copy-label>Copy</span></button></div><pre><code><span class="cl"><span class="c">// routes.ts — which paths Next.js already owns</span></span><span class="cl"><span class="k">export const</span> migrated = [</span><span class="cl">  <span class="s">"/"</span>,</span><span class="cl">  <span class="s">"/category/:slug"</span>,</span><span class="cl">  <span class="s">"/product/:slug"</span>,</span><span class="cl">];</span></code></pre></div>
+<h4>What the users saw</h4>
+<p>Nothing. Both stacks served the same domain, so cookies, sessions and the cart kept working across the boundary.</p>
+<h2>Keeping SEO intact</h2>
+<p>Search traffic was the main risk, so every migrated route had to pass the same checklist:</p>
+<ul><li>Identical URLs, including trailing slashes and the query parameters that mattered.</li><li>The same titles, descriptions and canonical tags, generated with the <code>generateMetadata</code> API.</li><li>Sitemaps rebuilt from one source of truth, so no page fell out of the index.</li></ul>
+<blockquote>If you can't measure a route before and after the move, you're not migrating it — you're gambling with it.</blockquote>
+<h3>Three mistakes I would avoid next time</h3>
+<ol><li>Measure Core Web Vitals per route <em>before</em> writing any code.</li><li>Export every redirect from the old system first; many lived only inside PHP.</li><li>Keep the routing table in config, not in code, so the team can change it without a deploy.</li></ol>
+<p>The result was worth it. Read more in the <a href="https://nextjs.org/docs">Next.js documentation</a>, or <a href="#">get in touch</a> if you're planning a similar move.</p>
+</div><div class="endrule"></div><div class="author"><span class="av" aria-hidden="true">MA</span><span><b>Mikhail Aleksandrov</b><span>Senior Frontend Software Engineer</span></span></div></article></div></div></div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1552,"height":816}}'>
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { theme: 'dark' };
+    this.onResize = () => this.setup(true);
+  }
+  componentDidMount() { this.setup(); window.addEventListener('resize', this.onResize); setTimeout(() => this.setup(true), 400); }
+  componentWillUnmount() { window.removeEventListener('resize', this.onResize); }
+  componentDidUpdate() { this.setup(); }
+  setup(force) {
+    const all = document.querySelectorAll('[data-fx]');
+    Array.prototype.forEach.call(all, (el) => {
+      if (el.__fx && !force) return;
+      const fx = el.getAttribute('data-fx');
+      const fn = this[fx] ? this[fx].bind(this, el) : null;
+      if (!fn) return;
+      if (!el.__fx) {
+        el.__fx = fn;
+        el.addEventListener('scroll', () => { if (!el.__raf) el.__raf = requestAnimationFrame(() => { el.__raf = 0; el.__fx(); }); }, { passive: true });
+        if (this[fx + 'Init']) this[fx + 'Init'](el);
+      }
+      el.style.setProperty('--H', el.clientHeight + 'px');
+      if (this[fx + 'Size']) this[fx + 'Size'](el);
+      fn();
+    });
+  }
+  clamp(v) { return Math.max(0, Math.min(1, v)); }
+  // shared: highlight rail items / counters
+  mark(root, sel, i) {
+    Array.prototype.forEach.call(root.querySelectorAll(sel), (n) => n.setAttribute('data-on', String(+n.getAttribute('data-i') === i)));
+  }
+  count(root, i, n) {
+    Array.prototype.forEach.call(root.querySelectorAll('[data-count]'), (c) => { c.textContent = String(i + 1).padStart(2, '0') + ' / ' + String(n).padStart(2, '0'); });
+  }
+
+  postInit(el) {
+    Array.prototype.forEach.call(el.querySelectorAll('[data-copy-code]'), (b) => b.addEventListener('click', () => this.copyCode(b)));
+    const b = el.querySelector('[data-back]');
+    if (b) b.addEventListener('click', (e) => { e.preventDefault(); b.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-4px)' }, { transform: 'translateX(0)' }], { duration: 250 }); });
+  }
+  post() {}
+  copyCode(btn) {
+    const box = btn.closest('.codebox');
+    const text = Array.prototype.map.call(box.querySelectorAll('.cl'), (l) => l.textContent.replace(/\u00a0/g, '')).join('\n');
+    const done = () => { btn.setAttribute('data-copied', 'true'); btn.querySelector('[data-copy-label]').textContent = 'Copied'; clearTimeout(btn.__t); btn.__t = setTimeout(() => { btn.removeAttribute('data-copied'); btn.querySelector('[data-copy-label]').textContent = 'Copy'; }, 1000); };
+    const fb = () => { const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (e) {} ta.remove(); };
+    try { if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, () => { fb(); done(); }); else { fb(); done(); } } catch (e) { fb(); done(); }
+  }
+
+  renderVals() {
+
+    const T = {
+      dark: { bg: '#10142A', tile: '#181E3B', line: '#2A3360', tileLine: '#2A3360', ink: '#EDEFF7', ink2: '#B4BAD2', mute: '#8E96B5', accent: '#C6F432', deco: '#C6F432', onAccent: '#10142A' },
+      light: { bg: '#F3F5F9', tile: '#FFFFFF', line: '#E1E5EE', tileLine: '#BFCBF4', ink: '#10142A', ink2: '#454B66', mute: '#5B6280', accent: '#2347E8', deco: '#FFD23F', onAccent: '#FFFFFF' }
+    };
+    const s = this.state;
+    return {
+      t: T[s.theme],
+      darkCls: s.theme === 'dark' ? 'sb on' : 'sb',
+      lightCls: s.theme === 'light' ? 'sb on' : 'sb',
+      toDark: () => this.setState({ theme: 'dark' }),
+      toLight: () => this.setState({ theme: 'light' })
+    };
+  }
+}
+
+</script>
+</body>
+</html>
