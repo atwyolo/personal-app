@@ -19,8 +19,8 @@ Part of the site handoff, see [[README]] in this folder. Related: [[Roadmap]], [
 - **About block:**
   - it is one rich-text field, `profile.about`;
   - the desktop-only extra paragraph was removed;
-  - desktop now shows the same "Read more" button as mobile.
-- **Hero chips will come from Skills.** The admin no longer edits hero tags. The proposal is to use skills marked `main`; see Open questions.
+  - desktop now shows the same "Read more" as mobile (in the build a text link, see About).
+- **Hero chips from skills marked `main`:** proposed by the design and not adopted, the current implementation stays (owner's decision, 2026-11-02).
 
 ## Changes since 2026-10-28
 
@@ -28,7 +28,7 @@ Part of the site handoff, see [[README]] in this folder. Related: [[Roadmap]], [
 
 - Blog preview cards show the post **topic** (Technical / Software / Hobby) as a badge before the date, same as on the Blog page.
 
-- The Skills block became **My top skills**: no search, filter or counter; it shows only skills marked `featured`; "Show all N skills" links to the new `/skills` page.
+- The Skills block became **My top skills**: no search, filter or counter; it shows only skills marked `top`; "Show all N skills" links to the new `/skills` page.
 - The nav gained **Skills** (between Projects and Blog).
 - Experience links now point to the Projects page: `/projects#<company>` and `/projects`.
 
@@ -67,12 +67,12 @@ Rendering: home is **static** per locale (see [[Rendering Strategy]]). Everythin
 
 - Surface `bg-card`, bottom border `card-border`. Height 64 px mobile, 72 px desktop. `position: sticky; top: 0`.
 - Left: full name "Mikhail Aleksandrov", 600 weight, 17 px mobile / 20 px desktop, links to `/[locale]`.
-- Desktop: nav Home · About · Projects · Skills · Blog · Contact (15 px, gap 28 px). Active item: `text-brand`, 600, underline in `deco`, 3 px thick, offset 8 px.
+- Desktop: nav Home · About · Projects · Skills · Blog · Contact (15 px, gap 28 px). Active item: `text-brand`, 600, underline in `deco`, 3 px thick, offset 8 px. In the build the underline is one bar that slides between items, in the same place; a browser without anchor positioning keeps the plain underline (owner's decision, 2026-11-02, [[ADR-0012 Nav Indicator]]).
 - Right controls, all in `text-brand`:
   - **Locale menu.** Mobile: 44 px round icon button showing the code ("EN"). Desktop: pill button, code + chevron-down.
   - **Theme menu.** Mobile: 44 px round button. Desktop: pill, icon + chevron. The icon shows the *resolved* theme: moon for dark, sun for light.
   - Mobile only: hamburger (44 px round, `text-foreground`). **The open menu was not designed** — use a shadcn Sheet from the right with the same six nav items, active item styled as on desktop.
-- Menus (both): popover anchored bottom-right, 8 px gap, min-width 210 px, padding 6 px, radius 16 px, `bg-popover`, border `card-border`, soft shadow. Items 40 px tall, radius 10 px, hover `bg-accent`. Selected item: `text-brand` + check icon at the end.
+- Menus (both): popover anchored bottom-right, 8 px gap, min-width 210 px, padding 6 px, radius 16 px, `bg-popover`, border `card-border`, soft shadow. Items 40 px tall, radius 10 px, hover `bg-accent`. Selected item: `text-brand` on the whole item, the hint included, + check icon at the end (owner's decision, 2026-11-02; the design left the hint muted). Focus keeps it.
   - Theme items: Dark, Light, System. System shows a mono hint "now dark/light" (`text-muted-foreground`, 11 px).
   - Locale items: native names (English, Русский, Português, Español, Deutsch, Français, 日本語, Polski) with the code as a mono hint.
   - Build with the Base UI menu from shadcn (`DropdownMenu` + `DropdownMenuRadioGroup`). Base UI uses the `render` prop, not `asChild`.
@@ -95,7 +95,7 @@ Section headers: a mono label (`Geist Mono`, 11 px mobile / 12 px desktop, upper
 
 - H1 "Mikhail Aleksandrov": 700 weight, tracking −.04em. Size 36 px with line-height 1 on mobile; 64 px with line-height .95 on desktop.
 - Headline: "Senior Frontend Software Engineer, 8+ years", in `foreground-soft`, 16 / 20 px.
-- Tag chips (React.js, Redux, Next.js, NestJS, TypeScript, Express; proposed source: skills marked `main`): mono 12–13 px, pill, border `card-border`, text `brand`, weight 500. Chips show **colored text only**, no fill, in both themes.
+- Tag chips (React.js, Redux, Next.js, NestJS, TypeScript, Express): mono 12–13 px, pill, border `card-border`, text `brand`, weight 500. Chips show **colored text only**, no fill, in both themes.
 
 ### Photo
 
@@ -110,12 +110,12 @@ All four buttons are 56 px tall, radius 16 px, label 17 px / 700, padding `0 16p
 - Surface: `bg-card`, a 1 px `card-border` border, label in `text-foreground`.
 - Left: a 36 × 36 px box (no background) holding a 26 px outline icon in `text-brand` (chat bubble, envelope, "in" square).
 - Right: an arrow-up-right icon, 18 px, in `text-brand`.
-- Hover: the border turns `brand`, the button lifts 2 px with a soft shadow, and the arrow nudges 2 px up-right. Focus: a 2 px `brand` outline, offset 3 px.
+- Hover: the border turns `brand`, and nothing moves (owner's decision, 2026-11-02; the design also lifts the button 2 px with a soft shadow and nudges the arrow). Focus: the site's one 3 px ring, see the accessibility checklist; the design's 2 px `brand` outline offset by 3 px is not used (Claude's call, 2026-11-02).
 
 | Button | Label | Link |
 |---|---|---|
 | WhatsApp | "WhatsApp" | `https://wa.me/37493310039`, `title` = phone |
-| Mail | mailbox name "mikhail.aleksandrov.job" (the part before `@`, 16 px; may wrap at the dots on desktop) | `mailto:` |
+| Mail | mailbox name "mikhail.aleksandrov.job" (the part before `@`, 16 px, 15 px from `lg`; may wrap at the dots on desktop) | `mailto:` |
 | LinkedIn | "LinkedIn" | profile URL |
 
 **Download CV** is the primary action:
@@ -140,7 +140,7 @@ The icons are generic glyphs, not official logos.
 - Label "About", then the lead paragraph: 17 px mobile, 20 px desktop.
 - "A few results I'm proud of:" in 600 weight, followed by three bullet items. Each bullet is an 8 px square, radius 2 px, in `deco`.
 - The text comes from one rich-text field (`profile.about`, edited in the admin): the lead paragraph, a bold line and a bullet list. Render it with the shared `<RichText>` component. Here `<ul>` items use the 8 px `deco` squares, and `<strong>` paragraphs are 600 weight.
-- A secondary pill button "Read more" linking to `/about`, on both mobile and desktop.
+- "Read more" linking to `/about`, on both mobile and desktop: the shared text link with an arrow, not the design's secondary pill button (owner's decision, 2026-11-02).
 
 ### Experience
 
@@ -157,12 +157,12 @@ The icons are generic glyphs, not official logos.
 
 ### My top skills (static)
 
-A short list of the skills marked `featured` ("Top" in the admin) in the main skills list. There is no upper limit. No search, no domain filter and no "Top N of M" counter on the home page: the full explorer lives on the separate `/skills` page (designed separately).
+A short list of skills marked `top` in the main skills list, without a limit (owner's decision, 2026-11-01; the layout is drawn for 1–20). No search, no domain filter and no "Top N of M" counter on the home page: the full explorer lives on the separate `/skills` page (designed separately).
 
 - Section header: the mono label "My top skills", no count on the right.
-- Data: `topSkills` from `content.ts` (skills with `featured: true`, sorted by level desc, then `sort`, then name). Later: a `featured boolean` column on `skills`.
+- Data: `getTopSkills`, the `top boolean` column on `skills`, sorted by level desc, then `sort`, then name. `content.ts` and the prototype still call the flag `featured`.
 - One tile.
-  - Mobile: one column; each row has the name (500 weight) and a mono "n/10" on one line, with the 10-segment bar below (8 px tall, 3 px gaps).
+  - Mobile: one column; each row has the name (500 weight) on its own line, then the 10-segment bar (8 px tall, 3 px gaps) and a mono "n/10" on one line (owner's decision, 2026-11-01; the prototype and the screens still show the value next to the name).
   - Desktop: padding 28 × 32 px; grid `repeat(auto-fill, minmax(320px, 1fr))` with gaps of 18 × 48 px, so 1–2 skills fill one row and 20 spread over three columns. Each row is a grid `150px | 1fr | 44px`: name, bar (10 px tall, 4 px gaps), "n/10".
 - Bar segments are filled in `brand` up to the level; the rest use `placeholder`. Each row has `role="meter"` with `aria-valuenow` or an `aria-label` from messages.
 - Button below the tile: a primary pill reading "Show all {total} skills", where the total is counted from the full list. It is a link to `/[locale]/skills`. Desktop: right-aligned, like "All experience". Mobile: full width.
@@ -171,7 +171,7 @@ A short list of the skills marked `featured` ("Top" in the admin) in the main sk
 
 - Shows the 3 latest posts. The section header has no controls.
 - Post card:
-  - meta row: topic badge (mono 11 px, uppercase, `brand` text on `brand` at 14% opacity, radius 6 px, padding 5 × 8 px), then the date as a mono label formatted with next-intl `format.dateTime`;
+  - meta row: topic badge (mono 11 px, uppercase, `brand` text on `brand` at 14% opacity, radius 6 px, padding 5 × 8 px), then the date as a mono label formatted with next-intl `format.dateTime`. The label comes from `post_topic_translations`, not from messages (owner's decision, 2026-11-01);
   - title (h3): 17–19 px mobile, 18 px desktop; the featured card uses 22 px;
   - excerpt: 2–3 sentences, 15 px / 1.55, `foreground-soft`;
   - tag chips **under the text** (several per post);
@@ -194,17 +194,19 @@ A short list of the skills marked `featured` ("Top" in the admin) in the main sk
 
 ## Motion: accent wipe
 
-- Every tile and carousel reveals with a full-cover shutter in `shutter` that slides off, with `transform: scaleX(1 → 0)` on `::after`.
-- Directions alternate tile by tile: even index slides right (`data-dir="r"`), odd slides left (`data-dir="l"`). Set this server-side from the render index; no JS is needed.
-- First screen (`.reveal-load`): plays on load for 0.7 s with `cubic-bezier(.75,0,.2,1)`, staggered by `--i × 110 ms + 150 ms`. Covers hero, photo, contacts and About.
-- Everything below (`.reveal`): scroll-driven with `animation-timeline: view()` and range `entry 15% → entry 100%`. Browsers without support show the tiles immediately.
-- Carousels animate as one block, so the cards inside them carry no reveal class.
-- All of it is wrapped in `prefers-reduced-motion: no-preference`. CSS is in `tokens.css`.
+The owner simplified the design's motion on 2026-11-01: one wipe on load, all at once, and never again until a reload. The stagger, the scroll-driven reveal and the `.reveal-load` class of the prototype and `tokens.css` are not used. See [[2026-10-30-home-motion]].
+
+- Every block reveals with a full-cover shutter in `shutter` that slides off, with `transform: scaleX(1 → 0)` on `::after`.
+- `.reveal` plays on page load for 0.7 s with `cubic-bezier(.75,0,.2,1)` after 150 ms, on every block at the same time. Links, the back button and a language switch do not start it; a reload does.
+- It covers the header, hero, the photo, each contact button, About, each Experience card, the skills tile and each post card, on every width. Section headers, pills and carousel controls carry no class.
+- Directions alternate: `.reveal` slides right, `.reveal-left` slides left.
+- `overflow: clip`, not the `hidden` of `tokens.css`: `hidden` makes a block a scroll container, which stops any `view()` timeline inside it.
+- All of it is wrapped in `prefers-reduced-motion: no-preference`. CSS is in `src/app/globals.css`.
 
 ## Accessibility checklist
 
 - Touch targets ≥ 44 px for all buttons and carousel arrows.
-- Visible focus: `ring` color, 3 px.
+- Visible focus: `ring` color, 3 px, as an outline on links and a box shadow on buttons, which keep an outline in forced colors mode.
 - Icon-only buttons have labels; decorative icons `aria-hidden`.
 - Contrast checked: `brand` on card is 6.7:1 in light and 12.7:1 in dark. Muted text is ≥ 5.5:1. Contact buttons: label ≥ 14:1, icons ≥ 6.7:1 (see above). Yellow is never used for text.
 - `lang` and `hreflang` come from the locale segment. Mobile menus trap focus (Sheet / Menu do this).
@@ -215,14 +217,14 @@ A short list of the skills marked `featured` ("Top" in the admin) in the main sk
 - The Data Model needs these additions; record them in [[Data Model]] when Stage 3 starts:
   - `experience`: `image`, a relation to `skills` (many-to-many), `description` (the short description, up to 3 sentences, plain text), and `body` (rich text, Projects page).
   - `posts`: `cover`, `tags` (a `tags` table plus `post_tags`).
-  - `skills`: `featured boolean default false` ("Top", drives "My top skills") and `main boolean default false`.
+  - `skills`: `top boolean default false` (drives "My top skills", done 2026-11-01).
+  - `posts`: `topic_id`, see [[Data Model]] (done 2026-11-01).
   - `profile`: `about` as rich text.
-- Owner TODOs (marked in `content.ts`): the photo file, the CV PDF, the Omega-R description, the experience tag lists, real skill levels (currently only 5 are set; the rest are placeholder 6), which skills are `featured`, and real posts.
+- Owner TODOs (marked in `content.ts`): the photo file, the CV PDF, the Omega-R description, the experience tag lists, real skill levels (currently only 5 are set; the rest are placeholder 6), which skills are `top`, and real posts.
 
 ## Open questions (add to [[Open Questions]])
 
 - The mobile menu (Sheet) contents and the tablet layout were not designed. Proposed defaults are above.
-- Hero chips: proposed source is the skills marked `main` (the admin dropped the hero tags field). Confirm, and add "Express" to the skills list if it should stay.
 
 ## Kickoff prompt for the Claude Code session
 

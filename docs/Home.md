@@ -47,7 +47,7 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[2026-10-30]] — home page: photo, Blob store, image optimization
 - [[2026-10-31]] — home page: Experience block closed
 - [[2026-11-01]] — home page: My top skills and Blog blocks, accent wipe, verification
-- [[2026-11-02]] — home page closed: iOS check, sliding navigation, selected menu item
+- [[2026-11-02]] — home page closed: iOS check, sliding navigation, selected menu item, contact buttons
 
 ## Templates
 - [[ADR Template]] · [[Journal Template]]

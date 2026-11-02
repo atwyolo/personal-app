@@ -7,7 +7,7 @@
 /*
  * Design tokens: docs/design/shared/tokens.css (approved handoff, docs/design/Home Page Handoff.md).
  * shadcn variable names keep their shadcn meaning, so generated components pick up the palette.
- * Extra tokens (card-border, foreground-soft, brand, deco, shutter, selected, placeholder, contact brands)
+ * Extra tokens (card-border, foreground-soft, brand, deco, shutter, selected, placeholder)
  * cover what the design needs beyond shadcn's set.
  *
  * `inline` makes each utility reference the CSS variable directly (bg-card -> var(--card)),
@@ -53,14 +53,6 @@
   --color-selected: var(--selected);
   --color-selected-foreground: var(--selected-foreground);
   --color-placeholder: var(--placeholder);
-
-  /* Contact brand colors are the same in both themes. */
-  --color-whatsapp: #188842; /* The brand's hue, darkened for 4.5:1 with white; the official #25d366 gives 1.98:1. */
-  --color-whatsapp-foreground: #ffffff;
-  --color-gmail: #d93025;
-  --color-gmail-foreground: #ffffff;
-  --color-linkedin: #0a66c2;
-  --color-linkedin-foreground: #ffffff;
 
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);

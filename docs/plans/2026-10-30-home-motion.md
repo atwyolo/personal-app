@@ -153,9 +153,23 @@ The owner's request of 2026-11-02: the code of the selected locale keeps the mut
 
 Verify: `e2e/header-menus.spec.ts`. Depends on: nothing.
 
+### Task 5: Contact buttons in theme colors (S)
+
+The design of 2026-11-02: WhatsApp, Mail and LinkedIn become identical cards with `brand` icons, Download CV stays filled. This replaces the brand colors, the logos and the `#188842` of 2026-11-01.
+
+`widgets/contacts`, `src/app/globals.css`, `e2e/home-contacts.spec.ts`, [[Home Page Handoff]].
+
+- [x] Cards in `bg-card` with a 1 px `card-border`, a 26 px outline icon in a 36 px box, an 18 px arrow.
+- [x] Hover: the `brand` border and nothing else. The design's lift, shadow and arrow nudge were built and removed (owner's decision, 2026-11-02).
+- [x] The site's one 3 px focus ring stays, not the design's 2 px outline (Claude's call).
+- [x] The design's glyphs replace the real logos of 2026-10-30, in `ContactIcons.tsx`, because the owner asked to follow the design; the brand tokens are gone.
+- [x] The address takes the prototype's 15 px from `lg`: one line in a 288 px column, wrapped at the dots below that.
+
+Verify: `e2e/home-contacts.spec.ts`, screenshots at 390, 1024, 1100, 1280 and 1440 px. Depends on: nothing.
+
 ## Checkpoint
 
-- [x] Definition of done from `CLAUDE.md` is green (2026-11-02: 125 unit, 274 e2e).
+- [x] Definition of done from `CLAUDE.md` is green (2026-11-02: 125 unit, 288 e2e).
 - [x] Lighthouse repeated on Vercel after the font change.
 - [x] Spec status changes from draft, and [[Roadmap]] is updated.
 
