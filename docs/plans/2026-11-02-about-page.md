@@ -1,7 +1,8 @@
 ---
 tags: [plan, about]
-status: in-progress
+status: done
 date: 2026-11-02
+updated: 2026-11-03
 ---
 
 # Plan: About page
@@ -25,6 +26,8 @@ Related: [[2026-11-02-about-page-design]] (the spec, read it with this plan), [[
 - **The label sits outside the `h2`** (Claude's call). The handoff puts it inside the bubble, not necessarily inside the heading. `question_title` is a `<p>` before the `h2` within the bubble, so the heading reads as the question alone.
 - **Slices** (Claude's call): `src/widgets/about-hero`, `src/widgets/interview`, `src/features/question-nav`, `src/features/interview-reveal`. The feature slices are client leaves.
 - **`back` lives in a new `Common` namespace** (Claude's call). A namespace named after one page would not fit six pages.
+
+- **After the review (2026-11-02):** Task 3's tracker is gone: `BackLink` is a plain link home (owner's decision), so `in-site-navigation.ts` and `NavigationTracker.tsx` no longer exist. Task 4's chips scroll by themselves with `scroll={false}`, and neither `scroll-behavior` on `html` nor `data-scroll-behavior` is used. A chosen chip holds until a hand scroll, and the active chip is the section nearest to the top from below instead of the 40% line (owner's decisions). The tasks below keep their original text as the record of what was planned; the spec holds the result.
 
 ## Review focus
 
@@ -117,16 +120,16 @@ There are no unit tests here: Vitest does not reach the database, and Playwright
 **Interfaces:**
 - Produces: `markInSiteNavigation(): void`; `hasInSiteNavigation(): boolean`; `NavigationTracker: FC`; `BackLink: FC<{ href?: string; label: string }>`, `href` defaulting to `/`.
 
-- [ ] **Step 1: Write the failing tests.**
+- [x] **Step 1: Write the failing tests.**
   - `hasInSiteNavigation()` is false until `markInSiteNavigation()` is called, then true.
   - `NavigationTracker`, with a mocked `usePathname`: the first render marks nothing; a rerender with another path marks navigation; a rerender with the same path marks nothing.
   - `BackLink` renders a link to `/` named by `label`, its chevron `aria-hidden`.
   - `BackLink` click without in-site navigation does not call `router.back()`, and the link goes on; with in-site navigation it calls `router.back()` once and prevents the default. A click with a modifier key is left to the browser.
-- [ ] **Step 2: Run them.** Expected: FAIL, the modules are missing.
-- [ ] **Step 3: Implement.** A module-level flag. `NavigationTracker` compares the pathname in an effect and returns `null`; mount it in `SiteLayout` beside `RevealOnce`. `BackLink` uses `useRouter` and the router `Link`, styled as the README's Back link.
-- [ ] **Step 4: Run them.** Expected: PASS.
-- [ ] **Step 5: Add e2e tests.** Opened directly, Back on `/en/about` goes to `/en`. From `/en` through "Read more" to About, Back returns to `/en` with the home page visible. Clicking it on the home-to-About path does not reload the page.
-- [ ] **Step 6: Use `BackLink` in `AboutHero`** with `Common.back`, and run the definition of done, then `git add`.
+- [x] **Step 2: Run them.** Expected: FAIL, the modules are missing.
+- [x] **Step 3: Implement.** A module-level flag. `NavigationTracker` compares the pathname in an effect and returns `null`; mount it in `SiteLayout` beside `RevealOnce`. `BackLink` uses `useRouter` and the router `Link`, styled as the README's Back link.
+- [x] **Step 4: Run them.** Expected: PASS.
+- [x] **Step 5: Add e2e tests.** Opened directly, Back on `/en/about` goes to `/en`. From `/en` through "Read more" to About, Back returns to `/en` with the home page visible. Clicking it on the home-to-About path does not reload the page.
+- [x] **Step 6: Use `BackLink` in `AboutHero`** with `Common.back`, and run the definition of done, then `git add`.
 
 ### Task 4: Question chips
 
@@ -148,13 +151,13 @@ There are no unit tests here: Vitest does not reach the database, and Playwright
   ```
   `QuestionNav: FC<{ label: string; items: { slug: string; linkText: string }[] }>`.
 
-- [ ] **Step 1: Write the failing unit test**, table-driven, with a viewport of 1000 and `distanceToBottom: 200` unless stated. Tops `[0, 500, 900]` → `0`. Tops `[100, 399, 900]` → `1` (above the 400 line). Tops `[100, 400, 900]` → `0` (exactly on the line is not above). Tops `[500, 900, 1300]` → `0` (nothing above the line yet). Tops `[-900, -100, 900]` with `distanceToBottom: 0` → `2` (the bottom of the page). `sectionTops: []` → `0`.
-- [ ] **Step 2: Run it.** Expected: FAIL.
-- [ ] **Step 3: Implement `getActiveSection`.** Treat `distanceToBottom <= 1` as the bottom: fractional scroll positions leave a sub-pixel gap.
-- [ ] **Step 4: Write the failing component test.** `QuestionNav` renders a `nav` named by `label`, one link per item with `href` ending `#slug`, and the first item with `aria-current="true"`. Mock the router `Link` only if rendering it requires it.
-- [ ] **Step 5: Implement `QuestionNav`.** The router `Link` with `replace`. A scroll listener with `passive: true` batched by `requestAnimationFrame`, reading the section tops by `slug`, removed on cleanup. When the active item changes, scroll the row itself with `row.scrollTo({ left, behavior })`, never `scrollIntoView`, which also moves the page. `behavior` is `auto` under reduced motion. The bar and its chips follow the handoff, with the scrollbar hidden.
-- [ ] **Step 6: Connect it.** `Interview` renders `QuestionNav` before the sections, only when there are pairs. Sections get `scroll-margin-top` for the header plus the bar. `globals.css`: `scroll-behavior: smooth` on `html` under `prefers-reduced-motion: no-preference`. The root layout's `<html>`: `data-scroll-behavior="smooth"`.
-- [ ] **Step 7: Add e2e tests.**
+- [x] **Step 1: Write the failing unit test**, table-driven, with a viewport of 1000 and `distanceToBottom: 200` unless stated. Tops `[0, 500, 900]` → `0`. Tops `[100, 399, 900]` → `1` (above the 400 line). Tops `[100, 400, 900]` → `0` (exactly on the line is not above). Tops `[500, 900, 1300]` → `0` (nothing above the line yet). Tops `[-900, -100, 900]` with `distanceToBottom: 0` → `2` (the bottom of the page). `sectionTops: []` → `0`.
+- [x] **Step 2: Run it.** Expected: FAIL.
+- [x] **Step 3: Implement `getActiveSection`.** Treat `distanceToBottom <= 1` as the bottom: fractional scroll positions leave a sub-pixel gap.
+- [x] **Step 4: Write the failing component test.** `QuestionNav` renders a `nav` named by `label`, one link per item with `href` ending `#slug`, and the first item with `aria-current="true"`. Mock the router `Link` only if rendering it requires it.
+- [x] **Step 5: Implement `QuestionNav`.** The router `Link` with `replace`. A scroll listener with `passive: true` batched by `requestAnimationFrame`, reading the section tops by `slug`, removed on cleanup. When the active item changes, scroll the row itself with `row.scrollTo({ left, behavior })`, never `scrollIntoView`, which also moves the page. `behavior` is `auto` under reduced motion. The bar and its chips follow the handoff, with the scrollbar hidden.
+- [x] **Step 6: Connect it.** `Interview` renders `QuestionNav` before the sections, only when there are pairs. Sections get `scroll-margin-top` for the header plus the bar. `globals.css`: `scroll-behavior: smooth` on `html` under `prefers-reduced-motion: no-preference`. The root layout's `<html>`: `data-scroll-behavior="smooth"`.
+- [x] **Step 7: Add e2e tests.**
   - chip texts in order: "Who I am", "How I work", "Results I'm proud of", "Teams and scale", "What I'm looking for", "Outside of work"
   - the bar stays under the header after scrolling, at `top` 72 px on desktop and 64 px on mobile
   - after a click on "Teams and scale", the URL ends in `#scale`, the section's `h2` is below the bar's bottom edge and in the viewport, and that chip has `aria-current="true"`
@@ -166,7 +169,7 @@ There are no unit tests here: Vitest does not reach the database, and Playwright
   - after a language switch the left page stays in the DOM with the same ids (`cacheComponents`), found in Task 2: a chip click on `/ru/about` still scrolls the visible section, and the active chip follows the visible sections. `QuestionNav` looks sections up inside its own conversation, never through `document.getElementById`
   - **Review focus 3:** at 320 px the row scrolls (`scrollWidth > clientWidth`), the page does not, and the active chip is fully inside the row after scrolling to the end
   - without JavaScript (`javaScriptEnabled: false`) the chips are links and the click moves to the section
-- [ ] **Step 8: Run the definition of done** and `git add` the task's files.
+- [x] **Step 8: Run the definition of done** and `git add` the task's files.
 
 ### Task 5: Reveal on scroll
 
@@ -177,17 +180,17 @@ There are no unit tests here: Vitest does not reach the database, and Playwright
 **Interfaces:**
 - Produces: `InterviewReveal: FC<{ children: ReactNode }>`: wraps the conversation, sets `data-reveal` on its element after hydration when motion is allowed, and sets `data-revealed` on each section as it crosses 85% of the viewport.
 
-- [ ] **Step 1: Write the failing component test.** With a stub `IntersectionObserver` and `matchMedia`: motion allowed sets `data-reveal` and observes every `section`; the observer callback sets `data-revealed` on that section and stops observing it; reduced motion sets no `data-reveal` and creates no observer; a missing `IntersectionObserver` sets no `data-reveal`.
-- [ ] **Step 2: Run it.** Expected: FAIL.
-- [ ] **Step 3: Implement.** A layout effect, so a section already in view does not flash. `rootMargin: "0px 0px -15% 0px"` for the 85% line. Sections above the viewport count as revealed: a deep link and a return must not leave them hidden, so the callback also accepts a section whose top is above the line. Cleanup disconnects the observer and removes `data-reveal`.
-- [ ] **Step 4: Add the CSS** in `globals.css`, under `prefers-reduced-motion: no-preference` and scoped to `[data-reveal]`: the question fades up by 16 px over 0.45 s, the answer follows after 350 ms. The hidden state exists only under `[data-reveal] section:not([data-revealed])`.
-- [ ] **Step 5: Run the component test.** Expected: PASS.
-- [ ] **Step 6: Add e2e tests.**
+- [x] **Step 1: Write the failing component test.** With a stub `IntersectionObserver` and `matchMedia`: motion allowed sets `data-reveal` and observes every `section`; the observer callback sets `data-revealed` on that section and stops observing it; reduced motion sets no `data-reveal` and creates no observer; a missing `IntersectionObserver` sets no `data-reveal`.
+- [x] **Step 2: Run it.** Expected: FAIL.
+- [x] **Step 3: Implement.** A layout effect. It marks sections already above the 85% line synchronously, before `data-reveal` goes on, because the observer's first callback comes after a paint and they would flash hidden. They appear without the fade. `rootMargin: "0px 0px -15% 0px"` for the line. A section that jumped past the viewport upwards counts as revealed too. Cleanup disconnects the observer and removes `data-reveal`. The component also takes `className`: it is the conversation's column.
+- [x] **Step 4: Add the CSS** in `globals.css`, under `prefers-reduced-motion: no-preference` and scoped to `[data-reveal]`: the question fades up by 16 px over 0.45 s, the answer follows after 350 ms. The hidden state exists only under `[data-reveal] section:not([data-revealed])`.
+- [x] **Step 5: Run the component test.** Expected: PASS.
+- [x] **Step 6: Add e2e tests.**
   - a section below the fold has `opacity: 0` before scrolling and `1` after
   - **Review focus 5:** with `reducedMotion: "reduce"` every section is visible at once and has no `data-reveal`; with JavaScript off every `h2` is visible
   - **Review focus 1:** opening `/en/about#next` fresh shows that section and all above it at `opacity: 1`
   - **Review focus 2:** About, then Home through the header, then the browser's Back: every section in view is at `opacity: 1`
-- [ ] **Step 7: Run the definition of done** and `git add` the task's files.
+- [x] **Step 7: Run the definition of done** and `git add` the task's files.
 
 ### Task 6: JSON-LD
 
@@ -199,16 +202,16 @@ There are no unit tests here: Vitest does not reach the database, and Playwright
 - Consumes: `HomeProfile.jobTitle`, `contacts.linkedin.href`.
 - Produces: `serializeJsonLd(data: object): string`.
 
-- [ ] **Step 1: Write the failing unit test.** `serializeJsonLd({ name: "a</script><script>alert(1)</script>" })` contains no `<` and `JSON.parse` of it gives the original object back.
-- [ ] **Step 2: Run it.** Expected: FAIL.
-- [ ] **Step 3: Implement** as in the Next JSON-LD guide: `JSON.stringify(data).replace(/</g, "\\u003c")`.
-- [ ] **Step 4: Write the failing e2e test.** `/en/about` has one `script[type="application/ld+json"]`; parsed, `@type` is `ProfilePage`, `mainEntity["@type"]` is `Person`, `mainEntity.name` is "Mikhail Aleksandrov", `mainEntity.jobTitle` is "Senior Frontend Software Engineer", and `mainEntity.sameAs` holds the LinkedIn URL.
-- [ ] **Step 5: Render the script in `AboutPage`** with `dangerouslySetInnerHTML` and `serializeJsonLd`.
-- [ ] **Step 6: Run the definition of done** and `git add` the task's files.
+- [x] **Step 1: Write the failing unit test.** `serializeJsonLd({ name: "a</script><script>alert(1)</script>" })` contains no `<` and `JSON.parse` of it gives the original object back.
+- [x] **Step 2: Run it.** Expected: FAIL.
+- [x] **Step 3: Implement** as in the Next JSON-LD guide: `JSON.stringify(data).replace(/</g, "\\u003c")`.
+- [x] **Step 4: Write the failing e2e test.** `/en/about` has one `script[type="application/ld+json"]`; parsed, `@type` is `ProfilePage`, `mainEntity["@type"]` is `Person`, `mainEntity.name` is "Mikhail Aleksandrov", `mainEntity.jobTitle` is "Senior Frontend Software Engineer", and `mainEntity.sameAs` holds the LinkedIn URL.
+- [x] **Step 5: Render the script in `AboutPage`** with `dangerouslySetInnerHTML` and `serializeJsonLd`.
+- [x] **Step 6: Run the definition of done** and `git add` the task's files.
 
 ### Task 7: Review and hand over
 
-- [ ] **Step 1: Run `requesting-code-review`** on `git diff --cached`, then `receiving-code-review` for the findings.
-- [ ] **Step 2: Check it by eye** in both themes, on desktop and on a phone, and in the iOS simulator: sticky bars, smooth scrolling and rotation are the risky parts.
-- [ ] **Step 3: Run Lighthouse** on `/en/about`: the page adds two client leaves.
-- [ ] **Step 4: Ask the owner** whether it can be committed and which version to raise. The rest of the documentation from the spec's list, the version and the commit message follow the end-of-step rule in `CLAUDE.md`.
+- [x] **Step 1: Run `requesting-code-review`** on `git diff --cached`, then `receiving-code-review` for the findings.
+- [x] **Step 2: Check it by eye** in both themes, on desktop and on a phone, and in the iOS simulator: sticky bars, smooth scrolling and rotation are the risky parts.
+- [x] **Step 3: Run Lighthouse** on `/en/about`: the page adds two client leaves.
+- [x] **Step 4: Ask the owner** whether it can be committed and which version to raise. The rest of the documentation from the spec's list, the version and the commit message follow the end-of-step rule in `CLAUDE.md`.

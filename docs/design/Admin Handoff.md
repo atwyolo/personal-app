@@ -111,7 +111,7 @@ See [[README]] for shared rules. The fields here are exactly the shapes in `shar
 - Each pair holds:
   - **Slug** (shared across locales, entered by hand, never generated; the section's anchor);
   - **Link text** (the chip label; hint "Shown as the section chip and in the page index");
-  - **Question title** (the small label in the question bubble);
+  - **Question title** (the upper, larger line of the question bubble);
   - **Question message** (the interviewer's message);
   - **Answer title** (one sentence, shown larger);
   - **Answer message** (rich text, "text" toolbar);

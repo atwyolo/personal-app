@@ -13,7 +13,7 @@ See [[README]] for shared rules and files. Data: `aboutSections` in `shared/cont
 ## Changes since 2026-11-01
 
 - **"‹ Back" link** above the hero label (style in [[README]]).
-- **The pairs are data, not a fixed six.** The admin can add, delete and reorder question–answer pairs. Each pair has `link_text` (chip label), `question_title` (the small label in the question bubble), `question_message` (the h2), `answer_title` (the first line, shown larger) and `answer_message` (rich text). Render however many there are (owner's decision of 2026-11-02, replacing a single `title` for the chip and the label).
+- **The pairs are data, not a fixed six.** The admin can add, delete and reorder question–answer pairs. Each pair has `link_text` (chip label), `question_title` (the upper, larger line of the question bubble), `question_message` (the h2), `answer_title` (the first line, shown larger) and `answer_message` (rich text). Render however many there are (owner's decision of 2026-11-02, replacing a single `title` for the chip and the label).
 - **The "results" section is ordinary rich text now:** its bullets live in its `answer_message`, not in `profile.about.results`.
 - **No contact buttons** (owner's decision of 2026-11-02). Messages hold no extra items: a call to action becomes a link in `answer_message`, once rich text gets its own stage.
 
@@ -26,7 +26,7 @@ See [[README]] for shared rules and files. Data: `aboutSections` in `shared/cont
 
 ## Layout
 
-- **Hero**: label "About", h1 "About me" (56 px desktop, 36 px phone), and an intro of at most 640 px: "A short interview with myself: the questions recruiters ask most, answered properly."
+- **Hero**: no label (owner's decision of 2026-11-02), h1 "About me" (56 px desktop, 36 px phone), and an intro of at most 640 px: "A short interview with myself: the questions recruiters ask most, answered properly."
 - **Question chips bar**, sticky under the header:
   - `bg-background` with a bottom border, padding 12 × 48 px (desktop) and 10 × 14 px (phone).
   - One chip per section, labelled with `link_text` (Who I am, How I work, …): mono 12 px, a pill with a `card-border` outline.
@@ -40,7 +40,7 @@ See [[README]] for shared rules and files. Data: `aboutSections` in `shared/cont
 - **Question = `h2`**, right-aligned bubble:
   - max width 70% (85% on phone), padding 14 × 18 px, radius `20 20 6 20`;
   - `bg-primary text-primary-foreground`: brand fill, so lime in dark and blue in light;
-  - inside: a small mono label with `question_title` (11 px uppercase, 75% opacity), then `question_message` at 18 px / 600 (16 px on phone). The label stays outside the `h2`.
+  - inside: `question_title` at 18 px / 600 (16 px on phone), then `question_message` at 14 px / 400 (13 px on phone): the larger line is the title (owner's decision of 2026-11-02, replacing a small mono label over a large question). The title stays outside the `h2`.
 - **Answer**, left-aligned, max width 88% (100% on phone):
   - an avatar, a 40 px circle (32 px on phone), with a `card` fill, a `card-border` border and the initials "MA" in `brand` mono. Swap in the real photo later;
   - a bubble: `card` with a `card-border` border, radius `20 20 20 6`, padding 18 × 20 px, and a 12 px gap between its parts:
@@ -51,7 +51,7 @@ See [[README]] for shared rules and files. Data: `aboutSections` in `shared/cont
 
 - When a section's top crosses 85% of the viewport, the question fades up (opacity 0→1, `translateY 16px→0`, 0.45–0.5 s). The answer follows 350 ms later.
 - With reduced motion, or without JS, everything is visible immediately. Do not hide content in the server HTML: start hidden only after hydration, for example with a `data-js` attribute on `<html>`.
-- **Active chip:** the last section whose top is above 40% of the viewport. At the bottom of the page, the last section is active.
+- **Active chip** (owner's decision of 2026-11-02): the section nearest to the top of the visible page from below, measured from the bottom of the chips bar; a section that has gone above it no longer counts. Sections near the end cannot rise that far, so only a click marks their chips. A chip the visitor chose, or the target of a deep link, stays active until the visitor scrolls by hand.
 
 ## Accessibility and SEO
 

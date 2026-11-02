@@ -1,12 +1,13 @@
 ---
 tags: [spec, about, database]
-status: approved
+status: done
 date: 2026-11-02
+updated: 2026-11-03
 ---
 
 # About Page Design
 
-Status: **approved by the owner on 2026-11-02.** Plan: [[2026-11-02-about-page]].
+Status: **done, the page was closed on 2026-11-03.** Plan: [[2026-11-02-about-page]].
 
 Related: [[About Page Handoff]] (visual contract), [[Data Model]], [[Rendering Strategy]], [[ADR-0002 Database and ORM]], [[ADR-0003 Content Localization]], [[ADR-0007 Testing]].
 
@@ -30,7 +31,7 @@ Related: [[About Page Handoff]] (visual contract), [[Data Model]], [[Rendering S
 ## Decided by the owner
 
 1. **Pairs have five text fields:** `link_text`, `question_title`, `question_message`, `answer_title`, `answer_message`. Only `answer_message` is rich text.
-2. **`link_text` is the text of the sticky chip**; `question_title` is the small label inside the question bubble. This replaces the handoff's single `title`, used in both places.
+2. **`link_text` is the text of the sticky chip**; `question_title` is the upper, larger line of the question bubble. This replaces the handoff's single `title`, used in both places.
 3. **`slug` is entered by hand** in a future admin field, never generated. The seed sets it explicitly.
 4. **The page title and intro are not editable:** they stay in `messages`. The Page header block of [[Admin Handoff]] goes away.
 5. **No extra items in messages.** No `show_contacts`, no contact buttons. A call to action becomes a link in `answer_message`, once the rich text stage exists. Until then the page has no call to action.
@@ -108,7 +109,7 @@ All of it is additive for the running deployments: they do not read the new tabl
 
 The visual contract is [[About Page Handoff]] and the site-wide rules of `docs/design/README.md`. Only the differences and the structure are here.
 
-**Differences from the handoff:** chips use `link_text`; the bubble label uses `question_title`; no contact buttons; no call to action for now.
+**Differences from the handoff:** chips use `link_text`; the bubble's larger upper line is `question_title`, with `question_message` under it, smaller; no hero label; no contact buttons; no call to action for now.
 
 **The README says rich text is stored as sanitized HTML.** The project stores Tiptap JSON (`CLAUDE.md`, [[Data Model]]), which wins.
 
@@ -118,8 +119,7 @@ The visual contract is [[About Page Handoff]] and the site-wide rules of `docs/d
 - `src/app/[locale]/about/page.tsx`: route, with the one-line rendering comment.
 - `src/views/about/AboutPage.tsx`, `src/views/about/metadata.ts`: composition and metadata. `AboutPage` passes the locale-resolved data down.
 - `src/widgets/about/About.tsx` is the home block and stays. The page's widgets take names that do not collide with it.
-- `src/shared/ui/BackLink.tsx`: every inner page needs it, so it starts in `shared`. It is a real link to `/`, with the small client enhancement from the README (`router.back()` when the previous entry is on this site).
-- "The previous entry is on this site" comes from a small client tracker in `SiteLayout`, in the manner of `RevealOnce`: it notes that a client navigation happened. `document.referrer` does not change on those. After a reload the tracker is empty and Back goes to `/`.
+- `src/shared/ui/BackLink.tsx`: every inner page needs it, so it starts in `shared`. It is a plain server-rendered link to `/`, never a step in the history (owner's decision after the review): the visitor must not leave the site through it. This drops the README's `router.back()` enhancement.
 - A client leaf for the chips, and a client leaf for the reveal. Everything else is a Server Component.
 - JSON-LD `ProfilePage` + `Person` in a `<script type="application/ld+json">` rendered by the view: `name`, `jobTitle` and `sameAs` from `getProfile(locale)`, where `sameAs` is the LinkedIn URL. Serialized with `<` escaped, because database text ends up inside a script tag.
 
@@ -136,17 +136,20 @@ The visual contract is [[About Page Handoff]] and the site-wide rules of `docs/d
 - Going through the router keeps the history entry usable: a plain anchor writes an entry the router knows nothing about. `replace` keeps chips out of the history, so Back leaves the page instead of walking the chips.
 - `sticky` under the header: `top-16`, `lg:top-[72px]`, the header's heights.
 - Sections get `scroll-margin-top` of the header plus the bar.
-- Smooth scrolling comes from CSS on `html` under `prefers-reduced-motion: no-preference`, and the router's `scrollIntoView` follows it for a hash change. The root layout's `<html>` gets `data-scroll-behavior="smooth"`, so the router turns it off for page changes (Next 16 upgrade guide).
-- The active chip follows the handoff's rule: the last section whose top is above 40% of the viewport, the last section at the bottom of the page. This choice is a pure function with Vitest tests. The active chip scrolls into view inside its row only, without moving the page.
+- A chip's `Link` has `scroll={false}`: the router records the address, and the chip's click scrolls its own section with `scrollIntoView`, smooth unless motion is reduced, then moves the focus there, because the router leaves the focus alone. Sections have `tabIndex={-1}`. Without JavaScript the anchor jumps natively.
+- The active chip is the section nearest to the top of the visible page from below, measured from the bottom of the sticky row: a section that has gone above it no longer counts (owner's decision, replacing the handoff's 40% line and its rule for the bottom of the page). Sections near the end cannot rise that far, so their chips are marked only by a click, which the owner accepted. Once every section has gone above, the last one stays. This choice is a pure function with Vitest tests. The active chip scrolls into view inside its row only, without moving the page.
+- A chip the visitor chose, or the target of a deep link, stays active until the visitor scrolls by hand (owner's decision). `wheel`, `touchmove`, `keydown` and `pointerdown` mark the intent, and the next `scroll` confirms it, so a press that moves nothing changes nothing, and neither does the scroll a chip starts itself.
 
-**Reveal on scroll:** per the handoff. Hiding starts only after hydration, through an attribute set by the client leaf, so the server HTML shows everything. It is off with reduced motion.
+**Reveal on scroll:** per the handoff. Hiding starts only after hydration, through an attribute set by the client leaf, so the server HTML shows everything. It is off with reduced motion and in print.
+- Before hiding starts, the first pass reveals everything above the bottom of the window and the target of a deep link with what precedes it. Hiding is instant, so nothing fades out.
+- When the last section enters the window, everything left is revealed: on a tall window it can never rise to the 85% line.
 
 **`cacheComponents` keeps a left route in the DOM** with `display: none` ([[Rendering Strategy]]). Effects of a hidden route are cleaned up, and tests must not match its hidden `h1`.
 
 ## Tests
 
 - **Vitest:** the active-section function, the initials, the JSON-LD escaping.
-- **Playwright** (read-only, against the seeded pairs): the page renders one section per pair in order; the question is an `h2` in reading order; chip text and hrefs; `aria-current` follows scrolling; a chip click lands below the sticky bars; a chip click adds no history entry; after a chip, going to another page and pressing the browser's Back shows About at the same section; `BackLink` leaves the page after several chip clicks; sticky behavior; reduced motion; JavaScript off shows everything; both themes; desktop and mobile; hreflang and JSON-LD.
+- **Playwright** (read-only, against the seeded pairs): the page renders one section per pair in order; the question is an `h2` in reading order; chip text and hrefs; `aria-current` follows scrolling; a chip click lands below the sticky bars; a chip click adds no history entry; after a chip, going to another page and pressing the browser's Back shows About at the same section; `BackLink` goes home after several chip clicks, and from a page reached through the browser's Back; the chosen chip stays active on a section that cannot rise to the top, through a press that scrolls nothing, and follows the page again after a hand scroll; the last chip is not reached by scrolling alone; sticky behavior; reduced motion; JavaScript off shows everything; both themes; desktop and mobile; hreflang and JSON-LD.
 - **Existing tests that treat `/about` as a 404:**
   - `e2e/home-motion.spec.ts`: the `allowedConsoleErrors` comment at the "once per page load" block no longer holds for this link.
   - `e2e/header-nav.spec.ts`, `e2e/header.spec.ts`: sections that lead to the 404 page, where the comment names About.
@@ -172,8 +175,8 @@ Updated with the work:
 - **The page is not in `src/db/queries/home.ts`:** that file and its cache tags describe the home page.
 - **Brackets in the placeholders:** the screens show them, and they read as unfinished on purpose. They are public once deployed, because the database is shared.
 - **`BackLink` in `shared/ui`**, ahead of a second user, because the README names six pages that need it.
-- **Chips do not enter the history.** Alternative: `push`, so the browser's Back walks the chips, but then `BackLink` has to skip those entries to leave the page.
-- **Smooth scrolling is site-wide,** on `html`, not only on this page. A selector for this page would also match it while it is hidden and kept in the DOM.
+- **Chips do not enter the history.** Alternative: `push`, so the browser's Back walks the chips.
+- **Smooth scrolling belongs to the chips, not to `html`.** The first version set `scroll-behavior: smooth` site-wide, and the review measured the cost: the browser's position restore on Back and Forward animated across the whole site, because `data-scroll-behavior` only covers link navigation. A `popstate` listener could have undone that, at the price of more code for the same result.
 
 ## Left to the builder
 

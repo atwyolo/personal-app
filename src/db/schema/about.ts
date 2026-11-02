@@ -19,7 +19,7 @@ export const aboutPairTranslations = pgTable(
     locale: localeEnum().notNull(),
     /** Text of the sticky chip. */
     linkText: text(),
-    /** Small label inside the question bubble. */
+    /** Upper, larger line of the question bubble. */
     questionTitle: text(),
     questionMessage: text(),
     answerTitle: text(),

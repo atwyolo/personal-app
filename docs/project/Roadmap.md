@@ -1,6 +1,6 @@
 ---
 tags: [project, roadmap]
-updated: 2026-11-02
+updated: 2026-11-03
 ---
 
 # Roadmap
@@ -9,7 +9,7 @@ Each stage ends with a working build.
 
 **Home page** ([[2026-10-29-home-page-design]]): done 2026-11-02. It spans stages 1–3 and borrows blocks from later ones. Verification on Vercel: desktop 100 on all four, mobile 98, 100, 100, 100 (2026-11-01), measured before the sliding navigation and the contact buttons of 2026-11-02; the iOS simulator check passed ([[2026-10-30-home-motion]]).
 
-**About page** ([[2026-11-02-about-page-design]]): in progress, see [[2026-11-02-about-page]]. Content and the static page are built; the Back link, the chips, the reveal and the JSON-LD are next.
+**About page** ([[2026-11-02-about-page-design]]): done 2026-11-03, see [[2026-11-02-about-page]]. Three answers still hold the design's placeholders. Links in answers wait for the Rich text stage.
 
 - [x] **Stage 0 — Scaffold** (2026-10-26): `create-next-app`, shadcn init, lint/type/build green, docs vault, `CLAUDE.md`.
 - [x] **Stage 1 — Skeleton & theme** (2026-10-29): root layout, sticky header with desktop and mobile navigation, `next-themes` dark mode, base shadcn components, metadata API. No placeholder routes: links to missing pages go to the 404 page until those pages exist (owner's decision).

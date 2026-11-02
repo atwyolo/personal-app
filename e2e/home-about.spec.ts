@@ -1,6 +1,6 @@
 import { expect, test } from "./fixtures";
 
-// About tile: the profile's rich text with its structure kept, then a link to the About page, which comes later.
+// About tile: the profile's rich text with its structure kept, then a link to the About page.
 test("shows the lead, the results list and the read more link", async ({ page }) => {
   await page.goto("/en");
 

@@ -102,7 +102,7 @@ Agreed on 2026-11-02, see [[2026-11-02-about-page-design]].
 | Column | Type | Notes |
 |---|---|---|
 | `link_text` | text | Text of the sticky chip. |
-| `question_title` | text | Small label inside the question bubble. |
+| `question_title` | text | Upper, larger line of the question bubble. |
 | `question_message` | text | The question, an `h2`. |
 | `answer_title` | text | The first line of the answer, shown larger. |
 | `answer_message` | jsonb | Rich text. |
