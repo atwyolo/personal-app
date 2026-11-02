@@ -11,10 +11,12 @@ Each stage ends with a working build.
 
 **About page** ([[2026-11-02-about-page-design]]): done 2026-11-03, see [[2026-11-02-about-page]]. Three answers still hold the design's placeholders. Links in answers wait for the Rich text stage.
 
+**Projects page** ([[2026-11-03-projects-page-design]]): done 2026-11-03, see [[2026-11-03-projects-page]]. Static, on the `experience` tables. Three jobs for now: Omega-R left the database (owner's decision). The roles and the full descriptions are demo content.
+
 - [x] **Stage 0 — Scaffold** (2026-10-26): `create-next-app`, shadcn init, lint/type/build green, docs vault, `CLAUDE.md`.
 - [x] **Stage 1 — Skeleton & theme** (2026-10-29): root layout, sticky header with desktop and mobile navigation, `next-themes` dark mode, base shadcn components, metadata API. No placeholder routes: links to missing pages go to the 404 page until those pages exist (owner's decision).
 - [x] **Stage 2 — i18n** (2026-10-29): `next-intl`, `[locale]` segment, 8 locales, locale switcher, `generateStaticParams` for locales, localized metadata and `hreflang`. Only `en` has messages so far; the other locales fall back to it (see [[Localization]]).
-- [ ] **Stage 3 — Database**: Neon via Vercel Marketplace, Drizzle schema with translation tables, `drizzle-kit push`, seed script, Projects page reading from DB with ISR. *In progress:* everything except the Projects page is done; the home page reads from the database.
+- [x] **Stage 3 — Database** (2026-11-03): Neon via Vercel Marketplace, Drizzle schema with translation tables, `drizzle-kit push`, seed script, Home, About and Projects reading from the database, static with cache tags ([[Rendering Strategy]]).
 - [ ] **Stage 4 — Blog**: posts + translations in DB, dynamic `[slug]` route, static params, Tiptap JSON → React renderer, view counter.
 - [ ] **Stage 5 — Contact form**: Server Action, React Hook Form + Zod on the client, same schema on the server, honeypot, `useActionState`, messages table.
 - [ ] **Stage 6 — Admin**: Auth.js v5 credentials login, route protection, admin layout mirroring site structure, CRUD per entity, Tiptap editor, TanStack Table lists, per-locale editing with fallback indicator.

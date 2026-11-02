@@ -1,7 +1,7 @@
 ---
 tags: [design, handoff, admin]
 status: approved
-updated: 2026-11-02
+updated: 2026-11-03
 ---
 
 # Admin Handoff
@@ -28,7 +28,7 @@ See [[README]] for shared rules. The fields here are exactly the shapes in `shar
 1. Auth guard for `/admin` (Auth.js or a single-owner password plus a session cookie). The admin is not localized: its UI language is a separate setting (below).
 2. Shell: header, sidebar, phone drawer, save bar and toast.
 3. Content language switching with fallback markers.
-4. Section forms, in this order: Home → About → Experience → Skills → Blog (list, editor, topics) → Contact inbox.
+4. Section forms, in this order: Home → About → Projects → Skills → Blog (list, editor, topics) → Contact inbox.
 5. Writes go through Server Actions with Zod. After saving, revalidate the affected public routes for that locale (`revalidatePath`).
 
 ## Shell
@@ -47,7 +47,7 @@ See [[README]] for shared rules. The fields here are exactly the shapes in `shar
 **Sidebar** (desktop: 248 px, `bg-card`, a right border, padding 18 × 14 px; sections 22 px apart):
 
 - **Content language**: a select button (globe icon, language name, percentage translated, chevron) that expands an inline list. Each row shows the code, the name, a 4 px progress bar and the percentage. The hint below reads "Text fields are saved for the selected language. Empty fields fall back to English."
-- **Pages**: Home, About, Experience, Skills, Blog, Contact. Rows are 42 px tall with an icon.
+- **Pages**: Home, About, Projects, Skills, Blog, Contact. Rows are 42 px tall with an icon.
   - The active row is `bg-foreground text-background` with the icon in `brand`.
   - Contact shows a `brand` badge with the unread count.
 - Phone: the same sidebar as a 300 px drawer from the left, with a scrim.
@@ -118,7 +118,7 @@ See [[README]] for shared rules. The fields here are exactly the shapes in `shar
   - **Delete this pair** (`destructive` link).
 - The collapsed row shows a drag handle (reorder), the link text, the question message and a "Needs answer" badge while Answer title is empty. Link text and question message update live. All five texts are required in `en` today, so a saved pair is always complete: the badge needs a decision at the admin stage, see [[2026-11-02-about-page-design]].
 
-**Experience** (one accordion per place of work, sorted by start date, newest first; no drag handles):
+**Projects**, shown as "Experience" on the screens (owner's decision, 2026-11-03; one accordion per place of work, sorted by start date, newest first; no drag handles):
 
 - Company (shared), Role.
 - Start and End (month; End empty = "present").

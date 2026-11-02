@@ -110,20 +110,23 @@ export async function getProfile(locale: Locale): Promise<HomeProfile> {
   };
 }
 
-export type HomeExperience = {
+/** A job as the Home cards and the Projects page show it. */
+export type Experience = {
   slug: string;
   company: string;
+  role: string | null;
   /** "YYYY-MM-DD"; formatting and duration happen in the UI with next-intl. */
   startDate: string;
   endDate: string | null;
   /** "YYYY-MM-DD" when this result was cached: closes a running job, frozen until the next build or `updateTag`. */
   today: string;
   imageUrl: string | null;
-  descriptionShort: RichTextDoc;
+  descriptionShort: string;
+  descriptionFull: RichTextDoc | null;
   skills: string[];
 };
 
-export async function getExperience(locale: Locale): Promise<HomeExperience[]> {
+export async function getExperience(locale: Locale): Promise<Experience[]> {
   "use cache";
   cacheLife("max");
   cacheTag(homeCacheTags.experience, homeCacheTags.skills);
@@ -137,10 +140,12 @@ export async function getExperience(locale: Locale): Promise<HomeExperience[]> {
         id: experience.id,
         slug: experience.slug,
         company: experience.company,
+        role: localizedOptional(tr.role, en.role),
         startDate: experience.startDate,
         endDate: experience.endDate,
         imageUrl: experience.imageUrl,
         descriptionShort: localized(tr.descriptionShort, en.descriptionShort),
+        descriptionFull: localizedOptional(tr.descriptionFull, en.descriptionFull),
       })
       .from(experience)
       .innerJoin(en, and(eq(en.experienceId, experience.id), eq(en.locale, "en")))

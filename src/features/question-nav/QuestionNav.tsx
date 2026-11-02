@@ -3,6 +3,7 @@
 import { type FC, type MouseEvent, useEffect, useRef, useState } from "react";
 
 import { Link } from "@/shared/lib/i18n/navigation";
+import { useScrollHold } from "@/shared/lib/useScrollHold";
 import { cn } from "@/shared/lib/utils";
 
 import { getActiveSection } from "./active-section";
@@ -11,12 +12,6 @@ interface QuestionNavProps {
   label: string;
   items: { slug: string; linkText: string }[];
 }
-
-/**
- * What a visitor's own scroll starts with. `scroll` itself cannot tell it from the scroll a chip started,
- * so these only mark the intent, and the next `scroll` confirms it. A press that moves nothing changes nothing.
- */
-const HAND_INPUT_EVENTS = ["wheel", "touchmove", "keydown", "pointerdown"] as const;
 
 const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -34,17 +29,14 @@ export const QuestionNav: FC<QuestionNavProps> = (props) => {
   const navRef = useRef<HTMLElement>(null);
   const [active, setActive] = useState(0);
   // A chosen section may be unable to rise to the top, so the choice holds until the visitor scrolls by hand.
-  const heldRef = useRef(false);
-  const handInputRef = useRef(false);
+  const { hold, isHeld } = useScrollHold();
 
   const getSections = () => [...(navRef.current?.parentElement?.querySelectorAll<HTMLElement>("section[id]") ?? [])];
 
   const handleClick = (event: MouseEvent<HTMLAnchorElement>, slug: string) => {
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
 
-    heldRef.current = true;
-    // The press on this chip was hand input too, and the scroll it starts must not count as the visitor's.
-    handInputRef.current = false;
+    hold();
     setActive(items.findIndex((item) => item.slug === slug));
 
     const section = getSections().find((item) => item.id === slug);
@@ -59,7 +51,7 @@ export const QuestionNav: FC<QuestionNavProps> = (props) => {
 
     const update = () => {
       frame = 0;
-      if (heldRef.current) return;
+      if (isHeld()) return;
 
       setActive(
         getActiveSection({
@@ -73,33 +65,22 @@ export const QuestionNav: FC<QuestionNavProps> = (props) => {
       if (frame === 0) frame = requestAnimationFrame(update);
     };
 
-    const handleScroll = () => {
-      if (handInputRef.current) heldRef.current = false;
-      schedule();
-    };
-
-    const markHandInput = () => {
-      handInputRef.current = true;
-    };
-
     const target = sections.findIndex((section) => `#${section.id}` === window.location.hash);
     if (target >= 0) {
-      heldRef.current = true;
+      hold();
       setActive(target);
     }
 
     update();
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule, { passive: true });
-    for (const type of HAND_INPUT_EVENTS) window.addEventListener(type, markHandInput, { passive: true });
 
     return () => {
       cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
-      for (const type of HAND_INPUT_EVENTS) window.removeEventListener(type, markHandInput);
     };
-  }, []);
+  }, [hold, isHeld]);
 
   // The row scrolls by itself: `scrollIntoView` would also move the page, against the scroll that changed the chip.
   useEffect(() => {

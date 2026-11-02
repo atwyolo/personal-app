@@ -2,8 +2,7 @@ import { render, screen, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import type { AnchorHTMLAttributes } from "react";
 import { describe, expect, it, vi } from "vitest";
-import type { HomeExperience } from "@/db/queries/home";
-import { doc, paragraph } from "@/shared/lib/rich-text";
+import type { Experience } from "@/db/queries/home";
 import messages from "../../../messages/en.json";
 import { ExperienceCard } from "./ExperienceCard";
 
@@ -12,18 +11,20 @@ vi.mock("@/shared/lib/i18n/navigation", () => ({
   Link: (props: AnchorHTMLAttributes<HTMLAnchorElement>) => <a {...props} />,
 }));
 
-const job: HomeExperience = {
+const job: Experience = {
   slug: "glovo",
   company: "Glovo",
+  role: null,
   startDate: "2024-11-01",
   endDate: "2026-10-01",
   today: "2026-10-30",
   imageUrl: null,
-  descriptionShort: doc(paragraph("Built a chat."), paragraph("Cut defects.")),
+  descriptionShort: "Built a chat. Cut defects.",
+  descriptionFull: null,
   skills: ["Next.js", "Jest"],
 };
 
-const renderCard = (overrides: Partial<HomeExperience> = {}) =>
+const renderCard = (overrides: Partial<Experience> = {}) =>
   render(
     <NextIntlClientProvider locale="en" messages={messages}>
       <ExperienceCard job={{ ...job, ...overrides }} />
@@ -61,10 +62,10 @@ describe("ExperienceCard", () => {
     expect(screen.getByRole("article")).toHaveTextContent("11/2025 – present · 1 year");
   });
 
-  it("shows the description as plain text", () => {
+  it("shows the description", () => {
     renderCard();
 
-    expect(screen.getByText(/^Built a chat\.\s+Cut defects\.$/)).toBeVisible();
+    expect(screen.getByText("Built a chat. Cut defects.")).toBeVisible();
   });
 
   it("lists the skills as chips", () => {
@@ -82,9 +83,9 @@ describe("ExperienceCard", () => {
     expect(screen.queryByRole("list")).not.toBeInTheDocument();
   });
 
-  it("links to the projects page", () => {
-    renderCard();
+  it("links to the job on the projects page", () => {
+    renderCard({ slug: "sony" });
 
-    expect(screen.getByRole("link", { name: "Learn more" })).toHaveAttribute("href", "/projects");
+    expect(screen.getByRole("link", { name: "Learn more" })).toHaveAttribute("href", "/projects#sony");
   });
 });

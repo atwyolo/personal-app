@@ -7,6 +7,8 @@ const getMonthIndex = (date: string): number => {
   return year * MONTHS_IN_YEAR + month;
 };
 
+const getYear = (date: string): number => Number(date.slice(0, 4));
+
 /** "2024-11-01" → "11/2024". */
 export const formatMonthYear = (date: string): string => {
   const [year, month] = date.split("-");
@@ -23,4 +25,17 @@ export const getDurationYears = (startDate: string, endDate: string | null, toda
   const months = getMonthIndex(endDate ?? today) - getMonthIndex(startDate) + 1;
 
   return Math.round((months / MONTHS_IN_YEAR) * 10) / 10;
+};
+
+/** The years a list of jobs covers, in any order; null without jobs. `today` closes a job that is still running. */
+export const getYearSpan = (
+  periods: { startDate: string; endDate: string | null }[],
+  today: string,
+): { from: number; to: number } | null => {
+  if (periods.length === 0) return null;
+
+  return {
+    from: Math.min(...periods.map((period) => getYear(period.startDate))),
+    to: Math.max(...periods.map((period) => getYear(period.endDate ?? today))),
+  };
 };

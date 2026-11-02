@@ -1,6 +1,6 @@
 ---
 tags: [project]
-updated: 2026-10-26
+updated: 2026-11-03
 ---
 
 # Overview
@@ -20,6 +20,7 @@ Admin (`/admin`): login, a menu mirroring the public structure, CRUD forms per e
 - Database must fit the Neon Free plan (1 GB storage, 100 compute-hours/month, scale-to-zero after 5 min idle).
 - Nothing secret is stored; still, credentials live only in env vars.
 - Everything in the repo is in English.
+- The narrowest supported window is 360 px (owner's decision, 2026-11-03). Layout problems at a window height of 300 px or less are not a target.
 
 ## Stack summary
 

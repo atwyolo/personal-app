@@ -1,30 +1,28 @@
 import { useTranslations } from "next-intl";
 import type { FC } from "react";
 
-import type { HomeExperience } from "@/db/queries/home";
-import { toPlainText } from "@/shared/lib/rich-text";
+import type { Experience } from "@/db/queries/home";
+import { formatMonthYear, getDurationYears } from "@/shared/lib/period";
 import { cn } from "@/shared/lib/utils";
 import { Chip } from "@/shared/ui/Chip";
 import { Image } from "@/shared/ui/Image";
 import { Link } from "@/shared/ui/Link";
 import { Tile } from "@/shared/ui/Tile";
 
-import { formatMonthYear, getDurationYears } from "./lib/period";
-
 interface ExperienceCardProps {
-  job: HomeExperience;
+  job: Experience;
   className?: string;
 }
 
 /**
  * One job: image, company, period with its duration, description, skills. Synchronous, so Vitest can render it.
- * `sizes` is the rendered image width, not the box width: the column minus the card's border and padding (258px at
+ * `sizes` is the rendered image width, not the box width: the column minus the card's border and padding (359px at
  * 1280), but in a box narrower than 16:9 `object-cover` scales the file by the 180px height, so desktop takes at least
  * 320px. Below `lg` the box is wider than 16:9 and its width decides.
  */
 export const ExperienceCard: FC<ExperienceCardProps> = (props) => {
   const { job, className } = props;
-  const { company, startDate, endDate, today, imageUrl, descriptionShort, skills } = job;
+  const { slug, company, startDate, endDate, today, imageUrl, descriptionShort, skills } = job;
   const t = useTranslations("Home.experience");
 
   const end = endDate ? formatMonthYear(endDate) : t("present");
@@ -36,7 +34,7 @@ export const ExperienceCard: FC<ExperienceCardProps> = (props) => {
         <Image
           src={imageUrl}
           alt={company}
-          sizes="(min-width: 1024px) max(320px, 25vw - 62px), (min-width: 720px) 662px, calc(100vw - 58px)"
+          sizes="(min-width: 1024px) max(320px, 33.33vw - 67px), (min-width: 720px) 662px, calc(100vw - 58px)"
           className="object-cover"
           framed
         />
@@ -46,9 +44,7 @@ export const ExperienceCard: FC<ExperienceCardProps> = (props) => {
         <p className="font-mono text-[11px] tracking-[0.08em] text-muted-foreground uppercase lg:text-xs">
           {formatMonthYear(startDate)} – {end} · <span className="whitespace-nowrap">{duration}</span>
         </p>
-        <p className="text-sm leading-normal whitespace-pre-line text-foreground-soft">
-          {toPlainText(descriptionShort)}
-        </p>
+        <p className="text-sm leading-normal text-foreground-soft">{descriptionShort}</p>
         {skills.length > 0 && (
           <ul className="mt-0.5 flex flex-wrap gap-1.5">
             {skills.map((skill) => (
@@ -58,7 +54,7 @@ export const ExperienceCard: FC<ExperienceCardProps> = (props) => {
             ))}
           </ul>
         )}
-        <Link href="/projects" showArrowIcon className="mt-auto self-start py-1 text-[15px]">
+        <Link href={`/projects#${slug}`} showArrowIcon className="mt-auto self-start py-1 text-[15px]">
           {t("learnMore")}
         </Link>
       </div>

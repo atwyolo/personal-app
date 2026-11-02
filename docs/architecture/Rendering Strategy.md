@@ -1,6 +1,6 @@
 ---
 tags: [architecture]
-updated: 2026-11-01
+updated: 2026-11-03
 ---
 
 # Rendering Strategy
@@ -11,7 +11,7 @@ Deliberately mix rendering modes so each one is learned in practice. Every page 
 |---|---|---|
 | `/[locale]` (home) | static, DB-backed: `"use cache"` + `cacheLife("max")` + `cacheTag` per entity; admin calls `updateTag` | content changes rarely; built once per locale, refreshed only when edited |
 | `/[locale]/about` | static | same |
-| `/[locale]/projects` | ISR (`revalidate`) + on-demand `revalidateTag` from admin | DB-backed, but edits are rare |
+| `/[locale]/projects` | static, DB-backed, as home: same `getExperience`, same tags, admin calls `updateTag` | content changes rarely; one read per locale serves both pages |
 | `/[locale]/blog` | ISR | list of posts |
 | `/[locale]/blog/[slug]` | static params + ISR; view counter via Server Action | post body is static, counter is a mutation |
 | `/[locale]/contact` | dynamic (Server Action) | form submission |

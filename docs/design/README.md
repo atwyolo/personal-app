@@ -1,6 +1,6 @@
 ---
 tags: [design, handoff]
-updated: 2026-11-02
+updated: 2026-11-03
 ---
 
 # Design handoff
@@ -15,7 +15,7 @@ These are the approved designs for the whole site, ready to implement: seven pub
 | # | Page | Route | Spec | Rendering |
 |---|---|---|---|---|
 | 1 | Home | `/[locale]` | [[Home Page Handoff]] | static |
-| 2 | Projects (work experience) | `/[locale]/projects` | [[Projects Page Handoff]] | static now, ISR once it reads the DB |
+| 2 | Projects (work experience) | `/[locale]/projects` | [[Projects Page Handoff]] | static, DB-backed |
 | 3 | About | `/[locale]/about` | [[About Page Handoff]] | static |
 | 4 | Skills | `/[locale]/skills` | [[Skills Page Handoff]] | static now, ISR once it reads the DB |
 | 5 | Blog list | `/[locale]/blog` | [[Blog Page Handoff]] | ISR |
@@ -87,14 +87,13 @@ Build order:
   - The icon is in `brand`, and the arrow-up-right is in `brand`.
   - On hover, the border turns `brand`.
   - Download CV is the filled `primary` button.
-- **Anchors:** every work place has an id (`glovo`, `sony`, `epam`, `omega-r`), and Home links to `/projects#<id>`. Anchored sections need `scroll-margin-top` equal to the header height (plus any sticky bar).
+- **Anchors:** every work place has an id (`glovo`, `sony`, `epam`), and Home links to `/projects#<id>`. Anchored sections need `scroll-margin-top` equal to the header height (plus any sticky bar).
 - **Motion** respects `prefers-reduced-motion`: reveals and progress animations are skipped, and content is visible immediately.
 - **All text is server-rendered.** Filters and scroll effects are small client components layered on top. With JavaScript off, every page still reads as a plain article or list.
 - **Rich text** from the admin (Tiptap) is stored as sanitized HTML. It is rendered with one shared `<RichText>` component whose styles match the post typography (scaled down outside posts).
 
 ## Open questions
 
-- **Page name.** The admin calls the page "Experience", while the site nav and route say "Projects". Pick one name for the nav, the route and the admin.
 - **"Main" skills.** The admin has a "Main" flag next to "Top". The proposal is that it drives the hero chips on Home (the admin no longer edits hero tags). Note that "Express", currently a hero chip, is not in the skills list.
 
 ## Kickoff prompt (one page at a time)

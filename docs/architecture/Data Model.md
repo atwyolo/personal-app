@@ -1,6 +1,6 @@
 ---
 tags: [architecture, database]
-updated: 2026-11-02
+updated: 2026-11-03
 ---
 
 # Data Model
@@ -38,7 +38,7 @@ Agreed for the home page on 2026-10-28; the rest stays a draft until its stage. 
 ### `experience`
 | Column | Type | Notes |
 |---|---|---|
-| `slug` | text unique | Anchor for "Learn more" (`/about#glovo`). |
+| `slug` | text unique | Anchor for "Learn more" (`/projects#glovo`). |
 | `company` | text | Not translated. Also the image alt. |
 | `start_date` | date | First day of the month. |
 | `end_date` | date, nullable | `null` = present. Duration is computed. |
@@ -48,9 +48,9 @@ Agreed for the home page on 2026-10-28; the rest stays a draft until its stage. 
 ### `experience_translations`
 | Column | Type | Notes |
 |---|---|---|
-| `role` | text, nullable | Not shown on the home card; needed by the About page. |
-| `description_short` | jsonb | Card text, up to 3 sentences. Marks only: bold, italic, link. |
-| `description_full` | jsonb, nullable | Detailed text for the About page. |
+| `role` | text, nullable | Not shown on the home card; shown on the Projects page. Nullable: the admin has a "Role missing" badge. |
+| `description_short` | text | Plain text, up to 3 sentences: the home card and the Projects page. Changed from jsonb on 2026-11-03. |
+| `description_full` | jsonb, nullable | Rich text under the short description on the Projects page. |
 
 ### `experience_skills` (many-to-many)
 `experience_id`, `skill_id`, `sort`. 3–5 skills per card. Primary key `(experience_id, skill_id)`.

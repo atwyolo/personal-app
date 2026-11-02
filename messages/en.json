@@ -2,6 +2,15 @@
   "Common": {
     "back": "Back"
   },
+  "Projects": {
+    "metaTitle": "Projects",
+    "metaDescription": "The full story of every place I have worked as a frontend engineer: the products, the results and the skills behind them.",
+    "label": "Projects · {from} — {to}",
+    "navLabel": "Places of work",
+    "skills": "Skills",
+    "duration": "{years, plural, one {# year} other {# years}}",
+    "present": "present"
+  },
   "About": {
     "metaTitle": "About",
     "title": "About me",
