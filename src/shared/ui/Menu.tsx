@@ -48,7 +48,8 @@ export const Menu: FC<MenuProps> = (props) => {
               key={item.value}
               value={item.value}
               closeOnClick
-              className="min-h-10 gap-2.5 rounded-[10px] py-0 pr-9 pl-3 text-[15px] font-medium focus:bg-accent data-checked:text-brand focus:data-checked:text-brand [&_[data-slot=dropdown-menu-radio-item-indicator]]:right-3 [&_[data-slot=dropdown-menu-radio-item-indicator]]:text-brand"
+              // `**`: the shadcn item repaints its descendants on focus, so the selected color has to reach them too.
+              className="min-h-10 gap-2.5 rounded-[10px] py-0 pr-9 pl-3 text-[15px] font-medium focus:bg-accent data-checked:text-brand data-checked:**:text-brand focus:data-checked:text-brand focus:data-checked:**:text-brand [&_[data-slot=dropdown-menu-radio-item-indicator]]:right-3"
             >
               <span className="grow">{item.label}</span>
               {item.hint ? (

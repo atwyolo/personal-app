@@ -1,12 +1,12 @@
 ---
 tags: [spec, home, architecture]
-status: draft
+status: done
 date: 2026-10-29
 ---
 
-# Home Page Design (draft)
+# Home Page Design
 
-Status: **draft, not formally approved; the page is being built from it step by step.** Everything under "Decided" was agreed with the owner in chat. "Steps" records what is built, "Open" what still has to be discussed.
+Status: **done, the page was closed on 2026-11-02.** Everything under "Decided" was agreed with the owner in chat. "Steps" records what is built, "Open" what stays for later pages.
 
 Related: [[Home Page Handoff]] (visual contract), [[Data Model]], [[Rendering Strategy]], [[ADR-0005 UI Library]], [[ADR-0007 Testing]].
 
@@ -137,12 +137,13 @@ Small steps, **one step per commit** (owner's decision). Working order: structur
    6. **My top skills — done 2026-11-01.** Replaces the planned explorer, following the design of 2026-10-31. `skills.top`, `getTopSkills`, `features/skill-row/SkillRow.tsx`, `widgets/top-skills/TopSkills.tsx`, a Skills item in the navigation. The meter runs from 1 to 10 and the bar and the value always share a line (owner's decisions). Tests: `SkillRow.test.tsx`, `TopSkills.test.tsx`, `e2e/home-skills.spec.ts`. Detail: [[2026-10-30-home-skills]].
    7. **Blog — done 2026-11-01.** Follows the design of 2026-11-01: a topic badge before the date. `post_topics`, `post_topic_translations` and a required `posts.topic_id` instead of the handoff's enum (owner's decision), all eight locales filled, `getLatestPosts` returns the translated label and carries a `postTopics` tag. `features/post-card/PostCard.tsx`, `widgets/blog/Blog.tsx` on the Carousel, `timeZone: "UTC"` in the i18n config. The last dump and `Footer.copyright` are gone, `HomePage` fetches nothing itself. Tests: `PostCard.test.tsx`, `Blog.test.tsx`, `request.test.ts`, `e2e/home-blog.spec.ts`. See [[2026-10-30-home-blog]].
    8. **Accent wipe — done 2026-11-01.** `.reveal` and `.reveal-left` in `globals.css`, passed through `className`, one wipe on load on the header and every block at once. `shared/ui/RevealOnce.tsx`, mounted in `SiteLayout`, keeps it from playing again until a reload. Tests: `RevealOnce.test.tsx`, `e2e/home-motion.spec.ts`. See [[2026-10-30-home-motion]].
-   9. **Verification pass — done 2026-11-01, except the iOS simulator.** Lighthouse on Vercel: desktop 100 on all four, mobile 98, 100, 100, 100; numbers in [[2026-10-30-home-motion]]. One 3 px focus ring in the `ring` color on every link and button, kept in forced colors mode; the visible text is part of the accessible name of every control; the photo is fetched with `fetchPriority="high"`, and only the Latin file of Geist is preloaded, so fonts do not compete with it. `experimental.inlineCss` is on, see [[ADR-0011 Inline CSS]]. Tests: `e2e/home-a11y.spec.ts`, `e2e/home.spec.ts`.
+   9. **Verification pass — done 2026-11-02.** The iOS simulator check passed, results in [[2026-10-30-home-motion]]. Lighthouse on Vercel: desktop 100 on all four, mobile 98, 100, 100, 100; numbers in [[2026-10-30-home-motion]]. One 3 px focus ring in the `ring` color on every link and button, kept in forced colors mode; the visible text is part of the accessible name of every control; the photo is fetched with `fetchPriority="high"`, and only the Latin file of Geist is preloaded, so fonts do not compete with it. `experimental.inlineCss` is on, see [[ADR-0011 Inline CSS]]. Tests: `e2e/home-a11y.spec.ts`, `e2e/home.spec.ts`.
+  10. **Navigation and menus — done 2026-11-02** (owner's requests). One bar slides under the desktop navigation through CSS Anchor Positioning, with no new JavaScript, and each item reserves its semibold width; a browser without the feature keeps the underline, and Firefox shows the bar without the slide, see [[ADR-0012 Nav Indicator]]. The whole selected menu item is in the accent color, also under the focus. Tests: `e2e/header-nav.spec.ts`, `e2e/header-menus.spec.ts`.
 
 ## Open (resume here)
 
 1. **i18n:** client messages scope is all messages for now (Claude's call); measured again in [[2026-10-30-home-motion]].
-2. **Plans:** [[2026-10-30-home-motion]] is approved; the spec stays a draft until the iOS simulator check closes the page.
+2. **Plans:** [[2026-10-30-home-motion]] is done; what it deferred is listed there.
 3. "Learn more" on experience cards goes to `/projects` for now (owner's decision, 2026-10-30), to be revisited when that page exists.
 
 ## Calls made by Claude (to confirm on approval)

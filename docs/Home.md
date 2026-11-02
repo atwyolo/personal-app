@@ -1,6 +1,6 @@
 ---
 tags: [moc]
-updated: 2026-11-01
+updated: 2026-11-02
 ---
 
 # Home
@@ -29,15 +29,16 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[ADR-0009 Agent Workflow]] — superseded by ADR-0010
 - [[ADR-0010 Superpowers Workflow]]
 - [[ADR-0011 Inline CSS]]
+- [[ADR-0012 Nav Indicator]]
 
 ## Specs
-- [[2026-10-29-home-page-design]] — home page architecture, draft; everything done except the iOS simulator check
+- [[2026-10-29-home-page-design]] — home page architecture, done 2026-11-02
 
 ## Plans
 - [[2026-10-30-home-experience]] — Experience block, done; deferred items listed there
 - [[2026-10-30-home-skills]] — My top skills block, done, reviewed by the owner
 - [[2026-10-30-home-blog]] — Blog block with translated topics and clean-up, done, reviewed by the owner
-- [[2026-10-30-home-motion]] — accent wipe and verification done; iOS simulator left
+- [[2026-10-30-home-motion]] — accent wipe, verification, sliding navigation and menus, done; deferred items listed there
 
 ## Journal
 - [[2026-10-26]] — kickoff: decisions, scaffold
@@ -46,6 +47,7 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[2026-10-30]] — home page: photo, Blob store, image optimization
 - [[2026-10-31]] — home page: Experience block closed
 - [[2026-11-01]] — home page: My top skills and Blog blocks, accent wipe, verification
+- [[2026-11-02]] — home page closed: iOS check, sliding navigation, selected menu item
 
 ## Templates
 - [[ADR Template]] · [[Journal Template]]

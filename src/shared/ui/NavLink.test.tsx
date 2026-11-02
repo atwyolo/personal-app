@@ -26,6 +26,10 @@ describe("NavLink", () => {
     expect(renderAt("/blog/hello", "/blog")).toHaveAttribute("aria-current", "page");
   });
 
+  it("repeats the label for the width the desktop navigation reserves", () => {
+    expect(renderAt("/", "/")).toHaveAttribute("data-label", "Link");
+  });
+
   it("does not mark other sections", () => {
     expect(renderAt("/about", "/blog")).not.toHaveAttribute("aria-current");
   });

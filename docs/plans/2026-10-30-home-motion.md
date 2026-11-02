@@ -1,13 +1,13 @@
 ---
 tags: [plan, home]
-status: active
+status: done
 date: 2026-10-30
-updated: 2026-11-01
+updated: 2026-11-02
 ---
 
 # Plan: Home motion and verification pass
 
-Run the accent wipe once on every block when the page opens, then run the checks the spec postponed. This closes the home page.
+Run the accent wipe once on every block when the page opens, then run the checks the spec postponed. This closed the home page on 2026-11-02.
 
 Related: [[2026-10-29-home-page-design]] ("Rendering, SEO and animation", "Verification to include in the plan"), [[Home Page Handoff]]. Previous: [[2026-10-30-home-blog]].
 
@@ -46,7 +46,7 @@ Verify: `e2e/home-motion.spec.ts`, screenshots in both themes. Depends on: nothi
 - [x] Message payload measured again; narrow it with `pick` only if it became a noticeable share of the page.
 - [x] Playwright mobile project fails on hydration errors (already true through `e2e/fixtures.ts`; confirm it covers the new client leaves).
 - [x] Handoff accessibility checklist: touch targets, focus ring, labels, contrast. Contrast runs after the wipe: `axe-core` counts an opaque `::after` over the text and ignores its `transform`.
-- [ ] iOS simulator: the wipe plays, swipes and rotation still work.
+- [x] iOS simulator: the wipe plays, swipes and rotation still work.
 
 Verify: numbers recorded in the spec and the journal. Depends on: Task 1.
 
@@ -111,11 +111,58 @@ Verify: numbers recorded in the spec and the journal. Depends on: Task 1.
 
 **Fixed by this task:** one 3 px ring in the solid `ring` color on every link and button, where the site had three kinds, two of them weak; buttons keep an outline in forced colors mode, where the browser drops box shadows; the visible text is now part of the accessible name of the language button and the CV link; the photo is fetched with `fetchPriority="high"`. That raises its priority from Low to High and passes the Lighthouse check, but Lighthouse's LCP did not change (2985 and 3061 ms are noise).
 
+**iOS simulator (2026-11-02, iPhone 17, iOS 26.5, production build through a measuring proxy, nine runs, 0 errors):**
+
+| Check | Result |
+|---|---|
+| Wipe on load, `/en` three times, `/ru` dark | 16 of 16 animations start and end, about 700 ms, then `data-revealed` |
+| Swipes in portrait | stop exactly on 382, 764 and 1146, the counter follows |
+| Overscroll on the last slide | bounces to 1259, back on 1146, the counter stays `4 / 4` |
+| Rotation both ways, Experience and Blog | the slide survives, no horizontal overflow, the wipe does not restart |
+| Swipes in landscape | a step of 700, both ways; a swipe under half a slide snaps back |
+| A vertical swipe that starts on a carousel | the page scrolls by 248 px and back, the carousel does not move |
+
+Control run with a `ResizeObserver` that never fires: on the way back to portrait the carousel moved from slide 3 to slide 4. With the fix it stays on 3, so the check can fail. Links, the back button, a language switch and reduced motion on iOS were not run; `e2e/home-motion.spec.ts` covers them in Chromium. Timing in a simulator is not the timing of a phone.
+
+### Task 3: The sliding navigation indicator (S)
+
+The owner's request of 2026-11-02: the highlight of the desktop navigation slides from one item to the next instead of jumping, and a browser without the feature keeps today's underline. CSS Anchor Positioning, see [[ADR-0012 Nav Indicator]]. Firefox shows the bar without the slide (owner's decision, 2026-11-02).
+
+`src/app/globals.css`, `shared/ui/NavLink.tsx`, `widgets/header/Header.tsx`, `e2e/header-nav.spec.ts`.
+
+- [x] One server-rendered indicator in the desktop `nav`, anchored to the link with `aria-current="page"`.
+- [x] It slides and takes the width of the new item, and a click in the middle turns it around from where it is.
+- [x] Items keep their place: the width of the semibold label is reserved in each of them.
+- [x] With reduced motion it moves at once; without a current item it is hidden.
+- [x] Without anchor positioning nothing changes: the underline stays on the link. All the behavior is inside `@supports`; outside there is only the rule that hides the bar.
+- [x] The bar leaves the focus ring whole and stays visible in forced colors mode.
+- [x] The mobile menu keeps the underline.
+
+Verify: `e2e/header-nav.spec.ts`, Safari 26.5 on the iPad simulator. Depends on: nothing.
+
+### Task 4: The whole selected menu item in the accent color (S)
+
+The owner's request of 2026-11-02: the code of the selected locale keeps the muted color. The same rule breaks the selected item under the pointer or the keyboard focus, where shadcn's `focus:**:text-accent-foreground` repaints the label and the check.
+
+`shared/ui/Menu.tsx`, `e2e/header-menus.spec.ts`.
+
+- [x] The label, the hint and the check of the selected item use `text-brand`, focused or not.
+- [x] Other items keep the muted hint.
+- [x] The hint of the selected System item in the theme menu follows the same rule (Claude's call).
+- [x] The hint of the selected item stays at 4.5:1 or more under the pointer, in both themes.
+
+Verify: `e2e/header-menus.spec.ts`. Depends on: nothing.
+
 ## Checkpoint
 
-- [x] Definition of done from `CLAUDE.md` is green (2026-11-01: 124 unit, 237 e2e).
+- [x] Definition of done from `CLAUDE.md` is green (2026-11-02: 125 unit, 274 e2e).
 - [x] Lighthouse repeated on Vercel after the font change.
-- [ ] Spec status changes from draft, and [[Roadmap]] is updated.
+- [x] Spec status changes from draft, and [[Roadmap]] is updated.
+
+## Deferred (from Tasks 3 and 4)
+
+- How long the bar waits on a real network: it starts when the route commits, and only localhost was measured. Check it after a deployment.
+- The focus ring over the bar was measured in Chromium only: focus did not land in Playwright WebKit. Forced colors mode is Chromium only too.
 
 ## Deferred (from the review of Task 1)
 

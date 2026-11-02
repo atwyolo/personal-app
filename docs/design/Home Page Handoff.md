@@ -55,12 +55,12 @@ Rendering: home is **static** per locale (see [[Rendering Strategy]]). Everythin
 
 - Surface `bg-card`, bottom border `card-border`. Height 64 px mobile, 72 px desktop. `position: sticky; top: 0`.
 - Left: full name "Mikhail Aleksandrov", 600 weight, 17 px mobile / 20 px desktop, links to `/[locale]`.
-- Desktop: nav Home · About · Projects · Skills · Blog · Contact (15 px, gap 28 px). Active item: `text-brand`, 600, underline in `deco`, 3 px thick, offset 8 px.
+- Desktop: nav Home · About · Projects · Skills · Blog · Contact (15 px, gap 28 px). Active item: `text-brand`, 600, underline in `deco`, 3 px thick, offset 8 px. In the build the underline is one bar that slides between items, in the same place; a browser without anchor positioning keeps the plain underline (owner's decision, 2026-11-02, [[ADR-0012 Nav Indicator]]).
 - Right controls, all in `text-brand`:
   - **Locale menu.** Mobile: 44 px round icon button showing the code ("EN"). Desktop: pill button, code + chevron-down.
   - **Theme menu.** Mobile: 44 px round button. Desktop: pill, icon + chevron. The icon shows the *resolved* theme: moon for dark, sun for light.
   - Mobile only: hamburger (44 px round, `text-foreground`). **The open menu was not designed** — use a shadcn Sheet from the right with the same six nav items, active item styled as on desktop.
-- Menus (both): popover anchored bottom-right, 8 px gap, min-width 210 px, padding 6 px, radius 16 px, `bg-popover`, border `card-border`, soft shadow. Items 40 px tall, radius 10 px, hover `bg-accent`. Selected item: `text-brand` + check icon at the end.
+- Menus (both): popover anchored bottom-right, 8 px gap, min-width 210 px, padding 6 px, radius 16 px, `bg-popover`, border `card-border`, soft shadow. Items 40 px tall, radius 10 px, hover `bg-accent`. Selected item: `text-brand` on the whole item, the hint included, + check icon at the end (owner's decision, 2026-11-02; the design left the hint muted). Focus keeps it.
   - Theme items: Dark, Light, System. System shows a mono hint "now dark/light" (`text-muted-foreground`, 11 px).
   - Locale items: native names (English, Русский, Português, Español, Deutsch, Français, 日本語, Polski) with the code as a mono hint.
   - Build with the Base UI menu from shadcn (`DropdownMenu` + `DropdownMenuRadioGroup`). Base UI uses the `render` prop, not `asChild`.
