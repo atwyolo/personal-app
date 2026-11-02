@@ -5,6 +5,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getLocale } from "next-intl/server";
 import type { FC } from "react";
 
+import { appVersion } from "@/shared/lib/app-version";
 import { locales } from "@/shared/lib/locales";
 import { siteUrl } from "@/shared/lib/site-url";
 import { SiteLayout } from "@/views/site-layout/SiteLayout";
@@ -29,8 +30,10 @@ const geistMono = Geist_Mono({
 });
 
 // Makes relative metadata URLs (canonical, hreflang, Open Graph) absolute. Pages set their own title and description.
+// `app-version` names the build in every page, to check a deployment in DevTools.
 export const metadata: Metadata = {
   metadataBase: siteUrl,
+  other: { "app-version": appVersion },
 };
 
 // One prerendered tree per locale. Cache Components require at least one value for every root param.

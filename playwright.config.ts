@@ -1,5 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
+import { BUILD_COMMIT } from "./e2e/build-commit";
+
 // Not 3000: a running `next dev` there would be reused and the tests would skip the production build.
 const port = 3100;
 const baseURL = `http://localhost:${port}`;
@@ -26,6 +28,8 @@ export default defineConfig({
   webServer: {
     command: `npm run build && npm run start -- --port ${port}`,
     url: baseURL,
+    // As on Vercel, so the app version tag is tested with its commit.
+    env: { VERCEL_GIT_COMMIT_SHA: BUILD_COMMIT },
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,
   },
