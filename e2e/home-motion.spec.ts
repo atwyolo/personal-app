@@ -194,9 +194,6 @@ const switchToRussian = async (page: Page) => {
 };
 
 test.describe("once per page load", () => {
-  // The About link leads to the 404 page until the page exists.
-  test.use({ allowedConsoleErrors: [/404/] });
-
   test.beforeEach(async ({ page }) => {
     await recordWipes(page);
     await page.goto("/en");

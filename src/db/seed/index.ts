@@ -2,11 +2,13 @@
  * Fills an empty database with the initial content. Run with `npm run db:seed`.
  *
  * There is one database for every environment (ADR-0002), so this script never deletes
- * or overwrites anything: if content already exists, it stops.
+ * or overwrites anything: each group of tables is filled only while it is empty.
  */
 import "../load-env"; // must stay first: the db client reads DATABASE_URL on import
 import { db } from "..";
 import {
+  aboutPairTranslations,
+  aboutPairs,
   experience,
   experienceSkills,
   experienceTranslations,
@@ -24,7 +26,7 @@ import { locales } from "@/shared/lib/locales";
 import { doc, paragraph } from "@/shared/lib/rich-text";
 import * as data from "./data";
 
-async function main() {
+async function seedContent() {
   const [hasDomains, hasProfile] = await db.batch([
     db.select({ id: skillDomains.id }).from(skillDomains).limit(1),
     db.select({ id: profile.id }).from(profile).limit(1),
@@ -139,6 +141,39 @@ async function main() {
   console.log(
     `Seeded: ${domainRows.length} domains, ${skillRows.length} skills, ${experienceRows.length} jobs, ${topicRows.length} topics, ${postRows.length} posts, 1 profile.`,
   );
+}
+
+/**
+ * Has its own guard, so it also runs on a database that already holds the rest of the content.
+ * Two round trips are not one transaction: if the second fails, delete the rows of `about_pairs` and run again.
+ */
+async function seedAboutPairs() {
+  const existing = await db.select({ id: aboutPairs.id }).from(aboutPairs).limit(1);
+  if (existing.length > 0) {
+    console.log("About pairs already exist. Seed skipped.");
+    return;
+  }
+
+  const pairRows = await db
+    .insert(aboutPairs)
+    .values(data.aboutPairs.map((p, index) => ({ slug: p.slug, sort: index })))
+    .returning({ id: aboutPairs.id, slug: aboutPairs.slug });
+  const pairId = new Map(pairRows.map((row) => [row.slug, row.id]));
+
+  await db.insert(aboutPairTranslations).values(
+    data.aboutPairs.map(({ slug, ...texts }) => ({
+      aboutPairId: pairId.get(slug)!,
+      locale: "en" as const,
+      ...texts,
+    })),
+  );
+
+  console.log(`Seeded: ${pairRows.length} about pairs.`);
+}
+
+async function main() {
+  await seedContent();
+  await seedAboutPairs();
 }
 
 main().catch((error) => {

@@ -1,6 +1,6 @@
 ---
 tags: [moc]
-updated: 2026-11-02
+updated: 2026-11-03
 ---
 
 # Home
@@ -34,12 +34,14 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 
 ## Specs
 - [[2026-10-29-home-page-design]] — home page architecture, done 2026-11-02
+- [[2026-11-02-about-page-design]] — About page: interview pairs in the database, done 2026-11-03
 
 ## Plans
 - [[2026-10-30-home-experience]] — Experience block, done; deferred items listed there
 - [[2026-10-30-home-skills]] — My top skills block, done, reviewed by the owner
 - [[2026-10-30-home-blog]] — Blog block with translated topics and clean-up, done, reviewed by the owner
 - [[2026-10-30-home-motion]] — accent wipe, verification, sliding navigation and menus, done; deferred items listed there
+- [[2026-11-02-about-page]] — About page, done
 
 ## Journal
 - [[2026-10-26]] — kickoff: decisions, scaffold
@@ -48,7 +50,8 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[2026-10-30]] — home page: photo, Blob store, image optimization
 - [[2026-10-31]] — home page: Experience block closed
 - [[2026-11-01]] — home page: My top skills and Blog blocks, accent wipe, verification
-- [[2026-11-02]] — home page closed: iOS check, sliding navigation, selected menu item, contact buttons; version tracking
+- [[2026-11-02]] — home page closed: iOS check, sliding navigation, selected menu item, contact buttons; version tracking; About page started
+- [[2026-11-03]] — About page closed: chips, Back link, reveal, JSON-LD
 
 ## Templates
 - [[ADR Template]] · [[Journal Template]]

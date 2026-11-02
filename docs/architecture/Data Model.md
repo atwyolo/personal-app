@@ -1,6 +1,6 @@
 ---
 tags: [architecture, database]
-updated: 2026-11-01
+updated: 2026-11-02
 ---
 
 # Data Model
@@ -30,11 +30,10 @@ Agreed for the home page on 2026-10-28; the rest stays a draft until its stage. 
 |---|---|---|
 | `name` | text | |
 | `headline` | text | "Senior Frontend Software Engineer, 8+ years" |
+| `job_title` | text | Plain title for structured data, "Senior Frontend Software Engineer". Required in `en` (added 2026-11-02). |
 | `about_short` | jsonb | Home page About on mobile and desktop: lead, results title, bullet list. |
 | `meta_description` | text | Plain-text page description for `<meta name="description">` and Open Graph, ~160 characters (validated by Zod in the admin, not in the database). Required in `en` (added 2026-10-29). |
 | `cv_url` | text, nullable | Blob URL of the PDF for this locale, stored as the blob `downloadUrl` (`?download=1`), because `<a download>` is ignored cross-origin. |
-
-`about_full` for the About page is deferred until that page is planned.
 
 ### `experience`
 | Column | Type | Notes |
@@ -88,6 +87,27 @@ Agreed for the home page on 2026-10-28; the rest stays a draft until its stage. 
 | `excerpt` | jsonb | Card text, 2–3 sentences. |
 | `body` | jsonb, nullable | Full post (Stage 4). Inline images are Blob URLs inside the JSON. |
 | `tags` | text[] | Free-form, per locale, not linked to `skills`. Admin edits them as a comma-separated input. |
+
+## About page entities
+
+Agreed on 2026-11-02, see [[2026-11-02-about-page-design]].
+
+### `about_pairs`
+| Column | Type | Notes |
+|---|---|---|
+| `slug` | text unique | The section's id and the chip's anchor (`/about#who`). Entered by hand, never generated. Not translated. |
+| `sort` | integer | Reading order. |
+
+### `about_pair_translations`
+| Column | Type | Notes |
+|---|---|---|
+| `link_text` | text | Text of the sticky chip. |
+| `question_title` | text | Upper, larger line of the question bubble. |
+| `question_message` | text | The question, an `h2`. |
+| `answer_title` | text | The first line of the answer, shown larger. |
+| `answer_message` | jsonb | Rich text. |
+
+All five are required in `en`.
 
 ## Translation table shape
 

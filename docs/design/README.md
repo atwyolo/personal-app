@@ -32,8 +32,7 @@ Build order:
 ## What changed since the 2026-11-01 package
 
 - **New pages:** Contact, Blog post (with a typography reference board) and Admin.
-- **Home: contact buttons now use theme colors.** WhatsApp, Mail and LinkedIn are identical card-style buttons with icons in `brand`; Download CV stays the filled primary button. There are no brand-color tokens any more. The About page's contact buttons follow the same style.
-- **Home: About block** is one rich-text field. The desktop-only extra paragraph is gone; desktop shows a "Read more" button like mobile.
+- **Home: contact buttons now use theme colors.** WhatsApp, Mail and LinkedIn are identical card-style buttons with icons in `brand`; Download CV stays the filled primary button. There are no brand-color tokens any more.- **Home: About block** is one rich-text field. The desktop-only extra paragraph is gone; desktop shows a "Read more" button like mobile.
 - **"‹ Back" link** on every inner page. It is an accent text link, the same everywhere; see Site-wide rules.
 - **Content shapes follow the admin.** `shared/content.ts` was updated:
   - Experience: `description` plus a rich-text `body` and skills. The `lead`, `context`, `stats` and `achievements` fields were removed.
@@ -72,9 +71,9 @@ Build order:
 - **No footer** on any page. Pages end with their last section.
 - **"‹ Back" link**, the first element in the content of every inner page (Projects, About, Skills, Blog, Post, Contact).
   - A chevron-left icon (16 px) and "Back".
-  - `text-brand`, 600 weight, 15 px, underlined with a 2 px `deco` line offset 5 px. Min height 32 px.
+  - `text-brand`, 600 weight, 15 px, underlined with a 2 px `deco` line offset 5 px. Min height 32 px, and 30 px below it on every page (owner's decision of 2026-11-02).
   - On hover, the chevron moves 3 px left.
-  - It is a real link with a sensible default (`/` for top-level pages, `/blog` for a post). A small client enhancement uses `router.back()` when the previous history entry is on this site.
+  - It is a plain link (`/` for top-level pages, `/blog` for a post), never a step in the history: the visitor must not leave the site through it (owner's decision of 2026-11-02).
   - On Projects (desktop) it sits at the top of the sticky aside. On phone it sits in a row above the sticky progress bar.
 - **Section labels** are mono, uppercase, 11–12 px, `muted-foreground`.
 - **Page heroes:** a mono label, an h1 at 56 px desktop / 36 px phone, and a one-line intro.
@@ -83,7 +82,7 @@ Build order:
   - Filter chips are pills, 36 px tall, mono 12 px. An active filter is `bg-selected text-selected-foreground`.
   - Tag chips are `brand` text on a `card-border` outline. An active tag is filled with `brand`.
 - **Links** like "Read more →" / "Learn more →" are `text-brand`, 600 weight, with a 2 px `deco` underline offset 5 px.
-- **Contact buttons** (Home, About) are themed:
+- **Contact buttons** (Home) are themed:
   - `bg-card`, a 1 px `card-border` border and `text-foreground`.
   - The icon is in `brand`, and the arrow-up-right is in `brand`.
   - On hover, the border turns `brand`.
@@ -97,7 +96,6 @@ Build order:
 
 - **Page name.** The admin calls the page "Experience", while the site nav and route say "Projects". Pick one name for the nav, the route and the admin.
 - **"Main" skills.** The admin has a "Main" flag next to "Top". The proposal is that it drives the hero chips on Home (the admin no longer edits hero tags). Note that "Express", currently a hero chip, is not in the skills list.
-- **About contact buttons.** The "What I'm looking for" answer shows contact buttons, but the admin has no switch for them yet (`showContacts` in `content.ts`).
 
 ## Kickoff prompt (one page at a time)
 

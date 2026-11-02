@@ -98,7 +98,7 @@ See [[README]] for shared rules. The fields here are exactly the shapes in `shar
 
 **Home**:
 
-- Hero: Name (shared), Headline.
+- Hero: Name (shared), Headline, Job title (for structured data, added 2026-11-02).
 - Photo and CV: Photo (with tooltip), CV PDF.
 - Contacts (shared): WhatsApp number, Email, LinkedIn URL. "Also shown on the Contact page."
 - About block: **Text** (rich text, the only field).
@@ -106,15 +106,17 @@ See [[README]] for shared rules. The fields here are exactly the shapes in `shar
 
 **About**:
 
-- Page header: Title, Intro.
-- **Questions and answers · N**: an accordion of pairs, any number of them. The header button and a bottom link add a pair; new pairs open with focus on Title.
+- There is no page header block: the page title and intro are not editable (owner's decision of 2026-11-02).
+- **Questions and answers · N**: an accordion of pairs, any number of them. The header button and a bottom link add a pair; new pairs open with focus on Link text.
 - Each pair holds:
-  - **Title** (the chip label; hint "Shown as the section chip and in the page index");
-  - **Question** (the interviewer's message);
+  - **Slug** (shared across locales, entered by hand, never generated; the section's anchor);
+  - **Link text** (the chip label; hint "Shown as the section chip and in the page index");
+  - **Question title** (the upper, larger line of the question bubble);
+  - **Question message** (the interviewer's message);
   - **Answer title** (one sentence, shown larger);
-  - **Answer body** (rich text, "text" toolbar);
+  - **Answer message** (rich text, "text" toolbar);
   - **Delete this pair** (`destructive` link).
-- The collapsed row shows a drag handle (reorder), the title, the question and a "Needs answer" badge while Answer title is empty. Title and question update live.
+- The collapsed row shows a drag handle (reorder), the link text, the question message and a "Needs answer" badge while Answer title is empty. Link text and question message update live. All five texts are required in `en` today, so a saved pair is always complete: the badge needs a decision at the admin stage, see [[2026-11-02-about-page-design]].
 
 **Experience** (one accordion per place of work, sorted by start date, newest first; no drag handles):
 
@@ -162,7 +164,8 @@ See [[README]] for shared rules. The fields here are exactly the shapes in `shar
 - Translations: one row per (entity, locale) for translatable columns, or JSON columns keyed by locale. Missing values fall back to `en` on the site.
 - New or changed fields:
   - `profile.about` (rich text);
-  - `about_pairs` (sort, title, question, answer_title, answer_body);
+  - `about_pairs` (slug, sort) and `about_pair_translations` (link_text, question_title, question_message, answer_title, answer_message);
+  - `profile_translations.job_title`;
   - `experience.description` and `experience.body` (rich text), plus `experience_skills`;
   - `skills.featured` and `skills.main`;
   - `skill_domains` and `post_topics` as editable tables;

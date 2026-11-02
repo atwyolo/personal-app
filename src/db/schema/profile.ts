@@ -26,6 +26,8 @@ export const profileTranslations = pgTable(
     locale: localeEnum().notNull(),
     name: text(),
     headline: text(),
+    /** Plain job title for structured data; `headline` is the hero's line, with the years in it. */
+    jobTitle: text(),
     aboutShort: jsonb().$type<RichTextDoc>(),
     /** Plain-text page description for search engines and link previews, ~160 characters max. */
     metaDescription: text(),
@@ -37,7 +39,7 @@ export const profileTranslations = pgTable(
     primaryKey({ columns: [t.profileId, t.locale] }),
     check(
       "profile_translations_en_complete",
-      sql`${t.locale} <> 'en' or (${t.name} is not null and ${t.headline} is not null and ${t.aboutShort} is not null and ${t.metaDescription} is not null)`,
+      sql`${t.locale} <> 'en' or (${t.name} is not null and ${t.headline} is not null and ${t.jobTitle} is not null and ${t.aboutShort} is not null and ${t.metaDescription} is not null)`,
     ),
   ],
 );

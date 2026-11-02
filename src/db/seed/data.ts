@@ -66,6 +66,7 @@ export const profile = {
   en: {
     name: "Mikhail Aleksandrov",
     headline: "Senior Frontend Software Engineer, 8+ years",
+    jobTitle: "Senior Frontend Software Engineer",
     aboutShort: doc(
       paragraph(
         "I'm a Senior Frontend Engineer with 8+ years of commercial experience in React and Next.js, most recently at Glovo, Sony PlayStation and EPAM.",
@@ -194,5 +195,75 @@ export const posts = [
     excerpt:
       "Coverage targets alone don't change habits. This is the policy that took a team to 95% coverage: what we test first, what we skip on purpose, and how code review keeps it honest.",
     tags: ["Testing", "Jest", "Team process"],
+  },
+];
+
+/** The interview on the About page. Bracketed text is the design's placeholder for the owner's own words. */
+export const aboutPairs = [
+  {
+    slug: "who",
+    linkText: "Who I am",
+    questionTitle: "Who I am",
+    questionMessage: "Who are you, in two sentences?",
+    answerTitle: "I'm a Senior Frontend Engineer with 8+ years of commercial experience in React and Next.js.",
+    answerMessage: doc(
+      paragraph(
+        "Most recently at Glovo, Sony PlayStation and EPAM. [2–3 sentences: where you are based, how you got into frontend and what kind of products you enjoy building.]",
+      ),
+    ),
+  },
+  {
+    slug: "how",
+    linkText: "How I work",
+    questionTitle: "How I work",
+    questionMessage: "How do you like to work?",
+    answerTitle: "I own the whole cycle, from the first talk with the product owner to an automated release.",
+    answerMessage: doc(
+      paragraph(
+        "Beyond writing code, I have 2 years of team leadership experience, managing the full development cycle: from gathering requirements with the product owner to setting up a fully automated release process with high test coverage, detailed analytics and CI/CD.",
+      ),
+    ),
+  },
+  {
+    slug: "results",
+    linkText: "Results I'm proud of",
+    questionTitle: "Results I'm proud of",
+    questionMessage: "What results are you proud of?",
+    answerTitle: "I measure frontend work in numbers the business cares about.",
+    answerMessage: doc(
+      bulletList([
+        "At EPAM, I helped migrate an e-commerce store from PHP to Next.js, which raised conversion by 12.4% and made pages load 37% faster.",
+        "At Glovo, I introduced unit testing that cut production defects by 23%, and shipped an offline mode that increased average session time by 17%.",
+        "At Sony PlayStation, I helped build an in-game notification system from scratch, hired and onboarded 3 developers, and brought test coverage to 95%.",
+      ]),
+    ),
+  },
+  {
+    slug: "scale",
+    linkText: "Teams and scale",
+    questionTitle: "Teams and scale",
+    questionMessage: "What kind of teams have you worked in?",
+    answerTitle: "Comfortable with both startup speed and enterprise process.",
+    answerMessage: doc(
+      paragraph(
+        "I've worked in small teams of 2–10 people and on large products with 1M+ users and teams of up to 60 engineers.",
+      ),
+    ),
+  },
+  {
+    slug: "next",
+    linkText: "What I'm looking for",
+    questionTitle: "What I'm looking for",
+    questionMessage: "What are you looking for next?",
+    answerTitle: "[One sentence: the role, team and product you want next.]",
+    answerMessage: doc(paragraph("[2–3 sentences: role, format (remote or relocation), domains that interest you.]")),
+  },
+  {
+    slug: "life",
+    linkText: "Outside of work",
+    questionTitle: "Outside of work",
+    questionMessage: "And outside of work?",
+    answerTitle: "[A human detail people remember.]",
+    answerMessage: doc(paragraph("[2–3 sentences: hobbies, languages you speak, where you live.]")),
   },
 ];
