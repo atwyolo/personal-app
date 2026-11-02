@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatMonthYear, getDurationYears } from "./period";
+import { formatMonthYear, getDurationYears, getYearSpan } from "./period";
 
 const today = "2026-10-30";
 
@@ -41,5 +41,29 @@ describe("getDurationYears", () => {
 
   it("counts the running month for a job that started this month", () => {
     expect(getDurationYears("2026-10-01", null, today)).toBe(0.1);
+  });
+});
+
+describe("getYearSpan", () => {
+  const jobs = [
+    { startDate: "2024-11-01", endDate: "2026-10-01" },
+    { startDate: "2023-08-01", endDate: "2024-11-01" },
+    { startDate: "2021-07-01", endDate: "2023-08-01" },
+  ];
+
+  it("spans the earliest start and the latest end", () => {
+    expect(getYearSpan(jobs, today)).toEqual({ from: 2021, to: 2026 });
+  });
+
+  it("does not depend on the order of the jobs", () => {
+    expect(getYearSpan([...jobs].reverse(), today)).toEqual({ from: 2021, to: 2026 });
+  });
+
+  it("reaches today with a running job", () => {
+    expect(getYearSpan([{ startDate: "2024-11-01", endDate: null }], "2027-02-01")).toEqual({ from: 2024, to: 2027 });
+  });
+
+  it("has no span without jobs", () => {
+    expect(getYearSpan([], today)).toBeNull();
   });
 });

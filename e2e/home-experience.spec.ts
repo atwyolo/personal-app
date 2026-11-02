@@ -3,7 +3,7 @@ import type { Page } from "@playwright/test";
 import { expect, test } from "./fixtures";
 
 const getCarousel = (page: Page) => page.getByRole("group", { name: "Experience" });
-const getTrack = (page: Page) => page.getByRole("group", { name: "1 of 4" }).locator("..");
+const getTrack = (page: Page) => getCarousel(page).getByRole("group", { name: "1 of 3" }).locator("..");
 
 /** Presses the next arrow and records the track's offset on every frame until it reaches the second card. */
 const recordScrollToSecondCard = async (page: Page, secondCard: number) => {
@@ -27,7 +27,7 @@ const recordScrollToSecondCard = async (page: Page, secondCard: number) => {
 
 /** A real touch gesture, so the browser's own scroll-snap decides where the track stops. */
 const swipeToNextCard = async (page: Page) => {
-  await page.getByRole("group", { name: "1 of 4" }).scrollIntoViewIfNeeded();
+  await getCarousel(page).getByRole("group", { name: "1 of 3" }).scrollIntoViewIfNeeded();
 
   const client = await page.context().newCDPSession(page);
   const box = await getTrack(page).boundingBox();
@@ -43,7 +43,7 @@ const swipeToNextCard = async (page: Page) => {
 const goToCard = async (page: Page, card: number, step: number) => {
   for (let position = 2; position <= card; position += 1) {
     await getCarousel(page).getByRole("button", { name: "Next" }).click();
-    await expect(getCarousel(page).getByText(`${position} / 4`)).toBeVisible();
+    await expect(getCarousel(page).getByText(`${position} / 3`)).toBeVisible();
   }
 
   await expect.poll(() => getTrack(page).evaluate((track) => track.scrollLeft)).toBe((card - 1) * step);
@@ -59,13 +59,13 @@ const switchSnapOff = (page: Page) =>
     track.style.scrollSnapType = "none";
   });
 
-// Experience block: the jobs from the database. "Learn more" and "All experience" lead to /projects, a 404 for now.
+// Experience block: the jobs from the database. "Learn more" leads to its job on /projects, "All experience" to the page.
 test("shows the jobs from the database in their order", async ({ page }) => {
   await page.goto("/en");
 
   const section = page.getByRole("region", { name: "Experience" });
   await expect(section.getByRole("heading", { level: 2, name: "Experience" })).toBeVisible();
-  await expect(section.getByRole("heading", { level: 3 })).toHaveText(["Glovo", "Sony PlayStation", "EPAM", "Omega-R"]);
+  await expect(section.getByRole("heading", { level: 3 })).toHaveText(["Glovo", "Sony PlayStation", "EPAM"]);
   await expect(section.getByText("11/2024 – 10/2026 · 2 years")).toBeVisible();
   await expect(section.getByRole("article").first().getByRole("listitem")).not.toHaveCount(0);
 });
@@ -87,7 +87,8 @@ test.describe("when an image fails to load", () => {
 
     // `sizes` in ExperienceCard is derived from this box.
     const box = await placeholder.boundingBox();
-    expect(box).toMatchObject({ width: isMobile ? 332 : 258, height: isMobile ? 140 : 180 });
+    expect(box!.width).toBeCloseTo(isMobile ? 332 : 359.33, 1);
+    expect(box!.height).toBe(isMobile ? 140 : 180);
   });
 });
 
@@ -95,7 +96,7 @@ test("keeps the current locale in the links", async ({ page }) => {
   await page.goto("/de");
 
   const section = page.getByRole("region", { name: "Experience" });
-  await expect(section.getByRole("link", { name: "Learn more" }).first()).toHaveAttribute("href", "/de/projects");
+  await expect(section.getByRole("link", { name: "Learn more" }).first()).toHaveAttribute("href", "/de/projects#glovo");
   await expect(section.getByRole("link", { name: "All experience" })).toHaveAttribute("href", "/de/projects");
 });
 
@@ -121,7 +122,7 @@ test("pins learn more to the bottom of every card", async ({ page }) => {
 });
 
 test.describe("desktop layout", () => {
-  test.skip(({ isMobile }) => isMobile, "the four-column grid starts at lg");
+  test.skip(({ isMobile }) => isMobile, "the grid starts at lg");
 
   test("puts the cards in one row of equal height and the pill on the right", async ({ page }) => {
     await page.goto("/en");
@@ -134,7 +135,7 @@ test.describe("desktop layout", () => {
       }),
     );
 
-    expect(boxes).toHaveLength(4);
+    expect(boxes).toHaveLength(3);
     expect(new Set(boxes.map((box) => box.top)).size).toBe(1);
     expect(new Set(boxes.map((box) => box.height)).size).toBe(1);
 
@@ -148,15 +149,15 @@ test.describe("desktop layout", () => {
     await page.goto("/en");
 
     const carousel = page.getByRole("group", { name: "Experience" });
-    await expect(carousel.getByText("1 / 4")).toBeHidden();
+    await expect(carousel.getByText("1 / 3")).toBeHidden();
     await expect(carousel.getByRole("button", { name: "Next" })).toBeHidden();
 
-    const track = page.getByRole("group", { name: "1 of 4" }).locator("..");
+    const track = carousel.getByRole("group", { name: "1 of 3" }).locator("..");
     await expect(track).toHaveCSS("display", "grid");
     await expect(track).toHaveCSS("scroll-snap-type", "none");
   });
 
-  // object-cover scales a 16:9 file by the 180px height: it renders 320px wide, more than the 194px card at this width.
+  // object-cover scales a 16:9 file by the 180px height: it renders 320px wide, more than the 274px box at this width.
   test("loads a file as wide as the image scaled by its height", async ({ page }) => {
     await page.setViewportSize({ width: 1024, height: 800 });
     await page.goto("/en");
@@ -177,12 +178,12 @@ test.describe("mobile layout", () => {
     await page.goto("/en");
 
     const carousel = getCarousel(page);
-    const position = carousel.getByText("1 / 4");
-    const firstCard = page.getByRole("group", { name: "1 of 4" });
+    const position = carousel.getByText("1 / 3");
+    const firstCard = getCarousel(page).getByRole("group", { name: "1 of 3" });
     await firstCard.scrollIntoViewIfNeeded();
     await expect(position).toBeVisible();
     await expect(firstCard).toBeInViewport();
-    await expect(page.getByRole("group", { name: "2 of 4" })).not.toBeInViewport();
+    await expect(getCarousel(page).getByRole("group", { name: "2 of 3" })).not.toBeInViewport();
 
     const positionBox = await position.boundingBox();
     const cardBox = await firstCard.boundingBox();
@@ -203,7 +204,7 @@ test.describe("mobile layout", () => {
       .getByRole("article")
       .evaluateAll((cards) => cards.map((card) => card.getBoundingClientRect().height));
 
-    expect(heights).toHaveLength(4);
+    expect(heights).toHaveLength(3);
     expect(new Set(heights).size).toBe(1);
   });
 
@@ -213,27 +214,27 @@ test.describe("mobile layout", () => {
     const carousel = getCarousel(page);
     const next = carousel.getByRole("button", { name: "Next" });
 
-    for (const position of ["2 / 4", "3 / 4", "4 / 4"]) {
+    for (const position of ["2 / 3", "3 / 3"]) {
       await next.click();
       await expect(carousel.getByText(position)).toBeVisible();
       await expect.poll(() => getTrack(page).evaluate((track) => track.scrollLeft % 370)).toBe(0);
     }
 
-    await expect(page.getByRole("group", { name: "4 of 4" })).toBeInViewport();
+    await expect(getCarousel(page).getByRole("group", { name: "3 of 3" })).toBeInViewport();
     await expect(next).toHaveAttribute("aria-disabled", "true");
 
     await carousel.getByRole("button", { name: "Previous" }).click();
-    await expect(carousel.getByText("3 / 4")).toBeVisible();
+    await expect(carousel.getByText("2 / 3")).toBeVisible();
   });
 
   test("snaps to the next card and updates the position after a swipe", async ({ page }) => {
     await page.goto("/en");
 
-    const firstCard = await page.getByRole("group", { name: "1 of 4" }).boundingBox();
+    const firstCard = await getCarousel(page).getByRole("group", { name: "1 of 3" }).boundingBox();
 
     await swipeToNextCard(page);
 
-    await expect(getCarousel(page).getByText("2 / 4")).toBeVisible();
+    await expect(getCarousel(page).getByText("2 / 3")).toBeVisible();
     await expect.poll(() => getTrack(page).evaluate((track) => track.scrollLeft)).toBe(firstCard!.width + 12);
   });
 
@@ -245,7 +246,7 @@ test.describe("mobile layout", () => {
 
       await swipeToNextCard(page);
 
-      await expect(getCarousel(page).getByText("2 / 4")).toBeVisible();
+      await expect(getCarousel(page).getByText("2 / 3")).toBeVisible();
       await expect.poll(() => getTrack(page).evaluate((track) => track.scrollLeft)).toBe(700);
     });
   });
@@ -258,20 +259,20 @@ test.describe("mobile layout", () => {
     await page.setViewportSize({ width: 844, height: 390 });
 
     await expect.poll(() => getTrack(page).evaluate((track) => track.scrollLeft)).toBe(700);
-    await expect(getCarousel(page).getByText("2 / 4")).toBeVisible();
+    await expect(getCarousel(page).getByText("2 / 3")).toBeVisible();
   });
 
   test("stays on the card when the phone turns back to portrait", async ({ page }) => {
     await page.setViewportSize({ width: 844, height: 390 });
     await page.goto("/en");
-    await goToCard(page, 3, 700);
+    await goToCard(page, 2, 700);
     await switchSnapOff(page);
 
-    // 1400 px do not fit a narrow track: the browser clamps them to the fourth card.
+    // 700 px still fit a narrow track, between two cards. The last card would prove nothing: the browser clamps to it.
     await page.setViewportSize({ width: 390, height: 844 });
 
-    await expect.poll(() => getTrack(page).evaluate((track) => track.scrollLeft)).toBe(740);
-    await expect(getCarousel(page).getByText("3 / 4")).toBeVisible();
+    await expect.poll(() => getTrack(page).evaluate((track) => track.scrollLeft)).toBe(370);
+    await expect(getCarousel(page).getByText("2 / 3")).toBeVisible();
   });
 
   test("keeps the card when an iPad turns across lg and back", async ({ page }) => {
@@ -286,7 +287,7 @@ test.describe("mobile layout", () => {
     await waitForResizeObservers(page);
 
     expect(await getTrack(page).evaluate((track) => track.scrollLeft)).toBe(1400);
-    await expect(getCarousel(page).getByText("3 / 4")).toBeVisible();
+    await expect(getCarousel(page).getByText("3 / 3")).toBeVisible();
   });
 
   test("keeps the focus on an arrow when it turns off", async ({ page }) => {
@@ -294,7 +295,7 @@ test.describe("mobile layout", () => {
 
     const carousel = getCarousel(page);
     const next = carousel.getByRole("button", { name: "Next" });
-    for (const position of ["2 / 4", "3 / 4", "4 / 4"]) {
+    for (const position of ["2 / 3", "3 / 3"]) {
       await next.focus();
       await page.keyboard.press("Enter");
       await expect(carousel.getByText(position)).toBeVisible();
@@ -314,8 +315,8 @@ test.describe("mobile layout", () => {
     await page.keyboard.press("Tab");
     await page.keyboard.press("Tab");
 
-    await expect(page.getByRole("group", { name: "2 of 4" }).getByRole("link", { name: "Learn more" })).toBeFocused();
-    await expect(carousel.getByText("2 / 4")).toBeVisible();
+    await expect(getCarousel(page).getByRole("group", { name: "2 of 3" }).getByRole("link", { name: "Learn more" })).toBeFocused();
+    await expect(carousel.getByText("2 / 3")).toBeVisible();
   });
 
   test("animates the way to the next card", async ({ page }) => {
@@ -366,11 +367,11 @@ for (const width of [720, 1023]) {
     test("shows one card with the carousel controls", async ({ page }) => {
       await page.goto("/en");
 
-      const firstCard = page.getByRole("group", { name: "1 of 4" });
+      const firstCard = getCarousel(page).getByRole("group", { name: "1 of 3" });
       await firstCard.scrollIntoViewIfNeeded();
       await expect(firstCard).toBeInViewport();
-      await expect(page.getByRole("group", { name: "2 of 4" })).not.toBeInViewport();
-      await expect(getCarousel(page).getByText("1 / 4")).toBeVisible();
+      await expect(getCarousel(page).getByRole("group", { name: "2 of 3" })).not.toBeInViewport();
+      await expect(getCarousel(page).getByText("1 / 3")).toBeVisible();
       await expect(getCarousel(page).getByRole("button", { name: "Next" })).toBeVisible();
 
       const box = await firstCard.boundingBox();
@@ -382,7 +383,7 @@ for (const width of [720, 1023]) {
 
       await getCarousel(page).getByRole("button", { name: "Next" }).click();
 
-      await expect(getCarousel(page).getByText("2 / 4")).toBeVisible();
+      await expect(getCarousel(page).getByText("2 / 3")).toBeVisible();
       await expect.poll(() => getTrack(page).evaluate((track) => track.scrollLeft)).toBe(700);
     });
 

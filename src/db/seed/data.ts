@@ -85,42 +85,61 @@ export const profile = {
   },
 };
 
+const JOB_ROLE = "Senior Frontend Software Engineer";
+
 export const experience = [
   {
     slug: "glovo",
     company: "Glovo",
+    role: JOB_ROLE,
     startDate: "2024-11-01",
     endDate: "2026-10-01",
     imageUrl: "https://5iyco5bcxydlbyja.public.blob.vercel-storage.com/glovo.png",
     skills: ["Next.js", "TypeScript", "Mantine", "React Hook Form", "Jest"], // TODO(owner): confirm
     descriptionShort:
       "Built an AI-powered chat for user support and set up frontend monitoring. Introduced unit testing that cut production defects by 23%. Shipped an offline mode that increased average session time by 17%.",
+    descriptionFull: doc(
+      bulletList([
+        "Built an AI-powered chat for user support.",
+        "Introduced unit testing across the team, cutting production defects by 23%.",
+        "Set up frontend monitoring and alerting.",
+        "Shipped an offline mode that increased average session time by 17%.",
+      ]),
+    ),
   },
   {
     slug: "sony",
     company: "Sony PlayStation",
+    role: JOB_ROLE,
     startDate: "2023-08-01",
     endDate: "2024-11-01",
     skills: ["React", "TypeScript", "Redux Toolkit", "WebSocket", "Jest"], // TODO(owner): confirm
     descriptionShort:
       "Helped build the in-game notification system from scratch. Hired and onboarded 3 developers to the team. Brought test coverage to 95%.",
+    descriptionFull: doc(
+      bulletList([
+        "Helped design and build the in-game notification system from the ground up.",
+        "Hired and onboarded 3 developers to the team.",
+        "Brought test coverage to 95%.",
+      ]),
+    ),
   },
   {
     slug: "epam",
     company: "EPAM",
+    role: JOB_ROLE,
     startDate: "2021-07-01",
     endDate: "2023-08-01",
     skills: ["Next.js", "React", "Redux", "GraphQL"], // TODO(owner): confirm
     descriptionShort:
       "Migrated an e-commerce store from PHP to Next.js without losing SEO. The migration raised conversion by 12.4%. Pages started loading 37% faster.",
-  },
-  {
-    slug: "omega-r",
-    company: "Omega-R",
-    startDate: "2019-05-01",
-    endDate: "2021-06-01",
-    skills: ["React", "React Native", "Redux", "Material UI"], // TODO(owner): confirm
-    descriptionShort: "TODO(owner): up to three sentences about the role: product, what you built and the result.",
+    descriptionFull: doc(
+      bulletList([
+        "Migrated the storefront from PHP to Next.js page by page.",
+        "Kept URLs, metadata and sitemaps intact, so search rankings held.",
+        "Raised conversion by 12.4% and made pages load 37% faster.",
+      ]),
+    ),
   },
 ];
 

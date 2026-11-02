@@ -2,9 +2,10 @@
  * Fills an empty database with the initial content. Run with `npm run db:seed`.
  *
  * There is one database for every environment (ADR-0002), so this script never deletes
- * or overwrites anything: each group of tables is filled only while it is empty.
+ * or overwrites anything: each group of tables, or each field, is filled only while it is empty.
  */
 import "../load-env"; // must stay first: the db client reads DATABASE_URL on import
+import { and, eq, isNull } from "drizzle-orm";
 import { db } from "..";
 import {
   aboutPairTranslations,
@@ -115,7 +116,9 @@ async function seedContent() {
       data.experience.map((e) => ({
         experienceId: experienceId.get(e.slug)!,
         locale: "en" as const,
-        descriptionShort: doc(paragraph(e.descriptionShort)),
+        role: e.role,
+        descriptionShort: e.descriptionShort,
+        descriptionFull: e.descriptionFull,
       })),
     ),
     db.insert(experienceSkills).values(
@@ -141,6 +144,41 @@ async function seedContent() {
   console.log(
     `Seeded: ${domainRows.length} domains, ${skillRows.length} skills, ${experienceRows.length} jobs, ${topicRows.length} topics, ${postRows.length} posts, 1 profile.`,
   );
+}
+
+/**
+ * Fills the fields a job got after the first seed, on a database that already holds the jobs.
+ * Each field has its own guard, so text written later is never overwritten and a second run changes nothing.
+ */
+async function seedExperienceDetails() {
+  const jobs = await db.select({ id: experience.id, slug: experience.slug }).from(experience);
+  const experienceId = new Map(jobs.map((job) => [job.slug, job.id]));
+
+  const updates = data.experience.flatMap((job) => {
+    const id = experienceId.get(job.slug);
+    if (id === undefined) return [];
+
+    const enRow = and(eq(experienceTranslations.experienceId, id), eq(experienceTranslations.locale, "en"));
+
+    return [
+      db
+        .update(experienceTranslations)
+        .set({ role: job.role })
+        .where(and(enRow, isNull(experienceTranslations.role)))
+        .returning({ id: experienceTranslations.experienceId }),
+      db
+        .update(experienceTranslations)
+        .set({ descriptionFull: job.descriptionFull })
+        .where(and(enRow, isNull(experienceTranslations.descriptionFull)))
+        .returning({ id: experienceTranslations.experienceId }),
+    ];
+  });
+
+  const [first, ...rest] = updates;
+  if (!first) return;
+
+  const results = await db.batch([first, ...rest]);
+  console.log(`Seeded: ${results.flat().length} experience fields.`);
 }
 
 /**
@@ -173,6 +211,7 @@ async function seedAboutPairs() {
 
 async function main() {
   await seedContent();
+  await seedExperienceDetails();
   await seedAboutPairs();
 }
 

@@ -1,14 +1,22 @@
 ---
 tags: [design, handoff, projects]
 status: approved
-updated: 2026-11-02
+updated: 2026-11-03
 ---
 
 # Projects Page Handoff
 
-`/[locale]/projects` shows the full story of every place of work on one page. All jobs are in the HTML at once, so they are all indexed. The presentation is "scrollytelling": a pinned column tracks which job you are reading. Approved variant: **C v2** on the design canvas.
+`/[locale]/projects` shows the full story of every place of work on one page. All jobs are in the HTML at once, so they are all indexed. The presentation is "scrollytelling": a pinned column tracks which job you are reading. Approved variant: **C v2** on the design canvas. The owner corrected it on 2026-11-03: the section "Changes since 2026-11-01" and the text below are older, and [[2026-11-03-projects-page-design]] wins where they differ.
 
 See [[README]] for shared rules and files. Data: `experience` in `shared/content.ts`. Messages: the `Projects` namespace.
+
+## Changes of 2026-11-03
+
+- **Not shown:** the years in any form, above the `h2` and on the stage; the "What I did" heading.
+- **The short description** is 16 px / 1.6, plain text, followed by the full description with no heading.
+- **The image** moved: under the meta line below `lg`, on the stage above the name from `lg`, centered with the name and the role.
+- **Omega-R** is gone from the database; three jobs remain. The label reads `Projects · 2021 — 2026`, and it is the `h1`.
+- **Rendering:** static, as Home.
 
 ## Changes since 2026-11-01
 

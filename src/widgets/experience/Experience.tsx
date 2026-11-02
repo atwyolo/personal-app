@@ -15,7 +15,7 @@ export const Experience: FC = async () => {
   return (
     <section aria-labelledby="experience-title" className="flex flex-col gap-3 lg:gap-4">
       <SectionHeader id="experience-title">{t("label")}</SectionHeader>
-      <Carousel label={t("label")} className="lg:grid-cols-4">
+      <Carousel label={t("label")} className="lg:grid-cols-3">
         {jobs.map((job, index) => (
           <ExperienceCard key={job.slug} job={job} className={index % 2 ? "reveal reveal-left" : "reveal"} />
         ))}

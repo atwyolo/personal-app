@@ -1,7 +1,7 @@
 ---
 tags: [design, handoff, home]
 status: approved
-updated: 2026-11-02
+updated: 2026-11-03
 ---
 
 # Home Page Handoff
@@ -83,7 +83,7 @@ Rendering: home is **static** per locale (see [[Rendering Strategy]]). Everythin
 
 **Mobile:** hero → photo → contacts → About → Experience (carousel) → My top skills → Blog (carousel).
 
-**Desktop:** a 4-column row with the photo and contacts in column 1 and the hero plus About in columns 2–4. Below it: Experience (4 cards), My top skills (full width), Blog (featured card spanning 2 columns plus 2 cards).
+**Desktop:** a 4-column row with the photo and contacts in column 1 and the hero plus About in columns 2–4. Below it: Experience (3 cards, since Omega-R left the database on 2026-11-03), My top skills (full width), Blog (featured card spanning 2 columns plus 2 cards).
 
 Section headers: a mono label (`Geist Mono`, 11 px mobile / 12 px desktop, uppercase, letter-spacing .08em, `text-muted-foreground`), with a count on the right where shown. Header padding is 12 px on top for mobile and 32 px for desktop.
 
@@ -152,7 +152,7 @@ The icons are generic glyphs, not official logos.
   - 3–5 skill tags as chips;
   - "Learn more →" link at the bottom (`mt-auto`).
 - Link style, shared with "Read more →" in the blog: `text-brand`, 600 weight, underline in `deco`, 2 px thick, offset 5 px.
-- Desktop: a 4-column grid with equal-height cards, then a primary pill "All experience" aligned right below the grid. "Learn more" links go to `/[locale]/projects#<company-id>` (the Projects page holds the full story of every job); "All experience" goes to `/[locale]/projects`.
+- Desktop: a 3-column grid with equal-height cards, then a primary pill "All experience" aligned right below the grid. "Learn more" links go to `/[locale]/projects#<company-id>` (the Projects page holds the full story of every job); "All experience" goes to `/[locale]/projects`.
 - Mobile: a **carousel** (see below), then a full-width primary pill "All experience". The section header has no link.
 
 ### My top skills (static)
@@ -220,7 +220,7 @@ The owner simplified the design's motion on 2026-11-01: one wipe on load, all at
   - `skills`: `top boolean default false` (drives "My top skills", done 2026-11-01).
   - `posts`: `topic_id`, see [[Data Model]] (done 2026-11-01).
   - `profile`: `about` as rich text.
-- Owner TODOs (marked in `content.ts`): the photo file, the CV PDF, the Omega-R description, the experience tag lists, real skill levels (currently only 5 are set; the rest are placeholder 6), which skills are `top`, and real posts.
+- Owner TODOs (marked in `content.ts`): the photo file, the CV PDF, the experience tag lists, real skill levels (currently only 5 are set; the rest are placeholder 6), which skills are `top`, and real posts.
 
 ## Open questions (add to [[Open Questions]])
 

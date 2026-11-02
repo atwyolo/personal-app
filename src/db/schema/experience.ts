@@ -8,7 +8,7 @@ export const experience = pgTable(
   "experience",
   {
     id: id(),
-    /** Anchor for "Learn more", e.g. /about#glovo. */
+    /** Anchor for "Learn more", e.g. /projects#glovo. */
     slug: text().notNull().unique(),
     /** Not translated. Also the image alt text. */
     company: text().notNull(),
@@ -29,7 +29,7 @@ export const experienceTranslations = pgTable(
     experienceId: translationOf(() => experience.id),
     locale: localeEnum().notNull(),
     role: text(),
-    descriptionShort: jsonb().$type<RichTextDoc>(),
+    descriptionShort: text(),
     descriptionFull: jsonb().$type<RichTextDoc>(),
     ...timestamps,
   },
