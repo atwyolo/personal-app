@@ -3,8 +3,7 @@
     "back": "Back"
   },
   "Projects": {
-    "metaTitle": "Projects",
-    "metaDescription": "The full story of every place I have worked as a frontend engineer: the products, the results and the skills behind them.",
+    "labelWithoutYears": "Projects",
     "label": "Projects · {from} — {to}",
     "navLabel": "Places of work",
     "skills": "Skills",
@@ -12,7 +11,6 @@
     "present": "present"
   },
   "About": {
-    "metaTitle": "About",
     "title": "About me",
     "intro": "A short interview with myself: the questions recruiters ask most, answered properly.",
     "questionsNav": "Questions"

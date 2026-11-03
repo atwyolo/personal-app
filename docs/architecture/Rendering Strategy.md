@@ -23,6 +23,8 @@ The project runs with `cacheComponents: true`, so "ISR" means cached functions w
 
 `experimental.inlineCss` puts the CSS of a first load into a `<style>` tag instead of a render-blocking `<link>`, on every route. See [[ADR-0011 Inline CSS]].
 
+Metadata comes from the `meta_` tables through `"use cache"` functions tagged `meta` ([[ADR-0014 Metadata in the Database]]): the root layout reads the site-wide part (default title, icons, `noindex` while hidden) and each page its own, so metadata stays in the static shell. `/favicon.ico` is a route handler on the same cached read; under Cache Components a `GET` that reads only cached data is prerendered too (`x-nextjs-cache: HIT`).
+
 Notes to expand: streaming with `Suspense` on the blog list, `loading.tsx` / `error.tsx` per segment.
 
 Related: [[ADR-0001 Framework and Rendering]]
