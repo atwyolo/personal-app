@@ -6,8 +6,7 @@ import { type FC, useLayoutEffect, useRef, useState } from "react";
 import type { SkillList } from "@/db/queries/home";
 import { SkillRow } from "@/features/skill-row/SkillRow";
 import { useDebouncedValue } from "@/shared/lib/useDebouncedValue";
-import { useHideOnScroll } from "@/shared/lib/useHideOnScroll";
-import { useIsStuck } from "@/shared/lib/useIsStuck";
+import { useFoldingPanel } from "@/shared/lib/useFoldingPanel";
 import { ChipGroup } from "@/shared/ui/ChipGroup";
 import { ScrollFade } from "@/shared/ui/ScrollFade";
 import { SearchField } from "@/shared/ui/SearchField";
@@ -21,9 +20,6 @@ import { filterSkills } from "../lib/filter-skills";
  */
 const ALL = "*";
 const SEARCH_DELAY_MS = 300;
-/** Pixels of scrolling in one direction before the phone panel folds or unfolds: less is a finger's jitter. */
-const FOLD_THRESHOLD_PX = 10;
-
 /** A cleared field shows everything at once: waiting 300 ms there only feels slow. */
 const isBlank = (query: string) => query.trim() === "";
 
@@ -45,10 +41,8 @@ export const SkillsExplorer: FC<SkillsExplorerProps> = (props) => {
   const [domain, setDomain] = useState(ALL);
   const [searchFocused, setSearchFocused] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
-  const { stuck } = useIsStuck({ ref: panelRef });
-  const { hidden } = useHideOnScroll({ threshold: FOLD_THRESHOLD_PX });
   // Phones fold the stuck panel while the visitor scrolls down, never while they type (the keyboard is open).
-  const collapsed = stuck && hidden && !searchFocused;
+  const { stuck, collapsed } = useFoldingPanel({ ref: panelRef, focused: searchFocused });
   const { debouncedValue: appliedQuery } = useDebouncedValue({
     value: query,
     delay: SEARCH_DELAY_MS,

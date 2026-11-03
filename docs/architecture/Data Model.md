@@ -83,8 +83,8 @@ Agreed for the home page on 2026-10-28; the rest stays a draft until its stage. 
 | Column | Type | Notes |
 |---|---|---|
 | `title` | text | |
-| `excerpt` | jsonb | Card text, 2–3 sentences. |
-| `body` | jsonb, nullable | Full post (Stage 4). Inline images are Blob URLs inside the JSON. |
+| `content_short` | text | Card text, 2–3 sentences, plain text. Required in `en`. Renamed from `excerpt` (jsonb) on 2026-11-04 (owner's decision of 2026-11-03), with a one-off `USING` that kept each paragraph's text. |
+| `content_full` | jsonb, nullable | Full post, Tiptap JSON shown with `RichText` on the post page. Inline images are Blob URLs inside the JSON. Renamed from `body` on 2026-11-04. |
 | `tags` | text[] | Free-form, per locale, not linked to `skills`. Admin edits them as a comma-separated input. |
 
 ## About page entities
@@ -128,7 +128,7 @@ While the three browser icons are all null, pages carry the empty icon `data:,`.
 `site_name` (`og:site_name`) and `default_title` (the title of a page without one, e.g. 404), both required in `en`, never blank (`CHECK ... _not_blank`: `null` means "fall back to `en`", an empty string would show nothing). Its foreign key is named explicitly, `meta_site_settings_translations_settings_id_fk`: the generated name is longer than Postgres's 63 characters.
 
 ### `meta_pages` + `meta_page_translations`
-`meta_pages`: `key` (unique text, named in code by the `PageKey` type: `home`, `about`, `projects`, `skills`; a new page adds its row) and `og_image_url` (nullable, falls back to the placeholder). Translations: `title` and `description`, required in `en`, never blank. `og_image_url` is `null` or `https://...` (`CHECK meta_pages_og_image_url_absolute`). The preview image's alt is the `title` (no alt-text fields). A missing row fails the build.
+`meta_pages`: `key` (unique text, named in code by the `PageKey` type: `home`, `about`, `projects`, `skills`, `blog`; a new page adds its row) and `og_image_url` (nullable, falls back to the placeholder). Translations: `title` and `description`, required in `en`, never blank. `og_image_url` is `null` or `https://...` (`CHECK meta_pages_og_image_url_absolute`). The preview image's alt is the `title` (no alt-text fields). A missing row fails the build.
 
 ## Translation table shape
 

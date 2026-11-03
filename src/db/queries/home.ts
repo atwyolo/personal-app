@@ -230,7 +230,7 @@ export async function getTopSkills(): Promise<HomeTopSkills> {
   return { skills: topSkills, total: totals[0].total };
 }
 
-export type HomePost = {
+export type PostPreview = {
   slug: string;
   /** ISO timestamp; formatted in the UI with next-intl. */
   publishedAt: string;
@@ -238,11 +238,11 @@ export type HomePost = {
   /** The topic's label in the requested locale. */
   topic: string;
   title: string;
-  excerpt: RichTextDoc;
+  contentShort: string;
   tags: string[];
 };
 
-export async function getLatestPosts(locale: Locale, limit = 3): Promise<HomePost[]> {
+export async function getLatestPosts(locale: Locale, limit = 3): Promise<PostPreview[]> {
   "use cache";
   cacheLife("max");
   cacheTag(homeCacheTags.posts, homeCacheTags.postTopics);
@@ -259,7 +259,7 @@ export async function getLatestPosts(locale: Locale, limit = 3): Promise<HomePos
       coverUrl: posts.coverUrl,
       topic: localized(topicTr.label, topicEn.label),
       title: localized(tr.title, en.title),
-      excerpt: localized(tr.excerpt, en.excerpt),
+      contentShort: localized(tr.contentShort, en.contentShort),
       tags: localized(tr.tags, en.tags),
     })
     .from(posts)

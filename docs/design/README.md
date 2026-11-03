@@ -7,6 +7,8 @@ updated: 2026-11-03
 
 These are the approved designs for the whole site, ready to implement: seven public pages and the admin panel.
 
+**The handoffs define the look only.** Where a handoff prescribes behaviour, data shapes, rendering, libraries or URLs, the project rules (`CLAUDE.md`, ADRs, specs) win, and a handoff's choice changes the application's logic only when there is a reason for it (owner's rule, 2026-11-03).
+
 - Every public page is mobile-first and has dark and light themes.
 - Pages are localized through next-intl. Copy is in English; other locales fall back to `en`.
 
@@ -18,8 +20,8 @@ These are the approved designs for the whole site, ready to implement: seven pub
 | 2 | Projects (work experience) | `/[locale]/projects` | [[Projects Page Handoff]] | static, DB-backed |
 | 3 | About | `/[locale]/about` | [[About Page Handoff]] | static |
 | 4 | Skills | `/[locale]/skills` | [[Skills Page Handoff]] | static, DB-backed (as Home) |
-| 5 | Blog list | `/[locale]/blog` | [[Blog Page Handoff]] | ISR |
-| 6 | Blog post | `/[locale]/blog/[slug]` | [[Post Page Handoff]] | ISR, `generateStaticParams` |
+| 5 | Blog list | `/[locale]/blog` | [[Blog Page Handoff]] | static, DB-backed, paginated on the server |
+| 6 | Blog post | `/[locale]/blog/[slug]` | [[Post Page Handoff]] | static, DB-backed, `generateStaticParams` |
 | 7 | Contact | `/[locale]/contact` | [[Contact Page Handoff]] | static page + a Server Action |
 | 8 | Admin | `/admin` (not localized) | [[Admin Handoff]] | dynamic, behind auth |
 

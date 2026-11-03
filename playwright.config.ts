@@ -28,8 +28,10 @@ export default defineConfig({
   webServer: {
     command: `npm run build && npm run start -- --port ${port}`,
     url: baseURL,
-    // As on Vercel, so the app version tag is tested with its commit.
-    env: { VERCEL_GIT_COMMIT_SHA: BUILD_COMMIT },
+    // As on Vercel, so the app version tag is tested with its commit, and the build and the server see one site URL:
+    // `siteUrl` reads `PORT`, and a partly dynamic route (the blog list) resolves its metadata again per request, so a
+    // build on 3000 served on 3100 put two canonical and hreflang sets in the head.
+    env: { VERCEL_GIT_COMMIT_SHA: BUILD_COMMIT, PORT: String(port) },
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,
   },

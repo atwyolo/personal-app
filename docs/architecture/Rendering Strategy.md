@@ -13,8 +13,8 @@ Deliberately mix rendering modes so each one is learned in practice. Every page 
 | `/[locale]/about` | static | same |
 | `/[locale]/projects` | static, DB-backed, as home: same `getExperience`, same tags, admin calls `updateTag` | content changes rarely; one read per locale serves both pages |
 | `/[locale]/skills` | static, DB-backed, as home: the same `getSkills` read with the `skills` tag, handed to a client explorer that only filters | content changes rarely; the full list is in the HTML, so the page reads without JavaScript |
-| `/[locale]/blog` | ISR | list of posts |
-| `/[locale]/blog/[slug]` | static params + ISR; view counter via Server Action | post body is static, counter is a mutation |
+| `/[locale]/blog` | Partial Prerender (◐ in the build): the hero and a skeleton are the static shell; the panel, the list, the counts and the pagination read `searchParams` inside `<Suspense>`. Three `"use cache"` reads tagged `posts` and `post-topics` (catalog per locale, facets per filter, page per state), reached only by a state validated against the catalog. Every control is a link; `NavigationScope` pushes same-page links in a transition without scrolling and blocks clicks while pending | posts change rarely; the list can grow past what fits in one HTML page, so it is paginated on the server (owner's decision, 2026-11-03) |
+| `/[locale]/blog/[slug]` | static, DB-backed: `generateStaticParams` + cached read per post, tagged; view counter via Server Action | post body changes only when edited; the counter is a mutation |
 | `/[locale]/contact` | dynamic (Server Action) | form submission |
 | `/admin/**` | dynamic, no caching | authenticated, always fresh |
 
@@ -26,6 +26,8 @@ The project runs with `cacheComponents: true`, so "ISR" means cached functions w
 
 Metadata comes from the `meta_` tables through `"use cache"` functions tagged `meta` ([[ADR-0014 Metadata in the Database]]): the root layout reads the site-wide part (default title, icons, `noindex` while hidden) and each page its own, so metadata stays in the static shell. `/favicon.ico` is a route handler on the same cached read; under Cache Components a `GET` that reads only cached data is prerendered too (`x-nextjs-cache: HIT`).
 
-Notes to expand: streaming with `Suspense` on the blog list, `loading.tsx` / `error.tsx` per segment.
+No route uses time-based revalidation: every DB-backed page is refreshed by `updateTag` from the admin (owner's decision for the blog, 2026-11-03).
+
+Notes to expand: `loading.tsx` / `error.tsx` per segment.
 
 Related: [[ADR-0001 Framework and Rendering]]
