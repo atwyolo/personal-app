@@ -13,15 +13,19 @@ Each stage ends with a working build.
 
 **Projects page** ([[2026-11-03-projects-page-design]]): done 2026-11-03, see [[2026-11-03-projects-page]]. Static, on the `experience` tables. Three jobs for now: Omega-R left the database (owner's decision). The roles and the full descriptions are demo content.
 
+**Metadata tables** ([[2026-11-03-meta-tables-design]]): done 2026-11-03, see [[2026-11-03-meta-tables]] and [[ADR-0014 Metadata in the Database]]. Titles, descriptions, preview images, icons, the site name and `hidden_from_search` live in four `meta_` tables. The site is hidden from search engines until Stage 8. No icons are uploaded yet.
+
+**Skills page** ([[2026-11-03-skills-page-design]]): spec drafted 2026-11-03, paused for the metadata tables; it takes its title and description from `meta_pages`.
+
 - [x] **Stage 0 — Scaffold** (2026-10-26): `create-next-app`, shadcn init, lint/type/build green, docs vault, `CLAUDE.md`.
 - [x] **Stage 1 — Skeleton & theme** (2026-10-29): root layout, sticky header with desktop and mobile navigation, `next-themes` dark mode, base shadcn components, metadata API. No placeholder routes: links to missing pages go to the 404 page until those pages exist (owner's decision).
 - [x] **Stage 2 — i18n** (2026-10-29): `next-intl`, `[locale]` segment, 8 locales, locale switcher, `generateStaticParams` for locales, localized metadata and `hreflang`. Only `en` has messages so far; the other locales fall back to it (see [[Localization]]).
 - [x] **Stage 3 — Database** (2026-11-03): Neon via Vercel Marketplace, Drizzle schema with translation tables, `drizzle-kit push`, seed script, Home, About and Projects reading from the database, static with cache tags ([[Rendering Strategy]]).
 - [ ] **Stage 4 — Blog**: posts + translations in DB, dynamic `[slug]` route, static params, Tiptap JSON → React renderer, view counter.
 - [ ] **Stage 5 — Contact form**: Server Action, React Hook Form + Zod on the client, same schema on the server, honeypot, `useActionState`, messages table.
-- [ ] **Stage 6 — Admin**: Auth.js v5 credentials login, route protection, admin layout mirroring site structure, CRUD per entity, Tiptap editor, TanStack Table lists, per-locale editing with fallback indicator.
+- [ ] **Stage 6 — Admin**: Auth.js v5 credentials login, route protection, admin layout mirroring site structure, CRUD per entity, a metadata section (site settings and per-page title, description and image, [[ADR-0014 Metadata in the Database]]; refresh with `updateTag("meta")`), Tiptap editor, TanStack Table lists, per-locale editing with fallback indicator.
 - [ ] **Rich text** (owner's decision, 2026-11-02): the editor and the output together. Links, italic, underline and numbered lists in `src/shared/ui/RichText.tsx`, which shows them as plain text today. Links are the About page's call to action.
 - [ ] **Stage 7 — Deploy**: Vercel project, env vars, Neon integration (single database, no preview branches), Vercel Blob for uploads. *In progress:* the public Blob store holds the photo and CV, uploaded by hand (2026-10-30); builds show their version, and pull requests into `develop` must raise it ([[ADR-0013 Version Tracking]], 2026-11-02).
-- [ ] **Stage 8 — Polish**: sitemap/robots, OG images, loading/error boundaries, Suspense streaming, Lighthouse pass.
+- [ ] **Stage 8 — Polish**: sitemap/robots, OG images, loading/error boundaries, Suspense streaming, Lighthouse pass, `theme-color` following the chosen theme. `robots.txt` must allow everything while `hidden_from_search` is true: a crawler that may not load a page never sees its `noindex`. **Last step:** set `hidden_from_search` to false once the domain is connected, then request indexing in Search Console ([[ADR-0014 Metadata in the Database]]).
 
 Later / optional: email notification for contact messages (Resend), machine-translation helper in admin (DeepL), analytics.

@@ -159,6 +159,8 @@ See [[README]] for shared rules. The fields here are exactly the shapes in `shar
 - Opened, it shows the full message in a bordered block, then a details list: Reply via, Contact, Consent, Language. Actions: **Reply via {channel} ↗** (primary; opens `mailto:`, `tel:`, `wa.me`, `t.me` or the LinkedIn profile), Mark as read, delete.
 - A card **Form texts** (translatable): Intro, Success message (with a `{channel}` placeholder).
 
+**Metadata** (not designed yet, added 2026-11-03): the admin edits the `meta_` tables of [[ADR-0014 Metadata in the Database]]: site settings (five optional file URLs: `.ico`, SVG, PNG 96, apple touch icon, OG placeholder; the "Hidden from search" switch; the translated site name and default title) and, per page, the translated title and description and an optional preview image. Titles are full text, shown exactly as stored. The database rejects an empty text and a URL that does not start with `https://`; the form saves an empty field as `null` and explains the rule. A design is needed before Stage 6, see [[Open Questions]].
+
 ## Data notes (for the DB schema)
 
 - Translations: one row per (entity, locale) for translatable columns, or JSON columns keyed by locale. Missing values fall back to `en` on the site.

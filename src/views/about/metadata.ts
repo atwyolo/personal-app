@@ -1,31 +1,14 @@
 import type { Metadata } from "next";
-import { getLocale, getTranslations } from "next-intl/server";
+import { getLocale } from "next-intl/server";
 
-import { getProfile } from "@/db/queries/home";
+import { getPageMeta, getSiteMeta } from "@/db/queries/meta";
 import { getLocaleAlternates } from "@/shared/lib/i18n/alternates";
-import { locales } from "@/shared/lib/locales";
+import { buildPageMetadata } from "@/shared/lib/metadata";
 
-/** About page metadata in the page's language. The intro doubles as the description: it is the page's summary. */
+/** About page metadata in the page's language, from the `meta_` tables. Both reads are cached: one per locale at build time. */
 export const generateMetadata = async (): Promise<Metadata> => {
   const locale = await getLocale();
-  const [profile, t] = await Promise.all([getProfile(locale), getTranslations("About")]);
+  const [page, site] = await Promise.all([getPageMeta(locale, "about"), getSiteMeta(locale)]);
 
-  const title = `${t("metaTitle")} — ${profile.name}`;
-  const description = t("intro");
-  const alternates = getLocaleAlternates(locale, "/about");
-
-  return {
-    title,
-    description,
-    alternates,
-    openGraph: {
-      type: "website",
-      title,
-      description,
-      url: alternates.canonical,
-      siteName: profile.name,
-      locale,
-      alternateLocale: locales.filter((l) => l !== locale),
-    },
-  };
+  return buildPageMetadata({ page, site, locale, alternates: getLocaleAlternates(locale, "/about") });
 };

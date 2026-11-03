@@ -30,7 +30,7 @@ export const Projects: FC = async () => {
   });
 
   const span = getYearSpan(experience, experience[0]?.today ?? "");
-  const title = span ? t("label", span) : t("metaTitle");
+  const title = span ? t("label", span) : t("labelWithoutYears");
 
   return (
     <ReadingProgress className="lg:grid lg:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)] print:block">

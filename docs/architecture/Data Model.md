@@ -32,7 +32,6 @@ Agreed for the home page on 2026-10-28; the rest stays a draft until its stage. 
 | `headline` | text | "Senior Frontend Software Engineer, 8+ years" |
 | `job_title` | text | Plain title for structured data, "Senior Frontend Software Engineer". Required in `en` (added 2026-11-02). |
 | `about_short` | jsonb | Home page About on mobile and desktop: lead, results title, bullet list. |
-| `meta_description` | text | Plain-text page description for `<meta name="description">` and Open Graph, ~160 characters (validated by Zod in the admin, not in the database). Required in `en` (added 2026-10-29). |
 | `cv_url` | text, nullable | Blob URL of the PDF for this locale, stored as the blob `downloadUrl` (`?download=1`), because `<a download>` is ignored cross-origin. |
 
 ### `experience`
@@ -108,6 +107,28 @@ Agreed on 2026-11-02, see [[2026-11-02-about-page-design]].
 | `answer_message` | jsonb | Rich text. |
 
 All five are required in `en`.
+
+## Metadata entities
+
+Agreed on 2026-11-03, see [[2026-11-03-meta-tables-design]] and [[ADR-0014 Metadata in the Database]]. Every text is stored as full text, exactly as shown. `profile_translations.meta_description` moved here (to `home`) and was dropped.
+
+### `meta_site_settings` (singleton, `CHECK (id = 1)`)
+| Column | Type | Notes |
+|---|---|---|
+| `icon_ico_url` | text, nullable | `favicon.ico` (16, 32, 48 px). `/favicon.ico` redirects to it (307). |
+| `icon_svg_url` | text, nullable | Vector icon. |
+| `icon_png_url` | text, nullable | 96 × 96. |
+| `apple_touch_icon_url` | text, nullable | 180 × 180. |
+| `og_placeholder_url` | text, nullable | 1200 × 630, the preview image of a page without its own. |
+| `hidden_from_search` | boolean, default `true` | `true` adds `noindex, nofollow` to every page. |
+
+While the three browser icons are all null, pages carry the empty icon `data:,`. `CHECK meta_site_settings_urls_absolute`: every URL is `null` or starts with `https://`, so a relative or empty URL never reaches the fallbacks or `Response.redirect`.
+
+### `meta_site_settings_translations`
+`site_name` (`og:site_name`) and `default_title` (the title of a page without one, e.g. 404), both required in `en`, never blank (`CHECK ... _not_blank`: `null` means "fall back to `en`", an empty string would show nothing). Its foreign key is named explicitly, `meta_site_settings_translations_settings_id_fk`: the generated name is longer than Postgres's 63 characters.
+
+### `meta_pages` + `meta_page_translations`
+`meta_pages`: `key` (unique text, named in code by the `PageKey` type: `home`, `about`, `projects`; a new page adds its row) and `og_image_url` (nullable, falls back to the placeholder). Translations: `title` and `description`, required in `en`, never blank. `og_image_url` is `null` or `https://...` (`CHECK meta_pages_og_image_url_absolute`). The preview image's alt is the `title` (no alt-text fields). A missing row fails the build.
 
 ## Translation table shape
 

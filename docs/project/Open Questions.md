@@ -5,7 +5,7 @@ updated: 2026-11-03
 
 # Open Questions
 
-- The Skills page has a handoff in `docs/design/` and an item in the navigation, but no stage in [[Roadmap]]. Which stage takes it?
+- The admin's metadata section: [[Admin Handoff]] has no design for the `meta_` tables (site settings with icon uploads, per-page title, description and preview image per locale). Needed before Stage 6, see [[ADR-0014 Metadata in the Database]].
 - Drafts of About pairs: the admin's "Needs answer" badge implies saving a pair without an answer, while the `en` check requires all five texts. A nullable field or a status? Settled at the admin stage.
 - Is a separate `projects` list still needed? The Projects page shows work history from `experience`, and [[Data Model]] keeps the `projects` tables under "Later stages" until this is answered.
 - Blog authoring: everything through the admin editor, or allow importing Markdown? (Default: editor only.)

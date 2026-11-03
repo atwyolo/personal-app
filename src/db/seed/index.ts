@@ -5,7 +5,7 @@
  * or overwrites anything: each group of tables, or each field, is filled only while it is empty.
  */
 import "../load-env"; // must stay first: the db client reads DATABASE_URL on import
-import { and, eq, isNull } from "drizzle-orm";
+import { and, eq, inArray, isNull } from "drizzle-orm";
 import { db } from "..";
 import {
   aboutPairTranslations,
@@ -13,6 +13,10 @@ import {
   experience,
   experienceSkills,
   experienceTranslations,
+  metaPageTranslations,
+  metaPages,
+  metaSiteSettings,
+  metaSiteSettingsTranslations,
   postTopicTranslations,
   postTopics,
   postTranslations,
@@ -209,10 +213,50 @@ async function seedAboutPairs() {
   console.log(`Seeded: ${pairRows.length} about pairs.`);
 }
 
+/**
+ * Fills the metadata tables where rows are missing: the settings singleton, the pages and their `en` texts.
+ * Every insert skips a row that exists (`on conflict do nothing`), so a second run, or a run after a text
+ * was edited by hand, changes nothing. URLs stay empty and `hidden_from_search` takes its default, `true`.
+ */
+async function seedMeta() {
+  const keys = data.meta.pages.map((p) => p.key);
+
+  // Round trip 1, one transaction in this order: the singleton before its translation.
+  const [settings, settingsTexts, newPages] = await db.batch([
+    db.insert(metaSiteSettings).values({ id: 1 }).onConflictDoNothing().returning({ id: metaSiteSettings.id }),
+    db
+      .insert(metaSiteSettingsTranslations)
+      .values({ settingsId: 1, locale: "en", ...data.meta.site })
+      .onConflictDoNothing()
+      .returning({ id: metaSiteSettingsTranslations.settingsId }),
+    db
+      .insert(metaPages)
+      .values(keys.map((key) => ({ key })))
+      .onConflictDoNothing()
+      .returning({ id: metaPages.id }),
+  ]);
+
+  // Round trip 2: ids of every page, new or not, because a page may exist without its `en` row.
+  const pageRows = await db.select({ id: metaPages.id, key: metaPages.key }).from(metaPages).where(inArray(metaPages.key, keys));
+  const pageId = new Map(pageRows.map((row) => [row.key, row.id]));
+
+  // Round trip 3.
+  const pageTexts = await db
+    .insert(metaPageTranslations)
+    .values(data.meta.pages.map(({ key, ...texts }) => ({ pageId: pageId.get(key)!, locale: "en" as const, ...texts })))
+    .onConflictDoNothing()
+    .returning({ id: metaPageTranslations.pageId });
+
+  console.log(
+    `Seeded metadata: ${settings.length} settings row, ${settingsTexts.length} settings texts, ${newPages.length} pages, ${pageTexts.length} page texts.`,
+  );
+}
+
 async function main() {
   await seedContent();
   await seedExperienceDetails();
   await seedAboutPairs();
+  await seedMeta();
 }
 
 main().catch((error) => {

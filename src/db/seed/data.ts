@@ -2,6 +2,7 @@
  * Initial content, taken from docs/design/shared/content.ts (English only, other locales fall back; topics are translated).
  * Values marked TODO(owner) are design placeholders, not facts. Edit them later in the admin.
  */
+import type { PageKey } from "@/db/queries/meta";
 import type { Locale } from "@/shared/lib/locales";
 import { boldParagraph, bulletList, doc, paragraph } from "@/shared/lib/rich-text";
 
@@ -78,8 +79,6 @@ export const profile = {
         "At Sony PlayStation, I helped build an in-game notification system from scratch, hired and onboarded 3 developers, and brought test coverage to 95%.",
       ]),
     ),
-    metaDescription:
-      "I'm a Senior Frontend Engineer with 8+ years of commercial experience in React and Next.js, most recently at Glovo, Sony PlayStation and EPAM.",
     // `?download=1` is the blob's download URL: `<a download>` is ignored cross-origin.
     cvUrl: "https://5iyco5bcxydlbyja.public.blob.vercel-storage.com/Mikhail_Aleksandrov_Frontend.pdf?download=1",
   },
@@ -286,3 +285,36 @@ export const aboutPairs = [
     answerMessage: doc(paragraph("[2–3 sentences: hobbies, languages you speak, where you live.]")),
   },
 ];
+
+/**
+ * Metadata as the pages rendered it before it moved to the `meta_` tables (read from a production build on 2026-11-03),
+ * so the move changes nothing visible. Every text is stored as full text, exactly as shown.
+ */
+export const meta = {
+  site: {
+    siteName: "Mikhail Aleksandrov",
+    defaultTitle: "Mikhail Aleksandrov",
+  },
+  pages: [
+    {
+      key: "home",
+      title: "Mikhail Aleksandrov — Senior Frontend Software Engineer, 8+ years",
+      description:
+        "I'm a Senior Frontend Engineer with 8+ years of commercial experience in React and Next.js, most recently at Glovo, Sony PlayStation and EPAM.",
+    },
+    {
+      key: "about",
+      title: "About — Mikhail Aleksandrov",
+      description: "A short interview with myself: the questions recruiters ask most, answered properly.",
+    },
+    {
+      key: "projects",
+      title: "Projects — Mikhail Aleksandrov",
+      description:
+        "The full story of every place I have worked as a frontend engineer: the products, the results and the skills behind them.",
+    },
+  ],
+} satisfies {
+  site: { siteName: string; defaultTitle: string };
+  pages: { key: PageKey; title: string; description: string }[];
+};
