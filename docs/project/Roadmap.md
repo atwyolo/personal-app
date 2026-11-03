@@ -15,7 +15,7 @@ Each stage ends with a working build.
 
 **Metadata tables** ([[2026-11-03-meta-tables-design]]): done 2026-11-03, see [[2026-11-03-meta-tables]] and [[ADR-0014 Metadata in the Database]]. Titles, descriptions, preview images, icons, the site name and `hidden_from_search` live in four `meta_` tables. The site is hidden from search engines until Stage 8. No icons are uploaded yet.
 
-**Skills page** ([[2026-11-03-skills-page-design]]): spec drafted 2026-11-03, paused for the metadata tables; it takes its title and description from `meta_pages`.
+**Skills page** ([[2026-11-03-skills-page-design]]): done 2026-11-03, see [[2026-11-03-skills-page]]. Static, on the `skills` tables; every skill in the HTML, filtered on the client by a search that waits 300 ms and by domain chips. Metadata from `meta_pages`. Most levels are still the seed's placeholder 6.
 
 - [x] **Stage 0 — Scaffold** (2026-10-26): `create-next-app`, shadcn init, lint/type/build green, docs vault, `CLAUDE.md`.
 - [x] **Stage 1 — Skeleton & theme** (2026-10-29): root layout, sticky header with desktop and mobile navigation, `next-themes` dark mode, base shadcn components, metadata API. No placeholder routes: links to missing pages go to the 404 page until those pages exist (owner's decision).

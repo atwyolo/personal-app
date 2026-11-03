@@ -11,6 +11,7 @@ const pages = [
   { locale: "en", key: "home", path: "" },
   { locale: "en", key: "about", path: "/about" },
   { locale: "en", key: "projects", path: "/projects" },
+  { locale: "en", key: "skills", path: "/skills" },
   { locale: "ru", key: "projects", path: "/projects" },
 ] as const;
 

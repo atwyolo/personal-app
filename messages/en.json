@@ -10,6 +10,20 @@
     "duration": "{years, plural, one {# year} other {# years}}",
     "present": "present"
   },
+  "SkillsPage": {
+    "title": "Skills",
+    "intro": "Everything I work with, rated from 1 to 10. Search or filter by domain.",
+    "countAll": "{total} skills",
+    "countFiltered": "{shown} of {total}",
+    "search": "Search skills",
+    "domain": "Domain",
+    "all": "All",
+    "noMatch": "No skills match “{query}”."
+  },
+  "SkillRow": {
+    "levelAria": "{name}: level {level} of 10",
+    "level": "{level}/10"
+  },
   "About": {
     "title": "About me",
     "intro": "A short interview with myself: the questions recruiters ask most, answered properly.",
@@ -74,9 +88,7 @@
     },
     "skills": {
       "label": "My top skills",
-      "showAll": "Show all {total} skills",
-      "levelAria": "{name}: level {level} of 10",
-      "level": "{level}/10"
+      "showAll": "Show all {total} skills"
     },
     "blog": {
       "label": "Blog",

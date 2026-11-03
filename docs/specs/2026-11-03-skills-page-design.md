@@ -1,13 +1,13 @@
 ---
 tags: [spec, skills]
-status: draft
+status: done
 date: 2026-11-03
 updated: 2026-11-03
 ---
 
 # Skills Page Design
 
-Status: **draft, waiting for the owner's approval.**
+Status: **done 2026-11-03.** Plan: [[2026-11-03-skills-page]].
 
 Related: [[Skills Page Handoff]] (visual contract), `docs/design/README.md` (site-wide rules), [[Home Page Handoff]], [[Data Model]], [[Rendering Strategy]], [[ADR-0007 Testing]], [[2026-11-03-projects-page-design]].
 
@@ -49,7 +49,7 @@ Success: the recruiter finds any skill in seconds without reading the list; the 
 
 ## Data
 
-No schema change, no seed change, no database step.
+No schema change. One database step: the seed adds the `skills` row of `meta_pages` with its `en` title and description (see Metadata); `seedMeta` inserts only missing rows, so the owner confirms one `npm run db:seed`.
 
 `getSkills(locale)` in `src/db/queries/home.ts` already exists and is unused: it returns the domains with their localized labels and counts, and every skill with `name`, `level` and domain `key`, in the page's order, cached with `"use cache"`, `cacheLife("max")` and the `skills` tag. The page uses it as is, with two adjustments:
 
@@ -72,10 +72,20 @@ Visual contract: [[Skills Page Handoff]] and the site-wide rules of `docs/design
 - **A chip click applies at once**; there is nothing to debounce.
 - The query is trimmed before matching, so a stray space neither hides everything nor counts as a filter (from the prototype).
 - The count reads "N of 41" whenever any filter is active: a query, a chip other than "All", or both (from the prototype).
-- Chip counts are totals per domain and do not change with the query (Claude's call, matching the handoff's static numbers).
-- Empty state: "No skills match “{query}”." in `foreground-soft`, in place of the list. It names the debounced query, the one the list was filtered by.
-- **The filter state survives leaving the page and coming back** within the same visit (Claude's call). This is the default with `cacheComponents`: Next keeps a left route mounted under `<Activity>` (see [[Rendering Strategy]]), so the query and the chip are still there. Resetting them would take extra code for no clear gain. A language switch resets them, because it is a different route.
+- **Chip counts follow the applied query** (owner's correction of 2026-11-03, after Claude's first call of static totals): a chip shows how many skills choosing it would list for the query, after the same 300 ms pause; "All" counts every match. A chip with no match stays in place with "0" (Claude's call): chips that vanished would move the row on every letter.
+- Empty state: "No skills match “{query}”." in `foreground-soft`, in place of the list. It names the debounced query, the one the list was filtered by. A long query without spaces wraps (`overflow-wrap: anywhere`) instead of widening the page.
+- **The filters live only while the visitor is on the page** (owner's decision of 2026-11-03, replacing Claude's first call to keep them). Next keeps a left route mounted under `<Activity>` and runs effect cleanups when it hides it, so the explorer resets the query and the chip there; the page comes back with an empty search, "All" and the full list.
 - With JavaScript off, or before hydration, the full sorted list is in the HTML; the search and the chips do nothing until the client component hydrates.
+
+**Corrections after the final review (owner, 2026-11-03):**
+- The search text is 16 px below `lg` and the design's 15 px from `lg`: iOS Safari zooms into a field with text under 16 px and stays zoomed.
+- A chip's count is `muted-foreground`, not the design's 70% opacity, which gave 3.9:1 in the light theme (WCAG 1.4.3 asks 4.5:1 for 12 px). The pressed chip keeps 70% of `selected-foreground`, well above it.
+- The search input has `outline-hidden`, so forced colors show its focus.
+
+**The panel on phones (owner's request, 2026-11-03):**
+- Below `lg` the search and the chips stick under the 64 px header, across the tile's inner width, on the tile's color, with a 1 px line under them while stuck.
+- Once stuck, 10 px of scrolling down folds the panel: the search slides under the header and the chips stay 8 px below it; 10 px up unfolds it. Only the sticky `top` moves (64 px → 2 px), so the list never moves. Whether the panel is stuck is measured against `--stick-top`, the unfolded offset: Safari reports a transitioning `top` at its end value. The rubber band at either end of the page is ignored; the panel never folds while the search has focus or while it is not stuck. Reduced motion: no transition.
+- The chips are always one swipeable row on phones (owner's choice over wrapping until stuck), with a 32 px fade at each edge that still has chips beyond it. From `lg` they wrap in the aside as before.
 
 **Accessibility** (from the handoff):
 - The search sits in a `<search>` landmark with a visually hidden label "Search skills".
@@ -87,7 +97,7 @@ Visual contract: [[Skills Page Handoff]] and the site-wide rules of `docs/design
 - `src/app/[locale]/skills/page.tsx`: route, re-exports the view and its metadata, with the one-line rendering comment.
 - `src/views/skills/SkillsPage.tsx`, `src/views/skills/metadata.ts`.
 - `src/widgets/skills/Skills.tsx`: Server Component; reads `getSkills` and passes the data to the explorer as props.
-- `src/features/skills-explorer/SkillsExplorer.tsx`: the client leaf with the count row, the tile, the search, the chips and the list. Pure filtering in a sibling `filter-skills.ts`.
+- `src/widgets/skills/ui/SkillsExplorer.tsx`: the client leaf with the count row, the tile, the search, the chips and the list; pure filtering in `src/widgets/skills/lib/filter-skills.ts`. In the widget, not in `features` (changed while planning): it renders `SkillRow`, a feature, and slices of one layer may not import each other.
 - `src/shared/lib/useDebouncedValue.ts`: a generic hook, as `useScrollHold` is generic.
 - `src/shared/ui/PageHero.tsx` (Claude's call): Back link, `h1`, intro. `AboutHero` and the Skills page are identical in structure, and Blog and Contact will need the same. About moves to it, so the hero is defined once. It is a plain component that takes `backLabel`, `title` and `intro` as props, as `BackLink` takes its label: `shared` does not read messages. `AboutHero` stays the async widget that reads `About` and `Common` and renders `PageHero`; the About tests and `e2e/about.spec.ts` must stay green.
 - The search field and the chips are built on shadcn `input` and `toggle-group` (Base UI), wrapped in `src/shared/ui` adapters (Claude's call). The toggle group gives the keyboard behavior for free: one Tab stop for the group, arrows inside it. The alternative, plain `<button aria-pressed>`, needs no new components but gives one Tab stop per chip and its own focus handling.

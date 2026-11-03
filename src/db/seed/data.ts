@@ -287,8 +287,9 @@ export const aboutPairs = [
 ];
 
 /**
- * Metadata as the pages rendered it before it moved to the `meta_` tables (read from a production build on 2026-11-03),
- * so the move changes nothing visible. Every text is stored as full text, exactly as shown.
+ * Metadata of every fixed page. Home, About and Projects as they rendered before the move to the `meta_` tables
+ * (read from a production build on 2026-11-03), so the move changed nothing visible; Skills as the owner approved it.
+ * Every text is stored as full text, exactly as shown.
  */
 export const meta = {
   site: {
@@ -312,6 +313,12 @@ export const meta = {
       title: "Projects — Mikhail Aleksandrov",
       description:
         "The full story of every place I have worked as a frontend engineer: the products, the results and the skills behind them.",
+    },
+    {
+      key: "skills",
+      title: "Skills — Mikhail Aleksandrov",
+      description:
+        "Every technology I work with as a frontend engineer, rated from 1 to 10: frameworks, tools and the core of the web.",
     },
   ],
 } satisfies {
