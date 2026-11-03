@@ -289,6 +289,57 @@ export const posts = [
   },
 ];
 
+/**
+ * The body of every demo post: the article of docs/design/post/prototype.dc.html cut down to what `RichText` renders
+ * today (owner, 2026-11-04). Headings are bold paragraphs, both lists are bulleted, the quote is a paragraph, the code
+ * block is gone, and the article's first paragraph is left out: on the page the lead is the post's `content_short`.
+ * TODO(owner): replace with real posts.
+ */
+export const postBody = doc(
+  boldParagraph("Why we didn't rewrite everything at once"),
+  {
+    type: "paragraph",
+    content: [
+      {
+        type: "text",
+        text: "A big-bang rewrite would have frozen product work for months and put every ranking page at risk on launch day. Instead, we put a thin proxy in front of the old site and moved the storefront ",
+      },
+      { type: "text", text: "one route at a time", marks: [{ type: "bold" }] },
+      {
+        type: "text",
+        text: ". Each route went live only when its numbers matched or beat the PHP version, and the rule was no exceptions.",
+      },
+    ],
+  },
+  boldParagraph("The proxy did the heavy lifting"),
+  paragraph(
+    "Every request first hit an edge proxy. A small routing table decided whether a path was served by Next.js or passed through to PHP, so rolling back a route meant changing one line.",
+  ),
+  boldParagraph("What the users saw"),
+  paragraph(
+    "Nothing. Both stacks served the same domain, so cookies, sessions and the cart kept working across the boundary.",
+  ),
+  boldParagraph("Keeping SEO intact"),
+  paragraph("Search traffic was the main risk, so every migrated route had to pass the same checklist:"),
+  bulletList([
+    "Identical URLs, including trailing slashes and the query parameters that mattered.",
+    "The same titles, descriptions and canonical tags, generated with the generateMetadata API.",
+    "Sitemaps rebuilt from one source of truth, so no page fell out of the index.",
+  ]),
+  paragraph(
+    "If you can't measure a route before and after the move, you're not migrating it — you're gambling with it.",
+  ),
+  boldParagraph("Three mistakes I would avoid next time"),
+  bulletList([
+    "Measure Core Web Vitals per route before writing any code.",
+    "Export every redirect from the old system first; many lived only inside PHP.",
+    "Keep the routing table in config, not in code, so the team can change it without a deploy.",
+  ]),
+  paragraph(
+    "The result was worth it. Read more in the Next.js documentation, or get in touch if you're planning a similar move.",
+  ),
+);
+
 /** The interview on the About page. Bracketed text is the design's placeholder for the owner's own words. */
 export const aboutPairs = [
   {

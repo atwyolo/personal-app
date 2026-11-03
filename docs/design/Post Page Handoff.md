@@ -18,6 +18,7 @@ Project rules win over this handoff (see [[README]]):
 - The cover renders through `src/shared/ui/Image.tsx`, not `next/image` directly.
 - The body is `content_full`, rendered by `RichText` as it is in Stage 4; elements it does not render yet wait for the Rich text stage ([[Roadmap]]).
 - The topic and tag links in "Header" are deep links into the blog list, as designed; their URL format is set in the blog spec.
+- No read time and no dot in the meta row; no view counter (owner, 2026-11-04). After the cover comes the post's `content_short` as the lede, then `content_full`. The full set of decisions is in [[2026-11-04-post-page-design]].
 
 ## Files
 

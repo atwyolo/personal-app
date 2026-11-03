@@ -7,7 +7,7 @@ updated: 2026-11-03
 
 # Blog List Design
 
-Status: **done 2026-11-04.** Plan: [[2026-11-03-blog-list]], whose "Rulings while building" record every change made while building. The first of two Stage 4 specs (owner, 2026-11-03): this one covers the data changes and the list `/[locale]/blog`; the second covers the post page `/[locale]/blog/[slug]` and the view counter.
+Status: **done 2026-11-04.** Plan: [[2026-11-03-blog-list]], whose "Rulings while building" record every change made while building. The first of two Stage 4 specs (owner, 2026-11-03): this one covers the data changes and the list `/[locale]/blog`; the second covers the post page `/[locale]/blog/[slug]` (the view counter was dropped on 2026-11-04).
 
 Related: [[Blog Page Handoff]] (visual contract, with its "Overrides" section), `docs/design/README.md` (site-wide rules), [[2026-11-03-skills-page-design]] (the filter panel's behavior), [[Data Model]], [[Rendering Strategy]], [[ADR-0007 Testing]], [[Roadmap]].
 

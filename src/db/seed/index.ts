@@ -139,6 +139,7 @@ async function seedContent() {
         locale: "en" as const,
         title: p.title,
         contentShort: p.contentShort,
+        contentFull: data.postBody,
         tags: p.tags,
       })),
     ),
@@ -238,12 +239,45 @@ async function seedMorePosts() {
     await db.insert(postTranslations).values(
       newPosts.map((row) => {
         const p = bySlug.get(row.slug)!;
-        return { postId: row.id, locale: "en" as const, title: p.title, contentShort: p.contentShort, tags: p.tags };
+        return {
+          postId: row.id,
+          locale: "en" as const,
+          title: p.title,
+          contentShort: p.contentShort,
+          contentFull: data.postBody,
+          tags: p.tags,
+        };
       }),
     );
   }
 
   console.log(`Seeded: ${newPosts.length} more posts.`);
+}
+
+/**
+ * Fills the demo body into the seed's own posts (the slugs of `data.posts`) whose English row has none yet. Only those:
+ * a real post left without a body on purpose never gets the demo article from a later `db:seed`. A body written
+ * later, in the admin or by hand, is never overwritten, and a second run changes nothing.
+ */
+async function seedPostBodies() {
+  const seedPosts = db
+    .select({ id: posts.id })
+    .from(posts)
+    .where(inArray(posts.slug, data.posts.map((p) => p.slug)));
+
+  const filled = await db
+    .update(postTranslations)
+    .set({ contentFull: data.postBody })
+    .where(
+      and(
+        eq(postTranslations.locale, "en"),
+        isNull(postTranslations.contentFull),
+        inArray(postTranslations.postId, seedPosts),
+      ),
+    )
+    .returning({ id: postTranslations.postId });
+
+  console.log(`Seeded: ${filled.length} post bodies.`);
 }
 
 /**
@@ -288,6 +322,7 @@ async function seedMeta() {
 async function main() {
   await seedContent();
   await seedMorePosts();
+  await seedPostBodies();
   await seedExperienceDetails();
   await seedAboutPairs();
   await seedMeta();

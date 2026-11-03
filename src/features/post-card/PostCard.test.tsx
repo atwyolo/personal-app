@@ -8,7 +8,11 @@ import { PostCard } from "./PostCard";
 
 // next-intl navigation needs the Next router.
 vi.mock("@/shared/lib/i18n/navigation", () => ({
-  Link: (props: AnchorHTMLAttributes<HTMLAnchorElement>) => <a {...props} />,
+  // `prefetch` is a router prop, not an anchor attribute: the stand-in shows it as data.
+  Link: (props: AnchorHTMLAttributes<HTMLAnchorElement> & { prefetch?: boolean }) => {
+    const { prefetch, ...rest } = props;
+    return <a data-prefetch={prefetch === undefined ? undefined : String(prefetch)} {...rest} />;
+  },
 }));
 
 const post: PostPreview = {
@@ -78,7 +82,10 @@ describe("PostCard", () => {
   it("leads to the post", () => {
     renderCard();
 
-    expect(screen.getByRole("link", { name: "Read more" })).toHaveAttribute("href", "/blog/offline-mode-in-react");
+    expect(screen.getByRole("link", { name: "Read more (opens in a new tab)" })).toHaveAttribute(
+      "href",
+      "/blog/offline-mode-in-react",
+    );
   });
 
   it("has no cover unless it is featured", () => {
@@ -100,6 +107,36 @@ describe("PostCard", () => {
   });
 });
 
+describe("PostCard links to the post", () => {
+  const newTab = (link: HTMLElement) => {
+    expect(link).toHaveAttribute("target", "_blank");
+    expect(link).toHaveAttribute("rel", "noopener");
+  };
+
+  it("opens Read more in a new tab on Home, with the ↗ arrow", () => {
+    renderCard();
+
+    const readMore = screen.getByRole("link", { name: "Read more (opens in a new tab)" });
+    newTab(readMore);
+    expect(readMore).toHaveTextContent("↗");
+  });
+
+  it("opens the title and Read more in a new tab in the list, the title without an arrow", () => {
+    render(
+      <NextIntlClientProvider locale="en" messages={messages} timeZone="UTC">
+        <PostCard post={post} layout="list" tagHref={(tag) => `/blog?tags=${tag}`} />
+      </NextIntlClientProvider>,
+    );
+
+    const title = screen.getByRole("link", { name: `${post.title} (opens in a new tab)` });
+    newTab(title);
+    expect(title).toHaveAttribute("data-prefetch", "false");
+    expect(title).not.toHaveTextContent("↗");
+    newTab(screen.getByRole("link", { name: "Read more (opens in a new tab)" }));
+    expect(screen.getByRole("link", { name: "React" })).not.toHaveAttribute("target");
+  });
+});
+
 describe("PostCard in the blog list", () => {
   const renderListCard = (props: Partial<Parameters<typeof PostCard>[0]> = {}) =>
     render(
@@ -112,14 +149,15 @@ describe("PostCard in the blog list", () => {
     renderListCard();
 
     expect(screen.getByRole("img", { name: post.title })).toBeVisible();
-    expect(screen.getByRole("heading", { level: 2, name: post.title })).toBeVisible();
+    expect(screen.getByRole("heading", { level: 2, name: `${post.title} (opens in a new tab)` })).toBeVisible();
   });
 
   it("links the title to the post", () => {
     renderListCard();
 
-    const heading = screen.getByRole("heading", { level: 2, name: post.title });
-    expect(within(heading).getByRole("link", { name: post.title })).toHaveAttribute("href", `/blog/${post.slug}`);
+    const name = `${post.title} (opens in a new tab)`;
+    const heading = screen.getByRole("heading", { level: 2, name });
+    expect(within(heading).getByRole("link", { name })).toHaveAttribute("href", `/blog/${post.slug}`);
   });
 
   it("links each tag to the state that toggles it, through the router", () => {

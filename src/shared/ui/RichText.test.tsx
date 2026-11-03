@@ -17,6 +17,22 @@ describe("RichText", () => {
     expect(screen.getByText("Results:").tagName).toBe("STRONG");
   });
 
+  it("marks the post size on its root and renders the same elements", () => {
+    const { container } = render(
+      <RichText doc={doc(paragraph("Text."), boldParagraph("Bold."), bulletList(["One"]))} size="post" />,
+    );
+
+    expect(container.firstElementChild).toHaveAttribute("data-size", "post");
+    expect(screen.getByText("Bold.").tagName).toBe("STRONG");
+    expect(within(screen.getByRole("list")).getAllByRole("listitem")).toHaveLength(1);
+  });
+
+  it("keeps the default size unmarked, as every page had it", () => {
+    const { container } = render(<RichText doc={doc(paragraph("Text."))} />);
+
+    expect(container.firstElementChild).not.toHaveAttribute("data-size");
+  });
+
   it("renders a bullet list as a real list", () => {
     render(<RichText doc={doc(bulletList(["One", "Two"]))} />);
 

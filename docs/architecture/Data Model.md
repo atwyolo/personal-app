@@ -148,6 +148,5 @@ The pair `(<entity>_id, locale)` is the natural key, so it is the primary key; a
 ## Later stages (draft)
 
 - `projects` + `project_translations`: slug, url, repo_url, year, featured, sort; title, summary, body (rich text).
-- `post_views`: view counter per post (Stage 4).
 - `contact_messages`: name, email, message, locale, created_at, read_at (Stage 5).
 - `users`: admin accounts for Auth.js credentials (email, password_hash) (Stage 6).
