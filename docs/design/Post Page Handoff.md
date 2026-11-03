@@ -10,6 +10,15 @@ updated: 2026-11-02
 
 See [[README]] for shared rules and files. Data: posts in `shared/content.ts` (`PostPreview` plus a rich-text body). Messages: the `Post` and `Common` namespaces.
 
+## Overrides (owner, 2026-11-03)
+
+Project rules win over this handoff (see [[README]]):
+
+- The route is static with cache tags, not ISR ([[Rendering Strategy]]).
+- The cover renders through `src/shared/ui/Image.tsx`, not `next/image` directly.
+- The body is `content_full`, rendered by `RichText` as it is in Stage 4; elements it does not render yet wait for the Rich text stage ([[Roadmap]]).
+- The topic and tag links in "Header" are deep links into the blog list, as designed; their URL format is set in the blog spec.
+
 ## Files
 
 | File | What it is |

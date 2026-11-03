@@ -10,6 +10,18 @@ updated: 2026-11-02
 
 See [[README]] for shared rules and files. Data: `latestPosts` and `postTopics` in `shared/content.ts` (posts have `topic` and `tags`). Messages: the `Blog` namespace.
 
+## Overrides (owner, 2026-11-03)
+
+Project rules win over this handoff (see [[README]]). The full set of decisions and corrections is in [[2026-11-03-blog-list-design]]. For the blog list:
+
+- The route is static with cache tags, not ISR ([[Rendering Strategy]]).
+- **Deep links:** step 6 of "Scope and order" stays and grows: topic, tags, sort, page and page size live in the URL in a readable form. A link that cannot be restored falls back to the first page without filters.
+- **Counts follow the request:** the topic and tag counts are recomputed with every request, unlike "Filtering rules" below.
+- **The filter panel behaves as on Skills** ([[Skills Page Handoff]], [[2026-11-03-skills-page-design]]) on desktop and on phones, where the two pages differ.
+- **Pagination** under the list: 10 posts per page, a selector for 20 and 50. Filtering, sorting and paging run on the server; "Filtering rules" below still say *which* posts match.
+- The card text is `content_short`, a plain string, not the rich-text `excerpt`.
+- "Data notes" below are outdated: topics and tags follow [[Data Model]].
+
 ## Changes since 2026-11-01
 
 - **"‹ Back" link** above the hero label (style in [[README]]).

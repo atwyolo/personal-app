@@ -22,6 +22,6 @@ The project workflow is test-driven, and the project had no test runner. Next.js
 ## Consequences
 - `@vitejs/plugin-react` and `vite-tsconfig-paths` from the Next guide are not used. The React plugin conflicts on an optional Babel 8 peer, and Vite 8 covers both needs: Oxc compiles JSX from tsconfig's `"jsx": "react-jsx"`, `resolve.tsconfigPaths` resolves `@/*`.
 - `@types/node` raised to `^22` (required by Vitest 5; matches the local Node 22).
-- E2E tests read the shared production database (see [[ADR-0002 Database and ORM]]). They must stay read-only.
+- E2E tests run against the shared production database (see [[ADR-0002 Database and ORM]]). They were read-only until 2026-11-03; during development they may write to it, because the data is demo content (owner's decision, 2026-11-03). Revisit before real content goes in, at the latest in Stage 8.
 - Playwright browsers live outside the repo: `npx playwright install chromium` once per machine.
 - `test-driven-development` comes from superpowers, see [[ADR-0010 Superpowers Workflow]].

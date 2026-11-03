@@ -192,7 +192,7 @@ export const posts = [
     topic: "technical",
     publishedAt: "2026-10-12",
     title: "Moving an e-commerce store from PHP to Next.js without losing SEO",
-    excerpt:
+    contentShort:
       "How we migrated page by page behind a proxy, kept every URL and sitemap entry intact, and measured each step. The result was a 12.4% lift in conversion and pages 37% faster. Plus the three mistakes I would avoid next time.",
     tags: ["Next.js", "SEO", "Migration"],
   },
@@ -201,7 +201,7 @@ export const posts = [
     topic: "technical",
     publishedAt: "2026-09-28",
     title: "Offline mode in a React app: what actually matters",
-    excerpt:
+    contentShort:
       "A service worker is only half the story. Here is how we queued actions made offline, resolved conflicts when the connection came back, and told users what was happening without alarming them.",
     tags: ["React", "PWA", "Offline"],
   },
@@ -210,9 +210,82 @@ export const posts = [
     topic: "software",
     publishedAt: "2026-09-09",
     title: "Unit tests a team keeps writing",
-    excerpt:
+    contentShort:
       "Coverage targets alone don't change habits. This is the policy that took a team to 95% coverage: what we test first, what we skip on purpose, and how code review keeps it honest.",
     tags: ["Testing", "Jest", "Team process"],
+  },
+  // Demo posts 4–11 (owner, 2026-11-03): the three texts above in turn, so the blog list has filters and pages to show.
+  {
+    slug: "demo-post-4",
+    topic: "technical",
+    publishedAt: "2026-08-24",
+    title: "Moving an e-commerce store from PHP to Next.js without losing SEO",
+    contentShort:
+      "How we migrated page by page behind a proxy, kept every URL and sitemap entry intact, and measured each step. The result was a 12.4% lift in conversion and pages 37% faster. Plus the three mistakes I would avoid next time.",
+    tags: ["React", "TypeScript", "Performance"],
+  },
+  {
+    slug: "demo-post-5",
+    topic: "software",
+    publishedAt: "2026-08-07",
+    title: "Offline mode in a React app: what actually matters",
+    contentShort:
+      "A service worker is only half the story. Here is how we queued actions made offline, resolved conflicts when the connection came back, and told users what was happening without alarming them.",
+    tags: ["Team process", "Testing"],
+  },
+  {
+    slug: "demo-post-6",
+    topic: "technical",
+    publishedAt: "2026-07-21",
+    title: "Unit tests a team keeps writing",
+    contentShort:
+      "Coverage targets alone don't change habits. This is the policy that took a team to 95% coverage: what we test first, what we skip on purpose, and how code review keeps it honest.",
+    tags: ["Next.js", "React", "CSS"],
+  },
+  {
+    slug: "demo-post-7",
+    topic: "software",
+    publishedAt: "2026-07-03",
+    title: "Moving an e-commerce store from PHP to Next.js without losing SEO",
+    contentShort:
+      "How we migrated page by page behind a proxy, kept every URL and sitemap entry intact, and measured each step. The result was a 12.4% lift in conversion and pages 37% faster. Plus the three mistakes I would avoid next time.",
+    tags: ["Team process", "Jest"],
+  },
+  {
+    slug: "demo-post-8",
+    topic: "technical",
+    publishedAt: "2026-06-16",
+    title: "Offline mode in a React app: what actually matters",
+    contentShort:
+      "A service worker is only half the story. Here is how we queued actions made offline, resolved conflicts when the connection came back, and told users what was happening without alarming them.",
+    tags: ["React", "TypeScript"],
+  },
+  {
+    slug: "demo-post-9",
+    topic: "software",
+    publishedAt: "2026-05-30",
+    title: "Unit tests a team keeps writing",
+    contentShort:
+      "Coverage targets alone don't change habits. This is the policy that took a team to 95% coverage: what we test first, what we skip on purpose, and how code review keeps it honest.",
+    tags: ["Testing", "Team process", "TypeScript"],
+  },
+  {
+    slug: "demo-post-10",
+    topic: "technical",
+    publishedAt: "2026-05-12",
+    title: "Moving an e-commerce store from PHP to Next.js without losing SEO",
+    contentShort:
+      "How we migrated page by page behind a proxy, kept every URL and sitemap entry intact, and measured each step. The result was a 12.4% lift in conversion and pages 37% faster. Plus the three mistakes I would avoid next time.",
+    tags: ["Next.js", "Performance"],
+  },
+  {
+    slug: "demo-post-11",
+    topic: "software",
+    publishedAt: "2026-04-25",
+    title: "Offline mode in a React app: what actually matters",
+    contentShort:
+      "A service worker is only half the story. Here is how we queued actions made offline, resolved conflicts when the connection came back, and told users what was happening without alarming them.",
+    tags: ["Team process", "Jest"],
   },
 ];
 
@@ -319,6 +392,11 @@ export const meta = {
       title: "Skills — Mikhail Aleksandrov",
       description:
         "Every technology I work with as a frontend engineer, rated from 1 to 10: frameworks, tools and the core of the web.",
+    },
+    {
+      key: "blog",
+      title: "Blog — Mikhail Aleksandrov",
+      description: "Notes on frontend engineering, software teams and things I do for fun.",
     },
   ],
 } satisfies {

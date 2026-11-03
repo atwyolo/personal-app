@@ -28,7 +28,6 @@ import {
   skills,
 } from "../schema";
 import { locales } from "@/shared/lib/locales";
-import { doc, paragraph } from "@/shared/lib/rich-text";
 import * as data from "./data";
 
 async function seedContent() {
@@ -139,7 +138,7 @@ async function seedContent() {
         postId: postId.get(p.slug)!,
         locale: "en" as const,
         title: p.title,
-        excerpt: doc(paragraph(p.excerpt)),
+        contentShort: p.contentShort,
         tags: p.tags,
       })),
     ),
@@ -214,6 +213,40 @@ async function seedAboutPairs() {
 }
 
 /**
+ * Adds the posts of `data.posts` whose slug is missing, with their `en` texts, on a database that already holds content.
+ * After a seed from scratch `seedContent` has inserted them all, and this inserts nothing.
+ * Two round trips are not one transaction: if the second fails, delete the new rows of `posts` and run again.
+ */
+async function seedMorePosts() {
+  const topicRows = await db.select({ id: postTopics.id, key: postTopics.key }).from(postTopics);
+  const topicId = new Map(topicRows.map((row) => [row.key, row.id]));
+
+  const newPosts = await db
+    .insert(posts)
+    .values(
+      data.posts.map((p) => {
+        const id = topicId.get(p.topic);
+        if (!id) throw new Error(`Post "${p.slug}" references unknown topic "${p.topic}".`);
+        return { slug: p.slug, topicId: id, status: "published" as const, publishedAt: new Date(p.publishedAt) };
+      }),
+    )
+    .onConflictDoNothing({ target: posts.slug })
+    .returning({ id: posts.id, slug: posts.slug });
+
+  if (newPosts.length > 0) {
+    const bySlug = new Map(data.posts.map((p) => [p.slug, p]));
+    await db.insert(postTranslations).values(
+      newPosts.map((row) => {
+        const p = bySlug.get(row.slug)!;
+        return { postId: row.id, locale: "en" as const, title: p.title, contentShort: p.contentShort, tags: p.tags };
+      }),
+    );
+  }
+
+  console.log(`Seeded: ${newPosts.length} more posts.`);
+}
+
+/**
  * Fills the metadata tables where rows are missing: the settings singleton, the pages and their `en` texts.
  * Every insert skips a row that exists (`on conflict do nothing`), so a second run, or a run after a text
  * was edited by hand, changes nothing. URLs stay empty and `hidden_from_search` takes its default, `true`.
@@ -254,6 +287,7 @@ async function seedMeta() {
 
 async function main() {
   await seedContent();
+  await seedMorePosts();
   await seedExperienceDetails();
   await seedAboutPairs();
   await seedMeta();

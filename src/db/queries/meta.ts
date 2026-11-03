@@ -18,7 +18,7 @@ export const metaCacheTags = {
 } as const;
 
 /** Every fixed page with a row in `meta_pages`. A new page adds its key here and its row in the seed. */
-export type PageKey = "home" | "about" | "projects" | "skills";
+export type PageKey = "home" | "about" | "projects" | "skills" | "blog";
 
 export type SiteMeta = {
   siteName: string;

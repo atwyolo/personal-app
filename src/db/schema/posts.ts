@@ -56,8 +56,10 @@ export const postTranslations = pgTable(
     postId: translationOf(() => posts.id),
     locale: localeEnum().notNull(),
     title: text(),
-    excerpt: jsonb().$type<RichTextDoc>(),
-    body: jsonb().$type<RichTextDoc>(),
+    /** Card text, 2–3 sentences, plain. */
+    contentShort: text(),
+    /** The full post as Tiptap JSON, shown on the post page. */
+    contentFull: jsonb().$type<RichTextDoc>(),
     /** Free-form tags per locale, not linked to skills. */
     tags: text().array(),
     ...timestamps,
@@ -66,7 +68,7 @@ export const postTranslations = pgTable(
     primaryKey({ columns: [t.postId, t.locale] }),
     check(
       "post_translations_en_complete",
-      sql`${t.locale} <> 'en' or (${t.title} is not null and ${t.excerpt} is not null and ${t.tags} is not null)`,
+      sql`${t.locale} <> 'en' or (${t.title} is not null and ${t.contentShort} is not null and ${t.tags} is not null)`,
     ),
   ],
 );

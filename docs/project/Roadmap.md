@@ -17,11 +17,23 @@ Each stage ends with a working build.
 
 **Skills page** ([[2026-11-03-skills-page-design]]): done 2026-11-03, see [[2026-11-03-skills-page]]. Static, on the `skills` tables; every skill in the HTML, filtered on the client by a search that waits 300 ms and by domain chips. Metadata from `meta_pages`. Most levels are still the seed's placeholder 6.
 
+**Blog list** ([[2026-11-03-blog-list-design]]): done 2026-11-04, see [[2026-11-03-blog-list]]. Partial Prerender: the state lives in the URL and is rendered on the server, with faceted counts, pagination (10, 20, 50) and the Skills panel's folding. `excerpt` and `body` became `content_short` and `content_full`; eleven demo posts. Mobile Lighthouse performance varies between 90 and 100 locally (the LCP is the first card, which streams after the shell): left for Stage 8 (owner's decision).
+
 - [x] **Stage 0 — Scaffold** (2026-10-26): `create-next-app`, shadcn init, lint/type/build green, docs vault, `CLAUDE.md`.
 - [x] **Stage 1 — Skeleton & theme** (2026-10-29): root layout, sticky header with desktop and mobile navigation, `next-themes` dark mode, base shadcn components, metadata API. No placeholder routes: links to missing pages go to the 404 page until those pages exist (owner's decision).
 - [x] **Stage 2 — i18n** (2026-10-29): `next-intl`, `[locale]` segment, 8 locales, locale switcher, `generateStaticParams` for locales, localized metadata and `hreflang`. Only `en` has messages so far; the other locales fall back to it (see [[Localization]]).
 - [x] **Stage 3 — Database** (2026-11-03): Neon via Vercel Marketplace, Drizzle schema with translation tables, `drizzle-kit push`, seed script, Home, About and Projects reading from the database, static with cache tags ([[Rendering Strategy]]).
-- [ ] **Stage 4 — Blog**: posts + translations in DB, dynamic `[slug]` route, static params, Tiptap JSON → React renderer, view counter.
+- [ ] **Stage 4 — Blog**: posts + translations in DB, the list and the `[slug]` route, view counter. Two specs (owner, 2026-11-03): the data and the list (done 2026-11-04), then the post page and the view counter. Decided by the owner on 2026-11-03:
+  - Both routes read through cached functions with tags, as Home; no time-based revalidation. The list became a Partial Prerender once its state moved into the URL ([[Rendering Strategy]]).
+  - `post_translations.excerpt` becomes `content_short`, a plain string; `body` becomes `content_full`, the Tiptap JSON of the post page ([[Data Model]]). Home's cards read `content_short`.
+  - The post body uses `RichText` as it is today: no new marks or nodes in this stage. The demo bodies keep to what it renders; the rest waits for the Rich text stage.
+  - The filter panel behaves as on Skills, on desktop and on phones.
+  - Pagination under the list: 10 posts per page by default, a selector offers 20 and 50. Filtering, sorting and paging run on the server, not in the browser.
+  - Deep links: topic, tags, sort, page and page size live in the URL in a readable form. Opening such a link restores the state; a link that cannot be restored falls back to the default (first page, no filters).
+  - Topic and tag counts are recomputed with every new request.
+  - The list renders on the server from `searchParams` inside `<Suspense>`, behind a static shell; no Route Handler for it ([[Rendering Strategy]]).
+  - Eight more demo posts in the database (11 in all); their content may repeat. The post body comes from the design's demo article.
+  - Posts are written only in the admin editor, no Markdown import.
 - [ ] **Stage 5 — Contact form**: Server Action, React Hook Form + Zod on the client, same schema on the server, honeypot, `useActionState`, messages table.
 - [ ] **Stage 6 — Admin**: Auth.js v5 credentials login, route protection, admin layout mirroring site structure, CRUD per entity, a metadata section (site settings and per-page title, description and image, [[ADR-0014 Metadata in the Database]]; refresh with `updateTag("meta")`), Tiptap editor, TanStack Table lists, per-locale editing with fallback indicator.
 - [ ] **Rich text** (owner's decision, 2026-11-02): the editor and the output together. Links, italic, underline and numbered lists in `src/shared/ui/RichText.tsx`, which shows them as plain text today. Links are the About page's call to action.

@@ -39,6 +39,7 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[2026-11-03-projects-page-design]] — Projects page: work history from the database, done 2026-11-03
 - [[2026-11-03-meta-tables-design]] — metadata in four `meta_` tables, done 2026-11-03
 - [[2026-11-03-skills-page-design]] — Skills page: search and domain filters, done 2026-11-03
+- [[2026-11-03-blog-list-design]] — Blog list: deep links, server-side filters and pagination, done 2026-11-04
 
 ## Plans
 - [[2026-10-30-home-experience]] — Experience block, done; deferred items listed there
@@ -49,6 +50,7 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[2026-11-03-projects-page]] — Projects page, done
 - [[2026-11-03-meta-tables]] — metadata tables, done
 - [[2026-11-03-skills-page]] — Skills page, done
+- [[2026-11-03-blog-list]] — Blog list, done
 
 ## Journal
 - [[2026-10-26]] — kickoff: decisions, scaffold
@@ -58,7 +60,8 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[2026-10-31]] — home page: Experience block closed
 - [[2026-11-01]] — home page: My top skills and Blog blocks, accent wipe, verification
 - [[2026-11-02]] — home page closed: iOS check, sliding navigation, selected menu item, contact buttons; version tracking; About page started
-- [[2026-11-03]] — About page closed: chips, Back link, reveal, JSON-LD; Projects page closed; Stage 3 done; metadata tables; Skills page
+- [[2026-11-03]] — About page closed: chips, Back link, reveal, JSON-LD; Projects page closed; Stage 3 done; metadata tables; Skills page; Blog decisions before the spec
+- [[2026-11-04]] — Blog list built: column renames, demo posts, URL state, pagination, faceted reads, the page
 
 ## Templates
 - [[ADR Template]] · [[Journal Template]]

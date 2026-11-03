@@ -2,8 +2,7 @@ import { render, screen, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import type { AnchorHTMLAttributes } from "react";
 import { describe, expect, it, vi } from "vitest";
-import type { HomePost } from "@/db/queries/home";
-import { doc, paragraph } from "@/shared/lib/rich-text";
+import type { PostPreview } from "@/db/queries/home";
 import messages from "../../../messages/en.json";
 import { PostCard } from "./PostCard";
 
@@ -12,17 +11,17 @@ vi.mock("@/shared/lib/i18n/navigation", () => ({
   Link: (props: AnchorHTMLAttributes<HTMLAnchorElement>) => <a {...props} />,
 }));
 
-const post: HomePost = {
+const post: PostPreview = {
   slug: "offline-mode-in-react",
   publishedAt: "2026-10-12T00:00:00.000Z",
   coverUrl: null,
   topic: "Technical",
   title: "Offline mode in a React app",
-  excerpt: doc(paragraph("A service worker is only half the story.")),
+  contentShort: "A service worker is only half the story.",
   tags: ["React", "PWA"],
 };
 
-const renderCard = (overrides: Partial<HomePost> = {}, featured?: boolean) =>
+const renderCard = (overrides: Partial<PostPreview> = {}, featured?: boolean) =>
   render(
     <NextIntlClientProvider locale="en" messages={messages} timeZone="UTC">
       <PostCard post={{ ...post, ...overrides }} featured={featured} />
@@ -55,7 +54,7 @@ describe("PostCard", () => {
     expect(screen.getByText(printed)).toBeVisible();
   });
 
-  it("shows the title as a third-level heading and the excerpt as plain text", () => {
+  it("shows the title as a third-level heading and the short text as it is", () => {
     renderCard();
 
     expect(screen.getByRole("heading", { level: 3, name: post.title })).toBeVisible();
@@ -98,5 +97,52 @@ describe("PostCard", () => {
     renderCard({}, true);
 
     expect(screen.getByRole("img", { name: post.title }).tagName).toBe("DIV");
+  });
+});
+
+describe("PostCard in the blog list", () => {
+  const renderListCard = (props: Partial<Parameters<typeof PostCard>[0]> = {}) =>
+    render(
+      <NextIntlClientProvider locale="en" messages={messages} timeZone="UTC">
+        <PostCard post={post} layout="list" {...props} />
+      </NextIntlClientProvider>,
+    );
+
+  it("shows the cover and the title as a second-level heading", () => {
+    renderListCard();
+
+    expect(screen.getByRole("img", { name: post.title })).toBeVisible();
+    expect(screen.getByRole("heading", { level: 2, name: post.title })).toBeVisible();
+  });
+
+  it("links the title to the post", () => {
+    renderListCard();
+
+    const heading = screen.getByRole("heading", { level: 2, name: post.title });
+    expect(within(heading).getByRole("link", { name: post.title })).toHaveAttribute("href", `/blog/${post.slug}`);
+  });
+
+  it("links each tag to the state that toggles it, through the router", () => {
+    renderListCard({ tagHref: (tag) => `/blog?tags=${tag}` });
+
+    const tags = within(screen.getByRole("list")).getAllByRole("link");
+
+    expect(tags.map((tag) => [tag.textContent, tag.getAttribute("href")])).toEqual([
+      ["React", "/blog?tags=React"],
+      ["PWA", "/blog?tags=PWA"],
+    ]);
+  });
+
+  it("marks the selected tags", () => {
+    renderListCard({ tagHref: (tag) => `/blog?tags=${tag}`, selectedTags: ["PWA"] });
+
+    expect(screen.getByRole("link", { name: "PWA" })).toHaveAttribute("aria-current", "true");
+    expect(screen.getByRole("link", { name: "React" })).not.toHaveAttribute("aria-current");
+  });
+
+  it("keeps the tags plain without tagHref", () => {
+    renderListCard();
+
+    expect(within(screen.getByRole("list")).queryByRole("link")).toBeNull();
   });
 });
