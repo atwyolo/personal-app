@@ -17,7 +17,7 @@ These are the approved designs for the whole site, ready to implement: seven pub
 | 1 | Home | `/[locale]` | [[Home Page Handoff]] | static |
 | 2 | Projects (work experience) | `/[locale]/projects` | [[Projects Page Handoff]] | static, DB-backed |
 | 3 | About | `/[locale]/about` | [[About Page Handoff]] | static |
-| 4 | Skills | `/[locale]/skills` | [[Skills Page Handoff]] | static now, ISR once it reads the DB |
+| 4 | Skills | `/[locale]/skills` | [[Skills Page Handoff]] | static, DB-backed (as Home) |
 | 5 | Blog list | `/[locale]/blog` | [[Blog Page Handoff]] | ISR |
 | 6 | Blog post | `/[locale]/blog/[slug]` | [[Post Page Handoff]] | ISR, `generateStaticParams` |
 | 7 | Contact | `/[locale]/contact` | [[Contact Page Handoff]] | static page + a Server Action |

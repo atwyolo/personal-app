@@ -164,12 +164,13 @@ export async function getExperience(locale: Locale): Promise<Experience[]> {
   }));
 }
 
-export type HomeSkills = {
+/** Every skill and the domains that hold at least one, as the Skills page shows them. */
+export type SkillList = {
   domains: { key: string; label: string; count: number }[];
   skills: { name: string; level: number; domain: string }[];
 };
 
-export async function getSkills(locale: Locale): Promise<HomeSkills> {
+export async function getSkills(locale: Locale): Promise<SkillList> {
   "use cache";
   cacheLife("max");
   cacheTag(homeCacheTags.skills);
@@ -193,11 +194,14 @@ export async function getSkills(locale: Locale): Promise<HomeSkills> {
   ]);
 
   return {
-    domains: domainRows.map((d) => ({
-      key: d.key,
-      label: d.label,
-      count: skillRows.filter((s) => s.domain === d.key).length,
-    })),
+    domains: domainRows
+      .map((d) => ({
+        key: d.key,
+        label: d.label,
+        count: skillRows.filter((s) => s.domain === d.key).length,
+      }))
+      // The admin can create an empty domain; its chip could only lead to the empty state.
+      .filter((d) => d.count > 0),
     skills: skillRows,
   };
 }
