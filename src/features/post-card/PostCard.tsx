@@ -31,6 +31,7 @@ export const PostCard: FC<PostCardProps> = (props) => {
   const { post, featured, layout = "home", tagHref, selectedTags = [], className } = props;
   const { slug, publishedAt, coverUrl, topic, title, contentShort, tags } = post;
   const t = useTranslations("Home.blog");
+  const common = useTranslations("Common");
   const format = useFormatter();
   const isList = layout === "list";
   const Heading = isList ? "h2" : "h3";
@@ -98,11 +99,18 @@ export const PostCard: FC<PostCardProps> = (props) => {
         >
           {/* In the list the title is the card's link with a meaningful name; "Read more" repeats it, as designed. */}
           {isList ? (
+            // A new tab, so the list keeps its filters (owner, 2026-11-04). Not the `Link` adapter: the title keeps the
+            // heading's look, not a text link's.
             <RouterLink
               href={`/blog/${slug}`}
+              target="_blank"
+              rel="noopener"
+              prefetch={false}
               className="rounded-sm outline-hidden hover:text-brand focus-visible:ring-3 focus-visible:ring-ring/50"
             >
               {title}
+              {" "}
+              <span className="sr-only">{common("newTab")}</span>
             </RouterLink>
           ) : (
             title
@@ -120,7 +128,12 @@ export const PostCard: FC<PostCardProps> = (props) => {
             ))}
           </ul>
         )}
-        <Link href={`/blog/${slug}`} showArrowIcon className="mt-auto self-start py-1 text-[15px]">
+        <Link
+          href={`/blog/${slug}`}
+          showArrowIcon
+          newTabLabel={common("newTab")}
+          className="mt-auto self-start py-1 text-[15px]"
+        >
           {t("readMore")}
         </Link>
       </div>

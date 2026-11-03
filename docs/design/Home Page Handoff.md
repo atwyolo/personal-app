@@ -175,7 +175,7 @@ A short list of skills marked `top` in the main skills list, without a limit (ow
   - title (h3): 17–19 px mobile, 18 px desktop; the featured card uses 22 px;
   - excerpt: 2–3 sentences, 15 px / 1.55, `foreground-soft`;
   - tag chips **under the text** (several per post);
-  - "Read more →" link.
+  - "Read more →" link; it opens the post in a new tab, with ↗ instead of → (owner, 2026-11-04; [[2026-11-04-post-page-design]]).
 - Desktop: a 4-column grid, then a primary pill "All posts" aligned right.
   - The first post spans 2 columns: a 220 px wide cover on the left, content on the right.
   - The other two posts are single-column cards without a cover.

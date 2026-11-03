@@ -1,6 +1,7 @@
 {
   "Common": {
-    "back": "Back"
+    "back": "Back",
+    "newTab": "(opens in a new tab)"
   },
   "Projects": {
     "labelWithoutYears": "Projects",
@@ -51,6 +52,9 @@
     "previousPage": "Previous page",
     "nextPage": "Next page",
     "perPage": "Posts per page"
+  },
+  "Post": {
+    "tags": "Tags"
   },
   "About": {
     "title": "About me",

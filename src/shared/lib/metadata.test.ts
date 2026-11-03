@@ -66,6 +66,14 @@ describe("buildPageMetadata", () => {
     expect(metadata.openGraph).toHaveProperty("images", [{ url: ownImage, alt: "Projects — M. A." }]);
   });
 
+  it("describes a post as an article, and every other page as a website", () => {
+    expect(buildPageMetadata({ page, site, locale: "ru", alternates, type: "article" }).openGraph).toHaveProperty(
+      "type",
+      "article",
+    );
+    expect(buildPageMetadata({ page, site, locale: "ru", alternates }).openGraph).toHaveProperty("type", "website");
+  });
+
   it("leaves robots to the layout", () => {
     const metadata = buildPageMetadata({ page, site, locale: "ru", alternates });
 

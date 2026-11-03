@@ -26,7 +26,7 @@ Project rules win over this handoff (see [[README]]). The full set of decisions 
 
 - **"‹ Back" link** above the hero label (style in [[README]]).
 - **Topics are data.** The admin can rename, add and delete them. `postTopics` is now `{ id, name }[]`. Build the topic chips and counts from it; topic names are localized content (the `Blog.topics.*` messages are only a fallback).
-- Cards link to the new post page `/[locale]/blog/[slug]` ([[Post Page Handoff]]).
+- Cards link to the new post page `/[locale]/blog/[slug]` ([[Post Page Handoff]]). The title and "Read more" open it in a new tab, "Read more" with ↗ instead of → (owner, 2026-11-04; [[2026-11-04-post-page-design]]).
 
 ## Scope and order
 

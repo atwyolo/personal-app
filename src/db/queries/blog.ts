@@ -7,8 +7,9 @@ import { db } from "@/db";
 import { postTopicTranslations, postTopics, postTranslations, posts } from "@/db/schema";
 import type { BlogListState } from "@/schemas/blog-list";
 import type { Locale } from "@/shared/lib/locales";
+import type { RichTextDoc } from "@/shared/lib/rich-text";
 import { homeCacheTags, type PostPreview } from "./home";
-import { localized } from "./localized";
+import { localized, localizedOptional } from "./localized";
 
 /**
  * Blog list data. Every read is `"use cache"` with the `posts` and `post-topics` tags, so the admin refreshes them
@@ -150,4 +151,60 @@ export async function getBlogPage(locale: Locale, state: BlogListState): Promise
     .offset((page - 1) * per);
 
   return rows.map((row) => ({ ...row, publishedAt: row.publishedAt!.toISOString() }));
+}
+
+/** Every published post's slug: the post route's static params, and the check before `getPost` reads a slug. */
+export async function getPublishedSlugs(): Promise<string[]> {
+  "use cache";
+  cacheLife("max");
+  cacheTag(homeCacheTags.posts, homeCacheTags.postTopics);
+
+  const rows = await db
+    .select({ slug: posts.slug })
+    .from(posts)
+    .where(eq(posts.status, "published"))
+    .orderBy(desc(posts.publishedAt), desc(posts.id));
+
+  return rows.map((row) => row.slug);
+}
+
+export type Post = PostPreview & {
+  /** The topic's key, for the link to the blog list filtered by it. */
+  topicKey: string;
+  contentFull: RichTextDoc | null;
+};
+
+/** One published post in `locale`, with English fallbacks; `null` for a draft or an unknown slug. */
+export async function getPost(locale: Locale, slug: string): Promise<Post | null> {
+  "use cache";
+  cacheLife("max");
+  cacheTag(homeCacheTags.posts, homeCacheTags.postTopics);
+
+  const tr = alias(postTranslations, "tr");
+  const en = alias(postTranslations, "en");
+  const topicTr = alias(postTopicTranslations, "topic_tr");
+  const topicEn = alias(postTopicTranslations, "topic_en");
+
+  const [row] = await db
+    .select({
+      slug: posts.slug,
+      publishedAt: posts.publishedAt,
+      coverUrl: posts.coverUrl,
+      topic: localized(topicTr.label, topicEn.label),
+      topicKey: postTopics.key,
+      title: localized(tr.title, en.title),
+      contentShort: localized(tr.contentShort, en.contentShort),
+      contentFull: localizedOptional(tr.contentFull, en.contentFull),
+      tags: localized(tr.tags, en.tags),
+    })
+    .from(posts)
+    .innerJoin(en, and(eq(en.postId, posts.id), eq(en.locale, "en")))
+    .leftJoin(tr, and(eq(tr.postId, posts.id), eq(tr.locale, locale)))
+    .innerJoin(postTopics, eq(postTopics.id, posts.topicId))
+    .innerJoin(topicEn, and(eq(topicEn.topicId, posts.topicId), eq(topicEn.locale, "en")))
+    .leftJoin(topicTr, and(eq(topicTr.topicId, posts.topicId), eq(topicTr.locale, locale)))
+    .where(and(eq(posts.slug, slug), eq(posts.status, "published")))
+    .limit(1);
+
+  return row ? { ...row, publishedAt: row.publishedAt!.toISOString() } : null;
 }

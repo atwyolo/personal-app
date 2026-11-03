@@ -17,13 +17,15 @@ Each stage ends with a working build.
 
 **Skills page** ([[2026-11-03-skills-page-design]]): done 2026-11-03, see [[2026-11-03-skills-page]]. Static, on the `skills` tables; every skill in the HTML, filtered on the client by a search that waits 300 ms and by domain chips. Metadata from `meta_pages`. Most levels are still the seed's placeholder 6.
 
+**Post page** ([[2026-11-04-post-page-design]]): done 2026-11-04, see [[2026-11-04-post-page]]. Static per post and locale; a post published after the build renders completely on its first request and is cached (`ensureStatic = "navigation"`), so an unknown slug is a real 404. Cards on Home and in the list open posts in a new tab. No read time, no view counter. The body holds the design's article cut down to what `RichText` renders.
+
 **Blog list** ([[2026-11-03-blog-list-design]]): done 2026-11-04, see [[2026-11-03-blog-list]]. Partial Prerender: the state lives in the URL and is rendered on the server, with faceted counts, pagination (10, 20, 50) and the Skills panel's folding. `excerpt` and `body` became `content_short` and `content_full`; eleven demo posts. Mobile Lighthouse performance varies between 90 and 100 locally (the LCP is the first card, which streams after the shell): left for Stage 8 (owner's decision).
 
 - [x] **Stage 0 — Scaffold** (2026-10-26): `create-next-app`, shadcn init, lint/type/build green, docs vault, `CLAUDE.md`.
 - [x] **Stage 1 — Skeleton & theme** (2026-10-29): root layout, sticky header with desktop and mobile navigation, `next-themes` dark mode, base shadcn components, metadata API. No placeholder routes: links to missing pages go to the 404 page until those pages exist (owner's decision).
 - [x] **Stage 2 — i18n** (2026-10-29): `next-intl`, `[locale]` segment, 8 locales, locale switcher, `generateStaticParams` for locales, localized metadata and `hreflang`. Only `en` has messages so far; the other locales fall back to it (see [[Localization]]).
 - [x] **Stage 3 — Database** (2026-11-03): Neon via Vercel Marketplace, Drizzle schema with translation tables, `drizzle-kit push`, seed script, Home, About and Projects reading from the database, static with cache tags ([[Rendering Strategy]]).
-- [ ] **Stage 4 — Blog**: posts + translations in DB, the list and the `[slug]` route, view counter. Two specs (owner, 2026-11-03): the data and the list (done 2026-11-04), then the post page and the view counter. Decided by the owner on 2026-11-03:
+- [x] **Stage 4 — Blog** (2026-11-04): posts + translations in DB, the list and the `[slug]` route. Two specs (owner, 2026-11-03): the data and the list, then the post page ([[2026-11-04-post-page-design]]), both done 2026-11-04. No view counter: the owner does not collect view metrics (2026-11-04). Decided by the owner on 2026-11-03:
   - Both routes read through cached functions with tags, as Home; no time-based revalidation. The list became a Partial Prerender once its state moved into the URL ([[Rendering Strategy]]).
   - `post_translations.excerpt` becomes `content_short`, a plain string; `body` becomes `content_full`, the Tiptap JSON of the post page ([[Data Model]]). Home's cards read `content_short`.
   - The post body uses `RichText` as it is today: no new marks or nodes in this stage. The demo bodies keep to what it renders; the rest waits for the Rich text stage.
