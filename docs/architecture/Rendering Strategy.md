@@ -5,7 +5,7 @@ updated: 2026-11-04
 
 # Rendering Strategy
 
-Every page file states its mode in a one-line comment. Since 2026-11-04 all content comes from files ([[ADR-0015 Content in Files]]), so every route is static and changes only with a deploy.
+Every page file states its mode in a one-line comment. Since 2026-11-04 all content comes from files ([[ADR-0015 Content in Files]]), so every route is static: new content arrives with a deploy, and `cacheLife("max")` re-renders a page in the background at most every 30 days.
 
 | Route | Mode | Why |
 |---|---|---|
@@ -15,9 +15,9 @@ Every page file states its mode in a one-line comment. Since 2026-11-04 all cont
 | `/[locale]/skills` | static, as home: `getSkills`, handed to a client explorer that only filters | the full list is in the HTML, so the page reads without JavaScript |
 | `/[locale]/[...rest]` | dynamic: `notFound()` for any unknown path, rendered inside the locale layout | the 404 page keeps the header and the locale |
 
-The project runs with `cacheComponents: true`. Content is read with `fs.readFileSync`, which Cache Components treat as predictable (prerendered with the page); the getters stay `"use cache"` functions so that several blocks share one read per locale and Experience can read the clock for a running job. There are no cache tags and no time-based revalidation.
+The project runs with `cacheComponents: true`. Content is read with `fs.readFileSync`, which Cache Components treat as predictable (prerendered with the page); the getters stay `"use cache"` functions so that several blocks share one read per locale and Experience can read the clock for a running job. There are no cache tags. `cacheLife("max")` means: `stale` 5 minutes in the browser's router, `revalidate` 30 days (the first visit after that gets the cached page and triggers a background re-render), `expire` one year (after a year without visits the next one waits for a fresh render); a deploy resets all of it. The files in a deployment never change, so a re-render differs only where the clock matters, the duration of a running job (owner's choice over a never-revalidating profile, 2026-11-04).
 
-**Runtime reads.** A render at request time (the 404 of an unknown path, whose header shows the profile name) runs in a Vercel function that holds only traced files. `outputFileTracingIncludes: { "/**": ["./messages/**/*.md"] }` in `next.config.ts` adds the Markdown files to every server route; the JSON messages are traced because `load-messages.ts` imports them.
+**Runtime reads.** A render at request time runs in a Vercel function that holds only traced files: the 404 of an unknown path (whose header shows the profile name) and the 30-day background revalidation of every page. `outputFileTracingIncludes: { "/**": ["./messages/**/*.md"] }` in `next.config.ts` adds the Markdown files to every server route; the JSON messages are traced because `load-messages.ts` imports them.
 
 `cacheComponents` also keeps a left route in the DOM: `<Activity>` hides it with `display: none`. Its state survives, and a CSS animation on it restarts when the visitor comes back, which is why [[2026-10-30-home-motion]] needs `RevealOnce`. A locator such as `h1` can match the hidden page too.
 

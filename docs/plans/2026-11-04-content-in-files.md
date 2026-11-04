@@ -239,6 +239,24 @@ Key mapping (`messages/en.json` root becomes `{ "Pages": { … } }`; `Meta` arri
   - Ruling: `[[Data Model]]` links across the vault now point to `[[Content Model]]` (25 notes), so no link breaks; plain-text mentions in older notes stay. Links to the deleted handoffs remain in dropped and closed notes, where they record what existed. Cost if wrong: dead links in historical notes.
   - Ruling: the flaky "recomputes the bars when the phone turns" test went into [[Open Questions]]. The design README's "What changed since the 2026-11-01 package" section stays as the package's history, under a line saying the content model and rendering strategy decide.
 
+## Final review
+
+A fresh reviewer (Opus, read-only) reviewed `918f824..637bf32`: ready "with fixes", no Critical. Four Important findings plus one Minor raised by effect; the owner decided three questions (2026-11-04): add the GFM parser packages, reject nested lists, keep `cacheLife("max")` and fix the docs.
+
+- Final: fixed GFM tables, strikethrough, task lists and footnotes passing as plain text — `rejects … as table / delete / task list item / footnoteReference` RED→GREEN (the loader now parses with `micromark-extension-gfm` + `mdast-util-gfm`; the renderer stays CommonMark), suite 314/314.
+- Final: fixed YAML syntax errors without a file name — `names the file of a YAML syntax error` RED→GREEN, suite 314/314.
+- Final: fixed a bad English field blamed on the translation — `blames the English file for a bad English field, even when a translation exists` RED→GREEN (English is validated alone first), suite 314/314.
+- Final: fixed nested lists rendering beside their parent (raised from Minor: Google Docs makes them from indented bullets) — `rejects … as list inside a list` RED→GREEN, suite 314/314.
+- Final: fixed the docs and comments that said nothing refreshes at runtime: `cacheLife("max")` revalidates every 30 days, which also needs the trace include on every route (ADR-0015, Rendering Strategy, Content Model, `next.config.ts`, `skills.ts`, `experience.ts`).
+- Final: Ruling: GFM bare-URL autolinks now parse as links (allowed) but the CommonMark renderer shows them as plain text — the text reads the same as before the fix — cost if wrong: a bare URL is not clickable until written as `[text](url)`.
+- Final: minor (deferred): `tel:` and other schemes outside react-markdown's default `urlTransform` become an empty `href`; a site link written with the locale (`/en/about`) gives `/en/en/about`.
+- Final: minor (deferred): gray-matter evaluates `---js` frontmatter with `eval`; closable with `engines: { js, javascript }` that throw.
+- Final: minor (deferred): `markdownToPlainText` has no consumer yet.
+- Final: minor (deferred): next-intl's `Messages` type includes `Meta`, so `useTranslations("Meta…")` type-checks in a client component; `Pick<…, "Pages">` would show the narrowing.
+- Final: minor (deferred): a misspelt top-level locale file or folder (`ru/profle.md`, `ru/experiences/`) is ignored silently.
+- Final: minor (deferred): content errors in `skills.ts` and `experience.ts` can name a path that does not exist.
+- Final: minor (deferred): duplicate `/ru/about` e2e test, stale "Review focus 4" comments in `e2e/experience.spec.ts`, `/blog` as the example path in Localization, no check that `endDate` is not before `startDate`.
+
 ## Task 10: Delete the Neon database (owner-gated)
 
 - [ ] After the staged work is committed, merged and deployed, the owner checks the production site on files and confirms.

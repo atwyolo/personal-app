@@ -13,15 +13,22 @@ describe("assertAllowedMarkdown", () => {
   });
 
   it.each([
-    ["<img src=x onerror=alert(1)>", "html"],
-    ["![a](b.png)", "image"],
-    ["> q", "blockquote"],
-    ["```\ncode\n```", "code"],
-    ["`code`", "inlineCode"],
-    ["---\n\ntext", "thematicBreak"],
-  ])("rejects %j as %s, with the file and the line", (source, type) => {
+    ["<img src=x onerror=alert(1)>", "html", 3],
+    ["![a](b.png)", "image", 3],
+    ["> q", "blockquote", 3],
+    ["```\ncode\n```", "code", 3],
+    ["`code`", "inlineCode", 3],
+    ["---\n\ntext", "thematicBreak", 3],
+    // GFM, which Google Docs' "Copy as Markdown" emits: parsed so it can be rejected, never shown as raw pipes or tildes.
+    ["| a | b |\n|---|---|\n| 1 | 2 |", "table", 3],
+    ["~~gone~~", "delete", 3],
+    ["- [ ] todo", "task list item", 3],
+    ["Text[^1]\n\n[^1]: Note.", "footnoteReference", 3],
+    // A nested list would sit beside its parent's text: the bullets are a flex row.
+    ["- parent\n  - child", "list inside a list", 4],
+  ])("rejects %j as %s, with the file and the line", (source, type, line) => {
     expect(() => assertAllowedMarkdown(`Fine.\n\n${source}`, file)).toThrow(
-      `Unsupported Markdown "${type}" in ${file}, line 3`,
+      `Unsupported Markdown "${type}" in ${file}, line ${line}`,
     );
   });
 });

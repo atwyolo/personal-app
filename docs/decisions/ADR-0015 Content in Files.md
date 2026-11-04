@@ -19,8 +19,9 @@ Spec: [[2026-11-04-content-in-files-design]]. Plan: [[2026-11-04-content-in-file
 - **Personal content is Markdown with YAML frontmatter** in `messages/<locale>/`: `profile.md`, `skills.md`, `experience/<slug>.md`, `about/<slug>.md`. The slug is the file name.
 - **Localization, per field:** `en` holds every field; another locale's file holds only what it translates, merged over English field by field (lists by item key). A missing locale file means English. A locale file without an English counterpart fails the build.
 - **Reading:** `src/content/` (outside the FSD layers) with `gray-matter`, strict Zod schemas and `fs.readFileSync` under `"use cache"` + `cacheLife("max")`, no tags. Every error names the file and the field.
-- **Markdown:** CommonMark only (paragraphs, bold, italic, links, lists, hard breaks, headings), rendered on the server by `react-markdown` in `src/shared/ui/Markdown.tsx`. Anything else fails the build, so the files stay portable. Text size comes from heading levels, shifted below the page's outline.
-- **Runtime reads:** `outputFileTracingIncludes` puts `messages/**/*.md` into every server route, for renders at request time such as the 404.
+- **Revalidation (owner, 2026-11-04):** `cacheLife("max")` as it is: a page is re-rendered in the background at most every 30 days after a visit (and synchronously after a year without visits). The files inside a deployment never change, so this only refreshes what depends on the clock: the duration of a running job. A profile that never revalidates was the alternative; it would freeze that duration at the last deploy.
+- **Markdown:** CommonMark only (paragraphs, bold, italic, links, lists, hard breaks, headings), rendered on the server by `react-markdown` in `src/shared/ui/Markdown.tsx`. Anything else fails the build, so the files stay portable; the loader parses with GFM (`micromark-extension-gfm`) only to see and reject the tables, strikethrough, task lists and footnotes Google Docs emits. Nested lists are rejected too (owner). Text size comes from heading levels, shifted below the page's outline.
+- **Runtime reads:** `outputFileTracingIncludes` puts `messages/**/*.md` into every server route, for renders at request time: the 404, and the background revalidation of every page.
 
 ## Alternatives
 - **Keep Neon without an admin:** content edited with Drizzle Studio or SQL. Every change still needs a tool outside the editor, no review in pull requests, and the e2e suite stays tied to production data.
@@ -30,7 +31,7 @@ Spec: [[2026-11-04-content-in-files-design]]. Plan: [[2026-11-04-content-in-file
 - **jsonb or JSON for rich text:** what the Tiptap editor produced. Not pasteable from Google Docs and not readable in a diff.
 
 ## Consequences
-- New content needs a deploy; nothing refreshes at runtime. `updateTag` and cache tags are gone.
+- New content needs a deploy; the 30-day revalidation re-reads the same files. `updateTag` and cache tags are gone.
 - Git is the history, pull requests are the review, `git revert` is the undo.
 - The build validates every file; a typo cannot reach production.
 - The Blob store's URLs are typed into the files by hand. There is no upload form.

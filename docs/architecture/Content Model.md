@@ -53,7 +53,7 @@ Pages
 
 ## Markdown bodies
 
-CommonMark only: paragraphs, **bold**, *italic*, links, bullet and numbered lists, hard line breaks, headings. Images, tables, code, block quotes, thematic breaks and raw HTML fail the build with the file and the line (`src/content/markdown.ts`), so the files stay portable to the CV repository and render on GitHub.
+CommonMark only: paragraphs, **bold**, *italic*, links, bullet and numbered lists (not nested), hard line breaks, headings. Images, tables, strikethrough, task lists, footnotes, code, block quotes, thematic breaks, nested lists and raw HTML fail the build with the file and the line (`src/content/markdown.ts`, which parses with GFM to see what Google Docs emits), so the files stay portable to the CV repository and render on GitHub. A YAML syntax error names its file too.
 
 - **Links:** a page of the site without the locale (`[About](/about)`); a web address opens in a new tab and says so.
 - **Headings:** the level in the file sets the size (`#` the largest); the element is shifted below the page's outline, so `#` inside an About answer, which sits under an `h2`, renders as `h3`.

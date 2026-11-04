@@ -12,9 +12,10 @@ const nextConfig: NextConfig = {
     inlineCss: true,
   },
   partialPrefetching: true,
-  // Content is read with fs at render time. Static pages read it during the build, but a render at request time (the 404
-  // of an unknown path, whose header shows the profile) runs in a function that holds only traced files, and `fs` paths
-  // built at runtime are not traced. Every server route gets the Markdown files.
+  // Content is read with fs at render time. Static pages read it during the build, but a render at request time runs in
+  // a function that holds only traced files, and `fs` paths built at runtime are not traced. Such renders are the 404 of
+  // an unknown path (its header shows the profile) and the 30-day revalidation of `cacheLife("max")` on every page, so
+  // every server route needs the Markdown files: do not narrow this to the 404.
   outputFileTracingIncludes: {
     "/**": ["./messages/**/*.md"],
   },

@@ -15,6 +15,12 @@ describe("readContentFile", () => {
     expect(file?.file.endsWith("en/profile.md")).toBe(true);
   });
 
+  it("names the file of a YAML syntax error", () => {
+    const root = writeContentTree({ "en/experience/acme.md": '---\ncompany: "Acme\n---\n' });
+
+    expect(() => readContentFile(root, "en", "experience/acme.md")).toThrow(/Invalid frontmatter in .*en\/experience\/acme\.md/);
+  });
+
   it("returns null for a missing file", () => {
     const root = writeContentTree({ "en/profile.md": "---\nname: Mike\n---\n" });
 

@@ -18,7 +18,7 @@ export type ExperienceEntry = {
   /** "YYYY-MM-DD"; formatting and duration happen in the UI with next-intl. */
   startDate: string;
   endDate: string | null;
-  /** "YYYY-MM-DD" when this result was cached: closes a running job, frozen until the next build. */
+  /** "YYYY-MM-DD" when this result was cached: closes a running job; refreshed by the 30-day revalidation and by a deploy. */
   today: string;
   imageUrl: string | null;
   descriptionShort: string;

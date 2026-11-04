@@ -71,8 +71,9 @@ export const readTopSkills = (root: string): HomeTopSkills => {
 };
 
 /**
- * Cached reads: the result joins the static shell at build time and stays until the next deploy (`cacheLife("max")`,
- * no tags: nothing refreshes content at runtime). The locale is part of the cache key.
+ * Cached reads: the result joins the static shell at build time. `cacheLife("max")` re-renders it in the background at
+ * most every 30 days; the files of a deployment never change, so only clock-based values move. No tags. The locale is
+ * part of the cache key.
  */
 export async function getSkills(locale: Locale): Promise<SkillList> {
   "use cache";

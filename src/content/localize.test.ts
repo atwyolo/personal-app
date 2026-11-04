@@ -88,6 +88,25 @@ describe("loadLocalized", () => {
     expect(skills.skills).toEqual([{ name: "React", level: 9, domain: "core", main: false, top: false, sort: 0 }]);
   });
 
+  it("blames the English file for a bad English field, even when a translation exists", () => {
+    const root = writeContentTree({
+      "en/profile.md": en.replace('since: "2021-03-01"', 'since: "March 2021"'),
+      "ru/profile.md": "---\nname: Михаил\n---\n",
+    });
+
+    expect(() => loadLocalized({ root, locale: "ru", path: "profile.md", schema })).toThrow(
+      /Invalid content in .*en\/profile\.md: since/,
+    );
+  });
+
+  it("blames the translation for a bad translated field", () => {
+    const root = writeContentTree({ "en/profile.md": en, "ru/profile.md": "---\nsince: soon\n---\n" });
+
+    expect(() => loadLocalized({ root, locale: "ru", path: "profile.md", schema })).toThrow(
+      /Invalid content in .*ru\/profile\.md: since/,
+    );
+  });
+
   it("names the file and the field of invalid content", () => {
     const skills = [7, 8, 9, 11].map((level, i) => `  - { name: S${i}, level: ${level}, domain: core }`).join("\n");
     const root = writeContentTree({ "en/skills.md": `---\ndomains:\n  - { key: core, label: Core }\nskills:\n${skills}\n---\n` });

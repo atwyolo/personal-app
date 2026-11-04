@@ -36,10 +36,17 @@ export const readContentFile = (root: string, locale: Locale, file: string): Con
     throw error;
   }
 
-  // Any options object turns off gray-matter's cache, which returns one shared, mutable result per identical input.
-  const { data, content } = matter(source, {});
+  const relative = path.relative(process.cwd(), absolute);
+  let parsed: matter.GrayMatterFile<string>;
+  try {
+    // Any options object turns off gray-matter's cache, which returns one shared, mutable result per identical input.
+    parsed = matter(source, {});
+  } catch (error) {
+    // A YAML syntax error names only a line; the build reports the page, which reads several files.
+    throw new Error(`Invalid frontmatter in ${relative}: ${(error as Error).message}`);
+  }
 
-  return { data, body: content, file: path.relative(process.cwd(), absolute) };
+  return { data: parsed.data, body: parsed.content, file: relative };
 };
 
 const markdownFiles = (folder: string): string[] => {

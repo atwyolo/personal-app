@@ -43,6 +43,14 @@ export const mergeFields = <T extends Fields>(en: T, locale: Fields | undefined,
   return result as T;
 };
 
+const validate = <S extends z.ZodType>(schema: S, data: unknown, file: string): z.infer<S> => {
+  const parsed = schema.safeParse(data);
+  if (parsed.success) return parsed.data;
+
+  const issues = parsed.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`).join("; ");
+  throw new Error(`Invalid content in ${file}: ${issues}`);
+};
+
 interface LoadLocalizedParams<S extends z.ZodType> {
   root: string;
   locale: Locale;
@@ -73,21 +81,20 @@ export const loadLocalized = <S extends z.ZodType>(params: LoadLocalizedParams<S
   assertAllowedMarkdown(en.body, en.file);
   if (translated) assertAllowedMarkdown(translated.body, translated.file);
 
-  const source = translated ?? en;
-  let data: Fields;
-  try {
-    data = mergeFields(en.data, translated?.data, lists);
-  } catch (error) {
-    throw new Error(`Invalid content in ${source.file}: ${(error as Error).message}`);
-  }
-
-  const parsed = schema.safeParse(data);
-  if (!parsed.success) {
-    const issues = parsed.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`).join("; ");
-    throw new Error(`Invalid content in ${source.file}: ${issues}`);
+  // English alone first: it must be complete, and its errors must name its file even when a translation exists.
+  let parsed = validate(schema, en.data, en.file);
+  if (translated) {
+    let data: Fields;
+    try {
+      data = mergeFields(en.data, translated.data, lists);
+    } catch (error) {
+      throw new Error(`Invalid content in ${translated.file}: ${(error as Error).message}`);
+    }
+    // English passed, so what fails now comes from the translation.
+    parsed = validate(schema, data, translated.file);
   }
 
   const body = translated?.body.trim() ? translated.body : en.body;
 
-  return { ...(parsed.data as object), body: body.trim(), slug: path.basename(file, ".md") } as Localized<S>;
+  return { ...(parsed as object), body: body.trim(), slug: path.basename(file, ".md") } as Localized<S>;
 };
