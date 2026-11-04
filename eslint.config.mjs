@@ -21,8 +21,6 @@ const architecture = {
       { type: "shadcn", pattern: "src/shared/shadcn", partialMatch: false },
       { type: "shared", pattern: "src/shared/*", partialMatch: false, capture: ["segment"] },
       { type: "db", pattern: "src/db", partialMatch: false },
-      { type: "actions", pattern: "src/actions", partialMatch: false },
-      { type: "schemas", pattern: "src/schemas", partialMatch: false },
     ],
     // Single files outside any element. Elements describe folders only, so files are classified here.
     "boundaries/files": [
@@ -93,14 +91,6 @@ const architecture = {
           {
             from: { element: { types: { anyOf: ["shared", "shadcn", "db"] } } },
             allow: { to: { element: { type: "shared", captured: { segment: "lib" } } } },
-          },
-
-          // Server Actions and Zod schemas sit outside the layers with no import-order rules:
-          // any file may import them, and they may import any local file.
-          { allow: { to: { element: { types: { anyOf: ["actions", "schemas"] } } } } },
-          {
-            from: { element: { types: { anyOf: ["actions", "schemas"] } } },
-            allow: { to: { element: { isUnknown: false } } },
           },
         ],
       },

@@ -25,37 +25,6 @@
     "levelAria": "{name}: level {level} of 10",
     "level": "{level}/10"
   },
-  "BlogPage": {
-    "title": "Blog",
-    "intro": "Notes on frontend engineering, software teams and things I do for fun.",
-    "topic": "Topic",
-    "all": "All",
-    "tags": "Tags",
-    "searchTags": "Search by tag",
-    "clearText": "Clear text",
-    "noMatchingTags": "No matching tags",
-    "tagPosts": "{count, plural, one {# post} other {# posts}}",
-    "selectedTags": "Selected tags",
-    "removeTag": "Remove tag {tag}",
-    "reset": "Reset",
-    "sortBy": "Sort by date",
-    "newest": "Newest",
-    "oldest": "Oldest",
-    "countAll": "{total, plural, one {# post} other {# posts}}",
-    "countFiltered": "{shown} of {total} posts",
-    "emptyTitle": "No posts here yet",
-    "emptyHint": "Try another topic or tag.",
-    "resetFilters": "Reset filters",
-    "readMore": "Read more",
-    "pagination": "Pagination",
-    "pageLabel": "Go to page {page}",
-    "previousPage": "Previous page",
-    "nextPage": "Next page",
-    "perPage": "Posts per page"
-  },
-  "Post": {
-    "tags": "Tags"
-  },
   "About": {
     "title": "About me",
     "intro": "A short interview with myself: the questions recruiters ask most, answered properly.",
@@ -67,9 +36,7 @@
       "home": "Home",
       "about": "About",
       "projects": "Projects",
-      "skills": "Skills",
-      "blog": "Blog",
-      "contact": "Contact"
+      "skills": "Skills"
     },
     "openMenu": "Open menu",
     "closeMenu": "Close menu"
@@ -121,11 +88,6 @@
     "skills": {
       "label": "My top skills",
       "showAll": "Show all {total} skills"
-    },
-    "blog": {
-      "label": "Blog",
-      "readMore": "Read more",
-      "all": "All posts"
     }
   },
   "Carousel": {

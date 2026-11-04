@@ -69,9 +69,13 @@ Related: [[Data Model]], [[Localization]], [[Rendering Strategy]], [[ADR-0007 Te
 - Modify: `src/views/home/HomePage.tsx` (drop `<Blog />`), `src/db/queries/home.ts` (drop `getLatestPosts`, `PostPreview`, the `posts`/`postTopics` tags), `src/shared/lib/site-nav.ts` (drop `blog`, `contact`), `messages/en.json` (drop `BlogPage`, `Post`, `Home.blog`, `Header.nav.blog`, `Header.nav.contact`), `eslint.config.mjs` (drop the `actions` and `schemas` elements and their policies), `e2e/header.spec.ts`, `e2e/header-nav.spec.ts`, `e2e/metadata.spec.ts` (drop the `blog` row), `src/features/mobile-nav/MobileNav.test.tsx`, `src/shared/lib/metadata.ts` (drop `type: "article"`).
 - `src/db/schema/posts.ts` and the seed stay until Task 8; nothing pushes the schema in between.
 
-- [ ] Update the navigation tests first: `MobileNav.test.tsx` expects `["Home", "About", "Projects", "Skills"]`; `header.spec.ts` expects the same labels and `["/de", "/de/about", "/de/projects", "/de/skills"]`; the mobile-menu click test follows "Skills" to `/en/skills` instead of "Blog"; `header-nav.spec.ts` samples `["Skills", "About"]` and loops over `["About", "Projects", "Skills"]`. Run: they fail.
-- [ ] Delete and modify as listed. Run `npx tsc --noEmit` and `npm run lint` until clean; every remaining import error points at blog code to remove, never at code to keep.
-- [ ] Definition of done. Stage the delta (`git add -A src e2e messages eslint.config.mjs`).
+- [x] Update the navigation tests first: `MobileNav.test.tsx` expects `["Home", "About", "Projects", "Skills"]`; `header.spec.ts` expects the same labels and `["/de", "/de/about", "/de/projects", "/de/skills"]`; the mobile-menu click test follows "Skills" to `/en/skills` instead of "Blog"; `header-nav.spec.ts` samples `["Skills", "About"]` and loops over `["About", "Projects", "Skills"]`. Run: they fail.
+- [x] Delete and modify as listed. Run `npx tsc --noEmit` and `npm run lint` until clean; every remaining import error points at blog code to remove, never at code to keep.
+- [x] Definition of done. Stage the delta (`git add -A src e2e messages eslint.config.mjs`). *Done: unit 256/256, e2e 491 passed / 123 skipped, lint, tsc and build clean.*
+  - Ruling: `src/features/reading-progress` stays: the Projects page uses it too, so it was not blog-only. Cost if wrong: none, `tsc` proved the use.
+  - Ruling: also deleted as blog-only, proved by `grep`: `ChipLinks` (+ test) and the generated `shadcn/ui/input-group.tsx` and `textarea.tsx`, which only `Combobox` used. Cost if wrong: `npx shadcn add input-group` restores them.
+  - Ruling: `Chip` lost its link mode (`href`, `selected`): only the blog's tag filter used it. Cost if wrong: a few lines to restore from git.
+  - Ruling: the e2e test "mobile navigation to a missing page" became "mobile navigation" and follows Skills: every remaining nav item has a page, so no 404 is expected. The desktop indicator's interruption test goes Skills → About instead of Contact → About (the farthest item now).
 
 ## Task 2: `Pages` namespace and narrow client messages
 

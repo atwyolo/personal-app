@@ -9,9 +9,6 @@ import {
   experience,
   experienceSkills,
   experienceTranslations,
-  postTopicTranslations,
-  postTranslations,
-  posts,
   profile,
   profileTranslations,
   skillDomainTranslations,
@@ -33,8 +30,6 @@ export const homeCacheTags = {
   profile: "profile",
   experience: "experience",
   skills: "skills",
-  posts: "posts",
-  postTopics: "post-topics",
 } as const;
 
 export type HomeProfile = {
@@ -228,51 +223,4 @@ export async function getTopSkills(): Promise<HomeTopSkills> {
   ]);
 
   return { skills: topSkills, total: totals[0].total };
-}
-
-export type PostPreview = {
-  slug: string;
-  /** ISO timestamp; formatted in the UI with next-intl. */
-  publishedAt: string;
-  coverUrl: string | null;
-  /** The topic's label in the requested locale. */
-  topic: string;
-  title: string;
-  contentShort: string;
-  tags: string[];
-};
-
-export async function getLatestPosts(locale: Locale, limit = 3): Promise<PostPreview[]> {
-  "use cache";
-  cacheLife("max");
-  cacheTag(homeCacheTags.posts, homeCacheTags.postTopics);
-
-  const tr = alias(postTranslations, "tr");
-  const en = alias(postTranslations, "en");
-  const topicTr = alias(postTopicTranslations, "topic_tr");
-  const topicEn = alias(postTopicTranslations, "topic_en");
-
-  const rows = await db
-    .select({
-      slug: posts.slug,
-      publishedAt: posts.publishedAt,
-      coverUrl: posts.coverUrl,
-      topic: localized(topicTr.label, topicEn.label),
-      title: localized(tr.title, en.title),
-      contentShort: localized(tr.contentShort, en.contentShort),
-      tags: localized(tr.tags, en.tags),
-    })
-    .from(posts)
-    .innerJoin(en, and(eq(en.postId, posts.id), eq(en.locale, "en")))
-    .leftJoin(tr, and(eq(tr.postId, posts.id), eq(tr.locale, locale)))
-    .innerJoin(topicEn, and(eq(topicEn.topicId, posts.topicId), eq(topicEn.locale, "en")))
-    .leftJoin(topicTr, and(eq(topicTr.topicId, posts.topicId), eq(topicTr.locale, locale)))
-    .where(eq(posts.status, "published"))
-    .orderBy(desc(posts.publishedAt))
-    .limit(limit);
-
-  return rows.map((row) => ({
-    ...row,
-    publishedAt: row.publishedAt!.toISOString(),
-  }));
 }

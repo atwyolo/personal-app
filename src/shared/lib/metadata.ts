@@ -20,8 +20,6 @@ export interface BuildPageMetadataParams {
   site: { siteName: string; ogPlaceholderUrl: string | null };
   locale: Locale;
   alternates: LocaleAlternates;
-  /** Open Graph type: `"article"` for a blog post, `"website"` (the default) for every other page. */
-  type?: "website" | "article";
 }
 
 /**
@@ -29,7 +27,7 @@ export interface BuildPageMetadataParams {
  * so shared fields such as `siteName` cannot live in the layout. `robots` belongs to the layout and is never set here.
  */
 export const buildPageMetadata = (params: BuildPageMetadataParams): Metadata => {
-  const { page, site, locale, alternates, type = "website" } = params;
+  const { page, site, locale, alternates } = params;
   const { title, description } = page;
   // The Data Model has no alt-text fields: the preview image is described by the page's title.
   const imageUrl = page.ogImageUrl ?? site.ogPlaceholderUrl;
@@ -39,7 +37,7 @@ export const buildPageMetadata = (params: BuildPageMetadataParams): Metadata => 
     description,
     alternates,
     openGraph: {
-      type,
+      type: "website",
       title,
       description,
       url: alternates.canonical,

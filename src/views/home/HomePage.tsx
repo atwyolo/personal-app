@@ -2,7 +2,6 @@
 import type { FC } from "react";
 
 import { About } from "@/widgets/about/About";
-import { Blog } from "@/widgets/blog/Blog";
 import { Contacts } from "@/widgets/contacts/Contacts";
 import { Experience } from "@/widgets/experience/Experience";
 import { Hero } from "@/widgets/hero/Hero";
@@ -31,8 +30,6 @@ export const HomePage: FC = () => {
       <Experience />
 
       <TopSkills />
-
-      <Blog />
     </main>
   );
 };

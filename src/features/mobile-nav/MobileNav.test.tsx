@@ -34,7 +34,7 @@ describe("MobileNav", () => {
     const dialog = await open(user);
 
     const links = Array.from(dialog.querySelectorAll("a"));
-    expect(links.map((link) => link.textContent)).toEqual(["Home", "About", "Projects", "Skills", "Blog", "Contact"]);
+    expect(links.map((link) => link.textContent)).toEqual(["Home", "About", "Projects", "Skills"]);
     expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute("aria-current", "page");
   });
 
@@ -53,7 +53,7 @@ describe("MobileNav", () => {
     renderNav();
     await open(user);
 
-    await user.click(screen.getByRole("link", { name: "Blog" }));
+    await user.click(screen.getByRole("link", { name: "Skills" }));
 
     await vi.waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
   });
