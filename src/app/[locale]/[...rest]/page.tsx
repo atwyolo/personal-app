@@ -3,6 +3,10 @@
 import { notFound } from "next/navigation";
 import type { FC } from "react";
 
+// Out of the dev-time instant-navigation check: the page only ever throws notFound(), so there is no segment to
+// validate, and the check logged "Could not validate `instant`" on every 404. Next excludes its own /_not-found the same way.
+export const instant = false;
+
 const CatchAllPage: FC = () => {
   notFound();
 };
