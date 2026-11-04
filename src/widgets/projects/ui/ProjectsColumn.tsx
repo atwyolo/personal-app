@@ -18,8 +18,8 @@ interface ProjectsColumnProps {
  */
 export const ProjectsColumn: FC<ProjectsColumnProps> = (props) => {
   const { title, jobs } = props;
-  const t = useTranslations("Projects");
-  const common = useTranslations("Common");
+  const t = useTranslations("Pages.Experience");
+  const common = useTranslations("Pages.Common");
 
   return (
     <div

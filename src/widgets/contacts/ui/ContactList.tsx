@@ -30,7 +30,7 @@ interface ContactListProps {
 export const ContactList: FC<ContactListProps> = (props) => {
   const { contacts, cvUrl, className } = props;
   const { whatsapp, email, linkedin } = contacts;
-  const t = useTranslations("Contacts");
+  const t = useTranslations("Pages.Common.Contacts");
 
   if (!whatsapp?.display && !email?.display && !linkedin?.display && !cvUrl) return null;
 

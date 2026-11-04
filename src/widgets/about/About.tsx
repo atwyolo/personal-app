@@ -19,7 +19,7 @@ interface AboutProps {
 export const About: FC<AboutProps> = async (props) => {
   const { className } = props;
   const locale = await getLocale();
-  const [{ aboutShort }, t] = await Promise.all([getProfile(locale), getTranslations("Home.about")]);
+  const [{ aboutShort }, t] = await Promise.all([getProfile(locale), getTranslations("Pages.Home.about")]);
 
   return (
     <Tile as="section" aria-labelledby="about-title" className={cn("gap-3.5 p-5 lg:gap-4 lg:p-9", className)}>

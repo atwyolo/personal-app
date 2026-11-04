@@ -23,7 +23,7 @@ interface ExperienceCardProps {
 export const ExperienceCard: FC<ExperienceCardProps> = (props) => {
   const { job, className } = props;
   const { slug, company, startDate, endDate, today, imageUrl, descriptionShort, skills } = job;
-  const t = useTranslations("Home.experience");
+  const t = useTranslations("Pages.Home.experience");
 
   const end = endDate ? formatMonthYear(endDate) : t("present");
   const duration = t("duration", { years: getDurationYears(startDate, endDate, today) });

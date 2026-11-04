@@ -15,7 +15,7 @@ import { Menu, type MenuItem } from "@/shared/ui/Menu";
  * until then the trigger keeps its size with an empty slot, and the server HTML matches the first client render.
  */
 export const ThemeMenu: FC = () => {
-  const t = useTranslations("ThemeMenu");
+  const t = useTranslations("Pages.Common.ThemeMenu");
   const { theme, resolvedTheme, systemTheme, setTheme } = useTheme();
   const mounted = useMounted();
 

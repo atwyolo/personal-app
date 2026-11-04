@@ -1,99 +1,101 @@
 {
-  "Common": {
-    "back": "Back",
-    "newTab": "(opens in a new tab)"
-  },
-  "Projects": {
-    "labelWithoutYears": "Projects",
-    "label": "Projects · {from} — {to}",
-    "navLabel": "Places of work",
-    "skills": "Skills",
-    "duration": "{years, plural, one {# year} other {# years}}",
-    "present": "present"
-  },
-  "SkillsPage": {
-    "title": "Skills",
-    "intro": "Everything I work with, rated from 1 to 10. Search or filter by domain.",
-    "countAll": "{total} skills",
-    "countFiltered": "{shown} of {total}",
-    "search": "Search skills",
-    "domain": "Domain",
-    "all": "All",
-    "noMatch": "No skills match “{query}”."
-  },
-  "SkillRow": {
-    "levelAria": "{name}: level {level} of 10",
-    "level": "{level}/10"
-  },
-  "About": {
-    "title": "About me",
-    "intro": "A short interview with myself: the questions recruiters ask most, answered properly.",
-    "questionsNav": "Questions"
-  },
-  "Header": {
-    "navLabel": "Main navigation",
-    "nav": {
-      "home": "Home",
-      "about": "About",
-      "projects": "Projects",
-      "skills": "Skills"
+  "Pages": {
+    "Common": {
+      "back": "Back",
+      "newTab": "(opens in a new tab)",
+      "Header": {
+        "navLabel": "Main navigation",
+        "nav": {
+          "home": "Home",
+          "about": "About",
+          "projects": "Projects",
+          "skills": "Skills"
+        },
+        "openMenu": "Open menu",
+        "closeMenu": "Close menu"
+      },
+      "LocaleMenu": {
+        "label": "Language",
+        "triggerAria": "Language: {code}",
+        "names": {
+          "en": "English",
+          "ru": "Русский",
+          "pt": "Português",
+          "es": "Español",
+          "de": "Deutsch",
+          "fr": "Français",
+          "ja": "日本語",
+          "pl": "Polski"
+        }
+      },
+      "ThemeMenu": {
+        "label": "Theme",
+        "dark": "Dark",
+        "light": "Light",
+        "system": "System",
+        "systemNow": "now {theme, select, dark {dark} other {light}}"
+      },
+      "Contacts": {
+        "label": "Contacts",
+        "whatsapp": "WhatsApp",
+        "whatsappAria": "WhatsApp: {phone}",
+        "mailAria": "Mail: {email}",
+        "linkedin": "LinkedIn",
+        "linkedinAria": "LinkedIn profile",
+        "downloadCv": "Download CV",
+        "downloadCvAria": "Download CV PDF",
+        "pdf": "PDF"
+      },
+      "Carousel": {
+        "previous": "Previous",
+        "next": "Next",
+        "position": "{current} / {total}",
+        "slide": "{current} of {total}"
+      },
+      "SkillRow": {
+        "levelAria": "{name}: level {level} of 10",
+        "level": "{level}/10"
+      }
     },
-    "openMenu": "Open menu",
-    "closeMenu": "Close menu"
-  },
-  "LocaleMenu": {
-    "label": "Language",
-    "triggerAria": "Language: {code}",
-    "names": {
-      "en": "English",
-      "ru": "Русский",
-      "pt": "Português",
-      "es": "Español",
-      "de": "Deutsch",
-      "fr": "Français",
-      "ja": "日本語",
-      "pl": "Polski"
-    }
-  },
-  "ThemeMenu": {
-    "label": "Theme",
-    "dark": "Dark",
-    "light": "Light",
-    "system": "System",
-    "systemNow": "now {theme, select, dark {dark} other {light}}"
-  },
-  "Contacts": {
-    "label": "Contacts",
-    "whatsapp": "WhatsApp",
-    "whatsappAria": "WhatsApp: {phone}",
-    "mailAria": "Mail: {email}",
-    "linkedin": "LinkedIn",
-    "linkedinAria": "LinkedIn profile",
-    "downloadCv": "Download CV",
-    "downloadCvAria": "Download CV PDF",
-    "pdf": "PDF"
-  },
-  "Home": {
-    "about": {
-      "label": "About",
-      "readMore": "Read more"
+    "Home": {
+      "about": {
+        "label": "About",
+        "readMore": "Read more"
+      },
+      "experience": {
+        "label": "Experience",
+        "duration": "{years, plural, one {# year} other {# years}}",
+        "present": "present",
+        "learnMore": "Learn more",
+        "all": "All experience"
+      },
+      "skills": {
+        "label": "My top skills",
+        "showAll": "Show all {total} skills"
+      }
     },
-    "experience": {
-      "label": "Experience",
+    "About": {
+      "title": "About me",
+      "intro": "A short interview with myself: the questions recruiters ask most, answered properly.",
+      "questionsNav": "Questions"
+    },
+    "Skills": {
+      "title": "Skills",
+      "intro": "Everything I work with, rated from 1 to 10. Search or filter by domain.",
+      "countAll": "{total} skills",
+      "countFiltered": "{shown} of {total}",
+      "search": "Search skills",
+      "domain": "Domain",
+      "all": "All",
+      "noMatch": "No skills match “{query}”."
+    },
+    "Experience": {
+      "labelWithoutYears": "Projects",
+      "label": "Projects · {from} — {to}",
+      "navLabel": "Places of work",
+      "skills": "Skills",
       "duration": "{years, plural, one {# year} other {# years}}",
-      "present": "present",
-      "learnMore": "Learn more",
-      "all": "All experience"
-    },
-    "skills": {
-      "label": "My top skills",
-      "showAll": "Show all {total} skills"
+      "present": "present"
     }
-  },
-  "Carousel": {
-    "previous": "Previous",
-    "next": "Next",
-    "position": "{current} / {total}",
-    "slide": "{current} of {total}"
   }
 }

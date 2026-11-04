@@ -15,7 +15,7 @@ import { Menu, type MenuItem } from "@/shared/ui/Menu";
  * the proxy stores the choice in the NEXT_LOCALE cookie when it differs from the browser language.
  */
 export const LocaleMenu: FC = () => {
-  const t = useTranslations("LocaleMenu");
+  const t = useTranslations("Pages.Common.LocaleMenu");
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();

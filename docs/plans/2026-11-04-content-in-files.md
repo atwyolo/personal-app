@@ -97,11 +97,13 @@ Key mapping (`messages/en.json` root becomes `{ "Pages": { … } }`; `Meta` arri
 | `SkillsPage` | `Pages.Skills` |
 | `Projects` | `Pages.Experience` |
 
-- [ ] Tests in `merge-messages.test.ts`: `null` in overrides keeps the fallback value; `false` overrides `true`; a number overrides; a `null` fallback leaf is replaced by an override object or string. Run: fail.
-- [ ] Widen `MessagesTree` and make `mergeMessages` pass the tests. Move `loadMessages` and the merge into `load-messages.ts`; `request.ts` calls `loadMergedMessages`.
-- [ ] Move the keys as in the table and update every namespace string. `AppConfig` types keep checking the keys; `tsc` lists any missed call.
-- [ ] Layout: `const messages = await getMessages();` and `<NextIntlClientProvider messages={{ Pages: messages.Pages }}>`. A test is not practical here; Task 5 verifies in the build output that `Meta` is absent from client chunks.
-- [ ] Definition of done (all e2e green: no visible change). Stage.
+- [x] Tests in `merge-messages.test.ts`: `null` in overrides keeps the fallback value; `false` overrides `true`; a number overrides; a `null` fallback leaf is replaced by an override object or string. Run: fail.
+- [x] Widen `MessagesTree` and make `mergeMessages` pass the tests. Move `loadMessages` and the merge into `load-messages.ts`; `request.ts` calls `loadMergedMessages`.
+- [x] Move the keys as in the table and update every namespace string. `AppConfig` types keep checking the keys; `tsc` lists any missed call.
+- [x] Layout: `const messages = await getMessages();` and `<NextIntlClientProvider messages={{ Pages: messages.Pages }}>`. A test is not practical here; Task 5 verifies in the build output that `Meta` is absent from client chunks.
+- [x] Definition of done (all e2e green: no visible change). Stage. *Done: unit 261/261, e2e 491 passed / 123 skipped, lint, tsc and build clean. The baseline diff shows only Task 1's removals (Blog and Contact in the header, the Blog block on Home).*
+  - Ruling: "a string replaces a null fallback" passed before the change (the string branch already did it); kept as a guard of the new `null` handling. Cost if wrong: none.
+  - Ruling: added `load-messages.test.ts` (a locale with no translations gets the full English tree), not in the plan: the moved loader had no test of its own. It passed at once, being a move of tested code. Cost if wrong: none.
 
 ## Task 3: Content core
 

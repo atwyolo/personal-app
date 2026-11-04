@@ -30,7 +30,7 @@ interface CarouselProps {
  */
 export const Carousel: FC<CarouselProps> = (props) => {
   const { label, className, children } = props;
-  const t = useTranslations("Carousel");
+  const t = useTranslations("Pages.Common.Carousel");
   const trackRef = useRef<HTMLDivElement>(null);
 
   const slides = Children.toArray(children);

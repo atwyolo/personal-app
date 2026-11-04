@@ -16,7 +16,7 @@ import { ProjectsColumn } from "./ui/ProjectsColumn";
  */
 export const Projects: FC = async () => {
   const locale = await getLocale();
-  const [experience, t] = await Promise.all([getExperience(locale), getTranslations("Projects")]);
+  const [experience, t] = await Promise.all([getExperience(locale), getTranslations("Pages.Experience")]);
 
   const jobs: ProjectJob[] = experience.map((job) => {
     const { startDate, endDate, today } = job;

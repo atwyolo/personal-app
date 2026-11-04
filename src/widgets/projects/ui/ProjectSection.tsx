@@ -20,7 +20,7 @@ interface ProjectSectionProps {
 export const ProjectSection: FC<ProjectSectionProps> = (props) => {
   const { job } = props;
   const { slug, company, role, period, duration, imageUrl, descriptionShort, descriptionFull, skills } = job;
-  const t = useTranslations("Projects");
+  const t = useTranslations("Pages.Experience");
 
   return (
     <article

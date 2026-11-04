@@ -1,7 +1,7 @@
 // Root layout: the [locale] segment sits at the top, so every locale gets its own prerendered <html lang>.
 import { Geist, Geist_Mono } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
-import { getLocale } from "next-intl/server";
+import { getLocale, getMessages } from "next-intl/server";
 import type { FC } from "react";
 
 import { locales } from "@/shared/lib/locales";
@@ -35,7 +35,7 @@ export const generateStaticParams = () => locales.map((locale) => ({ locale }));
 const RootLayout: FC<LayoutProps<"/[locale]">> = async (props) => {
   const { children } = props;
   // Resolved by src/shared/lib/i18n/request.ts from the [locale] segment; an unknown locale ends in notFound().
-  const locale = await getLocale();
+  const [locale, messages] = await Promise.all([getLocale(), getMessages()]);
 
   return (
     // suppressHydrationWarning: the theme script sets the class and color-scheme on <html> before React hydrates.
@@ -45,8 +45,11 @@ const RootLayout: FC<LayoutProps<"/[locale]">> = async (props) => {
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
-        {/* Gives client components the locale and messages from the request config. */}
-        <NextIntlClientProvider>
+        {/*
+          Gives client components the locale, time zone and the `Pages` messages. Without `messages` the provider would
+          serialize every message into the page, `Meta` included, which no client component reads.
+        */}
+        <NextIntlClientProvider messages={{ Pages: messages.Pages }}>
           <ThemeProvider>
             <SiteLayout>{children}</SiteLayout>
           </ThemeProvider>

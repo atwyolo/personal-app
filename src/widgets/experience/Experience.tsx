@@ -10,7 +10,7 @@ import { SectionHeader } from "@/shared/ui/SectionHeader";
 /** Experience block: the jobs in the database's order, then the way to the full list. */
 export const Experience: FC = async () => {
   const locale = await getLocale();
-  const [jobs, t] = await Promise.all([getExperience(locale), getTranslations("Home.experience")]);
+  const [jobs, t] = await Promise.all([getExperience(locale), getTranslations("Pages.Home.experience")]);
 
   return (
     <section aria-labelledby="experience-title" className="flex flex-col gap-3 lg:gap-4">

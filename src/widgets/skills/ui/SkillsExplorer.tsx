@@ -36,7 +36,7 @@ interface SkillsExplorerProps {
  */
 export const SkillsExplorer: FC<SkillsExplorerProps> = (props) => {
   const { skills, domains } = props;
-  const t = useTranslations("SkillsPage");
+  const t = useTranslations("Pages.Skills");
   const [query, setQuery] = useState("");
   const [domain, setDomain] = useState(ALL);
   const [searchFocused, setSearchFocused] = useState(false);

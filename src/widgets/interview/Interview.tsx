@@ -15,7 +15,7 @@ export const Interview: FC = async () => {
   const [pairs, profile, t] = await Promise.all([
     getAboutPairs(locale),
     getProfile(locale),
-    getTranslations("About"),
+    getTranslations("Pages.About"),
   ]);
 
   if (pairs.length === 0) return null;

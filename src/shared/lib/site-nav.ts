@@ -1,6 +1,6 @@
 /**
  * Main navigation of the public site, shared by the header and the mobile menu.
- * `key` selects the label in messages (`Header.nav.<key>`); `href` is the path without the locale.
+ * `key` selects the label in messages (`Pages.Common.Header.nav.<key>`); `href` is the path without the locale.
  */
 export const siteNav = [
   { key: "home", href: "/" },
