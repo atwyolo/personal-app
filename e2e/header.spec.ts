@@ -31,9 +31,9 @@ test.describe("desktop", () => {
 
     const nav = page.getByRole("navigation", { name: "Main navigation" });
     const links = nav.getByRole("link");
-    await expect(links).toHaveText(["Home", "About", "Projects", "Skills", "Blog", "Contact"]);
+    await expect(links).toHaveText(["Home", "About", "Experience", "Skills"]);
     const hrefs = await links.evaluateAll((anchors) => anchors.map((a) => a.getAttribute("href")));
-    expect(hrefs).toEqual(["/de", "/de/about", "/de/projects", "/de/skills", "/de/blog", "/de/contact"]);
+    expect(hrefs).toEqual(["/de", "/de/about", "/de/experience", "/de/skills"]);
     await expect(nav.getByRole("link", { name: "Home" })).toHaveAttribute("aria-current", "page");
   });
 });
@@ -53,7 +53,7 @@ test.describe("mobile", () => {
     const trigger = page.getByRole("button", { name: "Open menu" });
     await trigger.click();
     const panel = page.getByRole("dialog", { name: "Main navigation" });
-    await expect(panel.getByRole("link")).toHaveText(["Home", "About", "Projects", "Skills", "Blog", "Contact"]);
+    await expect(panel.getByRole("link")).toHaveText(["Home", "About", "Experience", "Skills"]);
     await expect(panel.getByRole("link", { name: "Home" })).toHaveAttribute("href", "/ru");
     await expect(panel.getByRole("link", { name: "Home" })).toHaveAttribute("aria-current", "page");
 
@@ -69,18 +69,16 @@ test.describe("mobile", () => {
   });
 });
 
-test.describe("mobile navigation to a missing page", () => {
+test.describe("mobile navigation", () => {
   test.skip(({ isMobile }) => !isMobile, "mobile layout only");
-  // Sections without a page yet lead to the 404 page (owner's decision); the browser logs the 404 itself.
-  test.use({ allowedConsoleErrors: [/status of 404/] });
 
   test("following a link closes the panel", async ({ page }) => {
     await page.goto("/en");
 
     await page.getByRole("button", { name: "Open menu" }).click();
-    await page.getByRole("dialog", { name: "Main navigation" }).getByRole("link", { name: "Blog" }).click();
+    await page.getByRole("dialog", { name: "Main navigation" }).getByRole("link", { name: "Skills" }).click();
 
-    await expect(page).toHaveURL(/\/en\/blog$/);
+    await expect(page).toHaveURL(/\/en\/skills$/);
     await expect(page.getByRole("dialog")).toBeHidden();
   });
 });

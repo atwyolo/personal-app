@@ -1,137 +1,133 @@
 {
-  "Common": {
-    "back": "Back",
-    "newTab": "(opens in a new tab)"
+  "Meta": {
+    "Common": {
+      "siteName": "Mikhail Aleksandrov",
+      "defaultTitle": "Mikhail Aleksandrov",
+      "iconIcoUrl": null,
+      "iconSvgUrl": null,
+      "iconPngUrl": null,
+      "appleTouchIconUrl": null,
+      "ogPlaceholderUrl": null,
+      "hiddenFromSearch": true
+    },
+    "Home": {
+      "title": "Mikhail Aleksandrov — Senior Frontend Software Engineer, 8+ years",
+      "description": "I'm a Senior Frontend Engineer with 8+ years of commercial experience in React and Next.js, most recently at Glovo, Sony PlayStation and EPAM.",
+      "ogImageUrl": null
+    },
+    "About": {
+      "title": "About — Mikhail Aleksandrov",
+      "description": "A short interview with myself: the questions recruiters ask most, answered properly.",
+      "ogImageUrl": null
+    },
+    "Skills": {
+      "title": "Skills — Mikhail Aleksandrov",
+      "description": "Every technology I work with as a frontend engineer, rated from 1 to 10: frameworks, tools and the core of the web.",
+      "ogImageUrl": null
+    },
+    "Experience": {
+      "title": "Experience — Mikhail Aleksandrov",
+      "description": "The full story of every place I have worked as a frontend engineer: the products, the results and the skills behind them.",
+      "ogImageUrl": null
+    }
   },
-  "Projects": {
-    "labelWithoutYears": "Projects",
-    "label": "Projects · {from} — {to}",
-    "navLabel": "Places of work",
-    "skills": "Skills",
-    "duration": "{years, plural, one {# year} other {# years}}",
-    "present": "present"
-  },
-  "SkillsPage": {
-    "title": "Skills",
-    "intro": "Everything I work with, rated from 1 to 10. Search or filter by domain.",
-    "countAll": "{total} skills",
-    "countFiltered": "{shown} of {total}",
-    "search": "Search skills",
-    "domain": "Domain",
-    "all": "All",
-    "noMatch": "No skills match “{query}”."
-  },
-  "SkillRow": {
-    "levelAria": "{name}: level {level} of 10",
-    "level": "{level}/10"
-  },
-  "BlogPage": {
-    "title": "Blog",
-    "intro": "Notes on frontend engineering, software teams and things I do for fun.",
-    "topic": "Topic",
-    "all": "All",
-    "tags": "Tags",
-    "searchTags": "Search by tag",
-    "clearText": "Clear text",
-    "noMatchingTags": "No matching tags",
-    "tagPosts": "{count, plural, one {# post} other {# posts}}",
-    "selectedTags": "Selected tags",
-    "removeTag": "Remove tag {tag}",
-    "reset": "Reset",
-    "sortBy": "Sort by date",
-    "newest": "Newest",
-    "oldest": "Oldest",
-    "countAll": "{total, plural, one {# post} other {# posts}}",
-    "countFiltered": "{shown} of {total} posts",
-    "emptyTitle": "No posts here yet",
-    "emptyHint": "Try another topic or tag.",
-    "resetFilters": "Reset filters",
-    "readMore": "Read more",
-    "pagination": "Pagination",
-    "pageLabel": "Go to page {page}",
-    "previousPage": "Previous page",
-    "nextPage": "Next page",
-    "perPage": "Posts per page"
-  },
-  "Post": {
-    "tags": "Tags"
-  },
-  "About": {
-    "title": "About me",
-    "intro": "A short interview with myself: the questions recruiters ask most, answered properly.",
-    "questionsNav": "Questions"
-  },
-  "Header": {
-    "navLabel": "Main navigation",
-    "nav": {
-      "home": "Home",
-      "about": "About",
-      "projects": "Projects",
+  "Pages": {
+    "Common": {
+      "back": "Back",
+      "newTab": "(opens in a new tab)",
+      "Header": {
+        "navLabel": "Main navigation",
+        "nav": {
+          "home": "Home",
+          "about": "About",
+          "experience": "Experience",
+          "skills": "Skills"
+        },
+        "openMenu": "Open menu",
+        "closeMenu": "Close menu"
+      },
+      "LocaleMenu": {
+        "label": "Language",
+        "triggerAria": "Language: {code}",
+        "names": {
+          "en": "English",
+          "ru": "Русский",
+          "pt": "Português",
+          "es": "Español",
+          "de": "Deutsch",
+          "fr": "Français",
+          "ja": "日本語",
+          "pl": "Polski"
+        }
+      },
+      "ThemeMenu": {
+        "label": "Theme",
+        "dark": "Dark",
+        "light": "Light",
+        "system": "System",
+        "systemNow": "now {theme, select, dark {dark} other {light}}"
+      },
+      "Contacts": {
+        "label": "Contacts",
+        "whatsapp": "WhatsApp",
+        "whatsappAria": "WhatsApp: {phone}",
+        "mailAria": "Mail: {email}",
+        "linkedin": "LinkedIn",
+        "linkedinAria": "LinkedIn profile",
+        "downloadCv": "Download CV",
+        "downloadCvAria": "Download CV PDF",
+        "pdf": "PDF"
+      },
+      "Carousel": {
+        "previous": "Previous",
+        "next": "Next",
+        "position": "{current} / {total}",
+        "slide": "{current} of {total}"
+      },
+      "SkillRow": {
+        "levelAria": "{name}: level {level} of 10",
+        "level": "{level}/10"
+      }
+    },
+    "Home": {
+      "about": {
+        "label": "About",
+        "readMore": "Read more"
+      },
+      "experience": {
+        "label": "Experience",
+        "duration": "{years, plural, one {# year} other {# years}}",
+        "present": "present",
+        "learnMore": "Learn more",
+        "all": "All experience"
+      },
+      "skills": {
+        "label": "My top skills",
+        "showAll": "Show all {total} skills"
+      }
+    },
+    "About": {
+      "title": "About me",
+      "intro": "A short interview with myself: the questions recruiters ask most, answered properly.",
+      "questionsNav": "Questions"
+    },
+    "Skills": {
+      "title": "Skills",
+      "intro": "Everything I work with, rated from 1 to 10. Search or filter by domain.",
+      "countAll": "{total} skills",
+      "countFiltered": "{shown} of {total}",
+      "search": "Search skills",
+      "domain": "Domain",
+      "all": "All",
+      "noMatch": "No skills match “{query}”."
+    },
+    "Experience": {
+      "labelWithoutYears": "Projects",
+      "label": "Projects · {from} — {to}",
+      "navLabel": "Places of work",
       "skills": "Skills",
-      "blog": "Blog",
-      "contact": "Contact"
-    },
-    "openMenu": "Open menu",
-    "closeMenu": "Close menu"
-  },
-  "LocaleMenu": {
-    "label": "Language",
-    "triggerAria": "Language: {code}",
-    "names": {
-      "en": "English",
-      "ru": "Русский",
-      "pt": "Português",
-      "es": "Español",
-      "de": "Deutsch",
-      "fr": "Français",
-      "ja": "日本語",
-      "pl": "Polski"
-    }
-  },
-  "ThemeMenu": {
-    "label": "Theme",
-    "dark": "Dark",
-    "light": "Light",
-    "system": "System",
-    "systemNow": "now {theme, select, dark {dark} other {light}}"
-  },
-  "Contacts": {
-    "label": "Contacts",
-    "whatsapp": "WhatsApp",
-    "whatsappAria": "WhatsApp: {phone}",
-    "mailAria": "Mail: {email}",
-    "linkedin": "LinkedIn",
-    "linkedinAria": "LinkedIn profile",
-    "downloadCv": "Download CV",
-    "downloadCvAria": "Download CV PDF",
-    "pdf": "PDF"
-  },
-  "Home": {
-    "about": {
-      "label": "About",
-      "readMore": "Read more"
-    },
-    "experience": {
-      "label": "Experience",
       "duration": "{years, plural, one {# year} other {# years}}",
-      "present": "present",
-      "learnMore": "Learn more",
-      "all": "All experience"
-    },
-    "skills": {
-      "label": "My top skills",
-      "showAll": "Show all {total} skills"
-    },
-    "blog": {
-      "label": "Blog",
-      "readMore": "Read more",
-      "all": "All posts"
+      "present": "present"
     }
-  },
-  "Carousel": {
-    "previous": "Previous",
-    "next": "Next",
-    "position": "{current} / {total}",
-    "slide": "{current} of {total}"
   }
 }

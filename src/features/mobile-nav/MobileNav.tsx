@@ -14,7 +14,7 @@ import { NavLink } from "@/shared/ui/NavLink";
  * desktop header. Not designed in the handoff; follows its proposed default. Closes when a link is followed.
  */
 export const MobileNav: FC = () => {
-  const t = useTranslations("Header");
+  const t = useTranslations("Pages.Common.Header");
   const [open, setOpen] = useState(false);
 
   // One delegated handler instead of an onClick on every link.

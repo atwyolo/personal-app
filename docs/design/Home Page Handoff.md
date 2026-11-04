@@ -8,7 +8,7 @@ updated: 2026-11-03
 
 Approved design of the home page (`/[locale]`), ready to implement. Mobile-first, two themes, eight locales. The design was iterated in a Claude Design canvas; this note is the implementation contract.
 
-Part of the site handoff, see [[README]] in this folder. Related: [[Roadmap]], [[Rendering Strategy]], [[Localization]], [[Data Model]], [[ADR-0005 UI Library]].
+Part of the site handoff, see [[README]] in this folder. Related: [[Roadmap]], [[Rendering Strategy]], [[Localization]], [[Content Model]], [[ADR-0005 UI Library]].
 
 ## Changes since 2026-11-01
 
@@ -214,11 +214,11 @@ The owner simplified the design's motion on 2026-11-01: one wipe on load, all at
 ## Data and content
 
 - Until Stage 3, read from `src/content/site.ts`. Keep component props in the shapes defined there, so swapping in Drizzle queries later doesn't touch the UI.
-- The Data Model needs these additions; record them in [[Data Model]] when Stage 3 starts:
+- The Data Model needs these additions; record them in [[Content Model]] when Stage 3 starts:
   - `experience`: `image`, a relation to `skills` (many-to-many), `description` (the short description, up to 3 sentences, plain text), and `body` (rich text, Projects page).
   - `posts`: `cover`, `tags` (a `tags` table plus `post_tags`).
   - `skills`: `top boolean default false` (drives "My top skills", done 2026-11-01).
-  - `posts`: `topic_id`, see [[Data Model]] (done 2026-11-01).
+  - `posts`: `topic_id`, see [[Content Model]] (done 2026-11-01).
   - `profile`: `about` as rich text.
 - Owner TODOs (marked in `content.ts`): the photo file, the CV PDF, the experience tag lists, real skill levels (currently only 5 are set; the rest are placeholder 6), which skills are `top`, and real posts.
 

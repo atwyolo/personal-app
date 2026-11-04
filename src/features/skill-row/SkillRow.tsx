@@ -38,7 +38,7 @@ interface SkillRowProps {
 export const SkillRow: FC<SkillRowProps> = (props) => {
   const { skill, layout = "home" } = props;
   const { name, level } = skill;
-  const t = useTranslations("SkillRow");
+  const t = useTranslations("Pages.Common.SkillRow");
   const cells = layouts[layout];
 
   return (

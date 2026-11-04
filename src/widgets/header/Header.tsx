@@ -1,7 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import type { FC } from "react";
 
-import { getProfile } from "@/db/queries/home";
+import { getProfile } from "@/content/profile";
 import { LocaleMenu } from "@/features/locale-menu/LocaleMenu";
 import { MobileNav } from "@/features/mobile-nav/MobileNav";
 import { ThemeMenu } from "@/features/theme-menu/ThemeMenu";
@@ -15,7 +15,7 @@ import { NavLink } from "@/shared/ui/NavLink";
  */
 export const Header: FC = async () => {
   const locale = await getLocale();
-  const [profile, t] = await Promise.all([getProfile(locale), getTranslations("Header")]);
+  const [profile, t] = await Promise.all([getProfile(locale), getTranslations("Pages.Common.Header")]);
 
   return (
     <header className="reveal reveal-left sticky top-0 z-10 border-b border-card-border bg-card">

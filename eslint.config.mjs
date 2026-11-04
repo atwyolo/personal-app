@@ -20,9 +20,7 @@ const architecture = {
       { type: "feature", pattern: "src/features/*", partialMatch: false, capture: ["slice"] },
       { type: "shadcn", pattern: "src/shared/shadcn", partialMatch: false },
       { type: "shared", pattern: "src/shared/*", partialMatch: false, capture: ["segment"] },
-      { type: "db", pattern: "src/db", partialMatch: false },
-      { type: "actions", pattern: "src/actions", partialMatch: false },
-      { type: "schemas", pattern: "src/schemas", partialMatch: false },
+      { type: "content", pattern: "src/content", partialMatch: false },
     ],
     // Single files outside any element. Elements describe folders only, so files are classified here.
     "boundaries/files": [
@@ -67,22 +65,22 @@ const architecture = {
             from: { element: { type: "view" } },
             allow: [
               { to: { element: { types: { anyOf: ["widget", "feature"] }, fileInternalPath: "*" } } },
-              { to: { element: { types: { anyOf: ["shared", "db"] } } } },
+              { to: { element: { types: { anyOf: ["shared", "content"] } } } },
             ],
           },
           {
             from: { element: { type: "widget" } },
             allow: [
               { to: { element: { type: "feature", fileInternalPath: "*" } } },
-              { to: { element: { types: { anyOf: ["shared", "db"] } } } },
+              { to: { element: { types: { anyOf: ["shared", "content"] } } } },
             ],
           },
-          // Features get data as props; they may only borrow types from db.
+          // Features get data as props; they may only borrow types from content.
           {
             from: { element: { type: "feature" } },
             allow: [
               { to: { element: { type: "shared" } } },
-              { to: { element: { type: "db" } }, dependency: { kind: "type" } },
+              { to: { element: { type: "content" } }, dependency: { kind: "type" } },
             ],
           },
           // shared/ui is the only consumer of generated shadcn code.
@@ -91,16 +89,8 @@ const architecture = {
             allow: { to: { element: { type: "shadcn" } } },
           },
           {
-            from: { element: { types: { anyOf: ["shared", "shadcn", "db"] } } },
+            from: { element: { types: { anyOf: ["shared", "shadcn", "content"] } } },
             allow: { to: { element: { type: "shared", captured: { segment: "lib" } } } },
-          },
-
-          // Server Actions and Zod schemas sit outside the layers with no import-order rules:
-          // any file may import them, and they may import any local file.
-          { allow: { to: { element: { types: { anyOf: ["actions", "schemas"] } } } } },
-          {
-            from: { element: { types: { anyOf: ["actions", "schemas"] } } },
-            allow: { to: { element: { isUnknown: false } } },
           },
         ],
       },

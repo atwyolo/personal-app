@@ -2,9 +2,12 @@
 tags: [adr, forms]
 status: accepted
 date: 2026-10-26
+updated: 2026-11-04
 ---
 
 # ADR-0006 Forms
+
+**No forms remain (2026-11-04):** the contact page and the admin left the plan ([[ADR-0015 Content in Files]]), and `src/actions/` and `src/schemas/` are gone. The decision stands for any future form.
 
 ## Context
 Public contact form and many admin forms; validation must match on client and server.

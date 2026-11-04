@@ -20,13 +20,12 @@ These rules apply to every reply and every task, however small. The owner's word
 
 - Next.js 16 App Router, React 19, TypeScript strict, `src/` layout, `@/*` alias, npm.
 - Styling: Tailwind v4 + shadcn/ui (Base UI, style `base-nova`). Generated components live in `src/shared/shadcn` and are wrapped by our own adapters in `src/shared/ui`.
-- Data: Neon Postgres via Vercel Marketplace, Drizzle ORM with `@neondatabase/serverless` (HTTP driver). One database for local dev, previews and production; schema synced with `drizzle-kit push`, no migration files (see ADR-0002).
-- i18n: `next-intl` for UI strings. DB content is localized through **translation tables** (`<entity>_translations` with `locale` column), never jsonb. Locales: `en` (default, fallback), `ru`, `pt`, `es`, `de`, `fr`, `ja`, `pl`.
-- Forms: React Hook Form + Zod (`zodResolver`). Zod schemas are the single source of validation on both client and server.
+- Content: **no database** (ADR-0015). Everything lives in `messages/`: `<locale>.json` with `Meta` (metadata, site settings) and `Pages` (UI strings), and Markdown with YAML frontmatter in `<locale>/` (`profile.md`, `skills.md`, `experience/<slug>.md`, `about/<slug>.md`). Read by `src/content/` with `gray-matter` and strict Zod schemas; bodies are CommonMark rendered by `react-markdown`. New content arrives with a deploy (see `docs/architecture/Content Model.md`).
+- i18n: `next-intl`. `en` is complete; other locales hold only what they translate and fall back to English per field (JSON and frontmatter alike). Locales: `en` (default, fallback), `ru`, `pt`, `es`, `de`, `fr`, `ja`, `pl`.
 - Tests: Vitest + React Testing Library (colocated `*.test.ts(x)`), Playwright in `e2e/` against a production build.
-- Admin: hand-written under `/admin`. Auth.js v5 credentials login, routes protected in proxy. Rich text: Tiptap 3, stored as JSON, rendered server-side on the public site.
+- No blog, contact form or admin (dropped 2026-11-04).
 - Theme: `next-themes`, class strategy, respects system preference. Provider with a React 19 workaround in `src/app/_providers/ThemeProvider.tsx` (ADR-0008).
-- Hosting: Vercel Hobby. Filesystem is read-only at runtime; uploads go to Vercel Blob.
+- Hosting: Vercel Hobby. Files (photo, CV, images) live in Vercel Blob, uploaded by hand; content holds their URLs.
 
 ## Before writing code
 
@@ -53,8 +52,8 @@ The plugin has no topic skills, so these stay plain rules:
 - **Next.js / library APIs:** read `node_modules/next/dist/docs/` and installed package docs first, then context7.
 - **Decisions:** write an ADR from `docs/templates/`.
 - **Performance pass:** no skill or `/webperf` any more; run Lighthouse and measure the bundle by hand.
-- **Admin, auth, forms, uploads:** run the built-in `/security-review` on the pending changes.
-- **Risky or irreversible steps (production database):** show the owner the exact SQL or command and get a confirmation first.
+- **Auth, forms, uploads (if they ever return):** run the built-in `/security-review` on the pending changes.
+- **Risky or irreversible steps** (deleting cloud resources, rewriting history): show the owner the exact command or action and get a confirmation first.
 
 Project rules win where the plugin's defaults differ:
 
@@ -66,7 +65,7 @@ Project rules win where the plugin's defaults differ:
 - **`executing-plans` runs without its scripts.** `task-start`, `task-done`, `review-package` and the `.superpowers/sdd/` ledger are built on commit ranges, which are empty here. The plan's checklist is the ledger: tick a task when its delta is staged. Follow the rest of the skill, including the completion contract. Reviews run on `git diff --cached`, not on `BASE..HEAD`.
 - **Specs and plans live in the vault**, in English, with frontmatter and `[[wikilinks]]`: `docs/specs/YYYY-MM-DD-<topic>.md` and `docs/plans/YYYY-MM-DD-<feature>.md`, not `docs/superpowers/`. The plan's task list is a checklist inside the plan note. ADRs go to `docs/decisions/` (template in `docs/templates/`). Link everything from `docs/Home.md`.
 - **Learning first.** Implement inline, one step at a time, so every step is visible and explained to the owner. Never use `subagent-driven-development` or `dispatching-parallel-agents` for implementation; do not ask which execution approach to use after `writing-plans`, it is always inline. A read-only review subagent from `requesting-code-review` is fine. Discussion happens in Russian, before any code.
-- **Tests** (ADR-0007). `test-driven-development` applies to logic and client components with Vitest. Async Server Components and database-backed pages are verified with Playwright, which may write to the database during development (it is the production one, holding demo content; ADR-0007, revisit before real content). Definition of done for every step: `npm run test:run`, `npm run test:e2e`, `npm run lint`, `npx tsc --noEmit`, `npm run build`.
+- **Tests** (ADR-0007). `test-driven-development` applies to logic and client components with Vitest, the content loader included. Async Server Components and the rendered content are verified with Playwright, which compares pages with the content files rather than literals. Definition of done for every step: `npm run test:run`, `npm run test:e2e`, `npm run lint`, `npx tsc --noEmit`, `npm run build`.
 
 ## UI sources: 21st.dev MCP
 
@@ -82,10 +81,10 @@ The `21st` MCP server (user scope) searches the 21st.dev catalog. The design han
 
 ### Architecture (adapted Feature-Sliced Design)
 
-- Layers: `src/app` (routes only) → `src/views` → `src/widgets` → `src/features` → `src/shared` (`ui`, `shadcn`, `lib`). `src/db`, `src/actions` (Server Actions) and `src/schemas` (Zod schemas) sit outside the layers. Full rules: `docs/specs/2026-10-29-home-page-design.md`.
+- Layers: `src/app` (routes only) → `src/views` → `src/widgets` → `src/features` → `src/shared` (`ui`, `shadcn`, `lib`). `src/content` (the content loader) sits outside the layers. Full rules: `docs/specs/2026-10-29-home-page-design.md`.
 - A layer imports only from layers below it; no imports between slices of the same layer. Only files in a slice root are importable from outside. No barrel `index.ts` files.
 - `src/shared/shadcn` is imported only by `src/shared/ui`; `@base-ui/*` only by `src/shared/shadcn`.
-- `src/actions` and `src/schemas` have no import-order rules: any layer may import them and they may import any local file. Features may import `src/db` only with `import type`; mutations go through actions.
+- Views and widgets may import `src/content`; features only with `import type` (they get data as props). `src/content` may import `src/shared/lib`.
 - Enforced by `eslint-plugin-boundaries` in `eslint.config.mjs` (`npm run lint`).
 
 ### Code style
@@ -111,9 +110,8 @@ export const HomePage: FC<HomePageProps> = (props) => {
 
 - Server Components by default. Add `"use client"` only where hooks, browser APIs or event handlers are required, and keep those leaves small.
 - Images render through `src/shared/ui/Image.tsx`, never `next/image` directly: it gives every image the placeholder for a missing source or a failed load.
-- Data access goes through `src/db/` (schema, queries). Pages never import the driver directly.
-- Mutations are Server Actions in `src/actions/`, validated with the form's Zod schema from `src/schemas/`, returning typed `{ ok, errors }` results for `useActionState`. Every action checks auth itself: actions are public POST endpoints, `proxy` does not protect them.
-- Rendering intent is explicit per route: static, ISR (`revalidate`), or dynamic. Note it in a one-line comment at the top of the page file.
+- Content access goes through `src/content/` getters (`"use cache"` + `cacheLife("max")`, no tags). Pages never read `messages/` files directly; Markdown bodies render through `src/shared/ui/Markdown.tsx`.
+- Rendering intent is explicit per route: static or dynamic. Note it in a one-line comment at the top of the page file.
 - Commits: Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`). The owner commits; Claude stages each step's delta (see Feature workflow) and does not commit or push unless asked. Never put Claude session links into commits, PRs or issues.
 
 ## Commands
@@ -126,9 +124,6 @@ npx tsc --noEmit # standalone type check
 npm test         # Vitest in watch mode
 npm run test:run # Vitest once
 npm run test:e2e # Playwright against a production build (first time: npx playwright install chromium)
-npm run db:push  # sync schema to the database (shows SQL, asks to confirm)
-npm run db:seed  # fill an empty database
-npm run db:studio # browse data
 ```
 
 ## Docs vault

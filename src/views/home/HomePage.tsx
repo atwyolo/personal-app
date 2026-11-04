@@ -1,10 +1,9 @@
-// Static per locale: every block reads its own cached data, which the admin refreshes by tag.
+// Static per locale: every block reads its own cached content, which changes with the next deploy.
 import type { FC } from "react";
 
 import { About } from "@/widgets/about/About";
-import { Blog } from "@/widgets/blog/Blog";
 import { Contacts } from "@/widgets/contacts/Contacts";
-import { Experience } from "@/widgets/experience/Experience";
+import { ExperienceCards } from "@/widgets/experience-cards/ExperienceCards";
 import { Hero } from "@/widgets/hero/Hero";
 import { ProfilePhoto } from "@/widgets/profile-photo/ProfilePhoto";
 import { TopSkills } from "@/widgets/top-skills/TopSkills";
@@ -28,11 +27,9 @@ export const HomePage: FC = () => {
         <About className="reveal [grid-area:about]" />
       </div>
 
-      <Experience />
+      <ExperienceCards />
 
       <TopSkills />
-
-      <Blog />
     </main>
   );
 };

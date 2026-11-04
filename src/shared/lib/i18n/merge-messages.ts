@@ -1,11 +1,18 @@
-/** A next-intl messages tree: nested objects with string leaves. */
+/** A leaf of the messages tree: UI strings, and the URLs, flags and numbers of `Meta.*`. */
+export type MessageLeaf = string | number | boolean | null;
+
+/** A next-intl messages tree: nested objects with scalar leaves. */
 export interface MessagesTree {
-  [key: string]: string | MessagesTree;
+  [key: string]: MessageLeaf | MessagesTree;
 }
+
+const isTree = (value: MessageLeaf | MessagesTree | undefined): value is MessagesTree =>
+  typeof value === "object" && value !== null;
 
 /**
  * Deep-merges a locale's messages over the English fallback, so a locale file only has to contain
- * what is translated. Missing keys and empty strings fall back to English. Returns a new object.
+ * what is translated. Missing keys, empty strings and `null` fall back to English; booleans and numbers
+ * override. Returns a new object.
  */
 export const mergeMessages = <T extends MessagesTree>(fallback: T, overrides: MessagesTree): T => {
   const result: MessagesTree = { ...fallback };
@@ -13,13 +20,9 @@ export const mergeMessages = <T extends MessagesTree>(fallback: T, overrides: Me
   for (const [key, value] of Object.entries(overrides)) {
     const base = result[key];
 
-    if (typeof value === "string") {
-      if (value !== "") result[key] = value;
-    } else if (base !== undefined && typeof base !== "string") {
-      result[key] = mergeMessages(base, value);
-    } else {
-      result[key] = value;
-    }
+    if (value === null || value === "") continue;
+
+    result[key] = isTree(value) && isTree(base) ? mergeMessages(base, value) : value;
   }
 
   return result as T;

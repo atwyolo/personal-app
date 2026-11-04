@@ -1,4 +1,4 @@
-import type { SkillList } from "@/db/queries/home";
+import type { SkillList } from "@/content/skills";
 
 type Skill = SkillList["skills"][number];
 

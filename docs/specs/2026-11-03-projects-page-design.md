@@ -9,7 +9,7 @@ updated: 2026-11-03
 
 Status: **done, the page was closed on 2026-11-03.** Plan: [[2026-11-03-projects-page]].
 
-Related: [[Projects Page Handoff]] (visual contract), [[Home Page Handoff]], [[Admin Handoff]], [[Data Model]], [[Rendering Strategy]], [[ADR-0002 Database and ORM]], [[ADR-0003 Content Localization]], [[ADR-0007 Testing]], [[2026-11-02-about-page-design]].
+Related: [[Experience Page Handoff]] (visual contract), [[Home Page Handoff]], [[Admin Handoff]], [[Content Model]], [[Rendering Strategy]], [[ADR-0002 Database and ORM]], [[ADR-0003 Content Localization]], [[ADR-0007 Testing]], [[2026-11-02-about-page-design]].
 
 ## Intent
 
@@ -106,7 +106,7 @@ The first two parts form one step of the definition of done: the code cannot com
 
 ## Page
 
-The visual contract is [[Projects Page Handoff]] and the site-wide rules of `docs/design/README.md`. Only the differences and the structure are here. The handoff's "Changes since 2026-11-01" already removes the stats and the lists; the corrections above go further.
+The visual contract is [[Experience Page Handoff]] and the site-wide rules of `docs/design/README.md`. Only the differences and the structure are here. The handoff's "Changes since 2026-11-01" already removes the stats and the lists; the corrections above go further.
 
 **Section, top to bottom, with a 16 px gap:**
 1. `h2` company name, 34 px, 30 px on phones.
@@ -205,15 +205,15 @@ The visual contract is [[Projects Page Handoff]] and the site-wide rules of `doc
 ## Documentation
 
 Updated with the work:
-- [[Data Model]]: the `slug` note (`/projects#glovo`), `role`, `description_short` as `text`, `description_full`.
+- [[Content Model]]: the `slug` note (`/projects#glovo`), `role`, `description_short` as `text`, `description_full`.
 - `src/db/schema/experience.ts`: the same `slug` comment.
-- [[Projects Page Handoff]]: the corrections, Omega-R, the label, the static route.
+- [[Experience Page Handoff]]: the corrections, Omega-R, the label, the static route.
 - [[Home Page Handoff]]: three cards, the Omega-R TODO.
 - [[Admin Handoff]]: the section is called Projects.
 - `docs/design/README.md`: the "Page name" question closed, the anchors list, the rendering column.
 - [[Rendering Strategy]]: the `/projects` row.
 - [[Roadmap]]: Stage 3 done.
-- [[Open Questions]]: is a separate `projects` list still needed, as [[Projects Page Handoff]] asks. [[Data Model]] keeps it under "Later stages" until that is answered.
+- [[Open Questions]]: is a separate `projects` list still needed, as [[Experience Page Handoff]] asks. [[Content Model]] keeps it under "Later stages" until that is answered.
 - `docs/Home.md`, journal, this spec's status.
 
 `docs/design/shared/content.ts` and the screens stay as delivered: they are the design package, and the seed is the source now.

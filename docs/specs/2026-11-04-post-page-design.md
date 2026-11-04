@@ -1,15 +1,17 @@
 ---
 tags: [spec, blog, post]
-status: done
+status: dropped
 date: 2026-11-04
 updated: 2026-11-04
 ---
 
 # Post Page Design
 
+> **Dropped on 2026-11-04:** the blog was removed from the code by [[2026-11-04-content-in-files]] ([[2026-11-04-content-in-files-design]]). This note records what was built and why.
+
 Status: **done 2026-11-04.** Plan: [[2026-11-04-post-page]], whose "Rulings while building" record the changes made while building (notably `ensureStatic` for a real 404). The second of the two Stage 4 specs (owner, 2026-11-03); the first is [[2026-11-03-blog-list-design]].
 
-Related: [[Post Page Handoff]] (visual contract, with its "Overrides" section), `docs/design/README.md` (site-wide rules), [[Blog Page Handoff]], [[Data Model]], [[Rendering Strategy]], [[ADR-0014 Metadata in the Database]], [[ADR-0007 Testing]], [[Roadmap]].
+Related: [[Post Page Handoff]] (visual contract, with its "Overrides" section), `docs/design/README.md` (site-wide rules), [[Blog Page Handoff]], [[Content Model]], [[Rendering Strategy]], [[ADR-0014 Metadata in the Database]], [[ADR-0007 Testing]], [[Roadmap]].
 
 ## Intent
 

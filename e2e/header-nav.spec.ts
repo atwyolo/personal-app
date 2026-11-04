@@ -160,9 +160,9 @@ test.describe("desktop", () => {
     await openHydrated(page);
     const [start] = await readItems(page);
 
-    const frames = await followAndSample(page, ["Projects"]);
+    const frames = await followAndSample(page, ["Experience"]);
 
-    await expectUnder(page, "Projects");
+    await expectUnder(page, "Experience");
     const [, , target] = await readItems(page);
     const lefts = frames.map((frame) => frame.left);
     const between = lefts.filter((left) => left > start.x + 1 && left < target.x - 1);
@@ -178,14 +178,14 @@ test.describe("desktop", () => {
     // Stretched, so the second click lands in the middle however long the first navigation takes.
     await page.addStyleTag({ content: ".nav-indicator { transition-duration: 3s !important; }" });
 
-    const frames = await followAndSample(page, ["Contact", "About"], 1500);
+    const frames = await followAndSample(page, ["Skills", "About"], 1500);
 
     await expectUnder(page, "About");
-    const [, about, , , , contact] = await readItems(page);
+    const [, about, , skills] = await readItems(page);
     const lefts = frames.map((frame) => frame.left);
     const turn = Math.max(...lefts);
     // Past the second target but short of the first, and with no jump: a jump is one step across most of the distance.
-    expect(turn).toBeLessThan(contact.x - 1);
+    expect(turn).toBeLessThan(skills.x - 1);
     expect(turn).toBeGreaterThan(about.x + 1);
     const steps = lefts.slice(1).map((left, index) => Math.abs(left - lefts[index]));
     expect(Math.max(...steps)).toBeLessThan(60);
@@ -195,7 +195,7 @@ test.describe("desktop", () => {
     await openHydrated(page);
     const items = await readItems(page);
 
-    for (const name of ["About", "Projects", "Skills", "Blog", "Contact"]) {
+    for (const name of ["About", "Experience", "Skills"]) {
       await navigation(page).getByRole("link", { name }).click();
       await expect(navigation(page).getByRole("link", { name })).toHaveAttribute("aria-current", "page");
 
@@ -216,9 +216,9 @@ test.describe("desktop", () => {
     test("moves at once", async ({ page }) => {
       await openHydrated(page);
 
-      const frames = await followAndSample(page, ["Projects"]);
+      const frames = await followAndSample(page, ["Experience"]);
 
-      await expectUnder(page, "Projects");
+      await expectUnder(page, "Experience");
       expect(new Set(frames.map((frame) => frame.left)).size).toBeLessThanOrEqual(2);
     });
   });

@@ -8,7 +8,7 @@ date: 2026-10-29
 
 Status: **done, the page was closed on 2026-11-02.** Everything under "Decided" was agreed with the owner in chat. "Steps" records what is built, "Open" what stays for later pages.
 
-Related: [[Home Page Handoff]] (visual contract), [[Data Model]], [[Rendering Strategy]], [[ADR-0005 UI Library]], [[ADR-0007 Testing]].
+Related: [[Home Page Handoff]] (visual contract), [[Content Model]], [[Rendering Strategy]], [[ADR-0005 UI Library]], [[ADR-0007 Testing]].
 
 ## Intent
 

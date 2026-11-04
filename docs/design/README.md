@@ -1,11 +1,11 @@
 ---
 tags: [design, handoff]
-updated: 2026-11-03
+updated: 2026-11-04
 ---
 
 # Design handoff
 
-These are the approved designs for the whole site, ready to implement: seven public pages and the admin panel.
+These are the approved designs of the site's four pages. The Blog, Post, Contact and Admin handoffs were deleted on 2026-11-04 with those pages ([[2026-11-04-content-in-files-design]]); git history keeps them.
 
 **The handoffs define the look only.** Where a handoff prescribes behaviour, data shapes, rendering, libraries or URLs, the project rules (`CLAUDE.md`, ADRs, specs) win, and a handoff's choice changes the application's logic only when there is a reason for it (owner's rule, 2026-11-03).
 
@@ -16,20 +16,12 @@ These are the approved designs for the whole site, ready to implement: seven pub
 
 | # | Page | Route | Spec | Rendering |
 |---|---|---|---|---|
-| 1 | Home | `/[locale]` | [[Home Page Handoff]] | static |
-| 2 | Projects (work experience) | `/[locale]/projects` | [[Projects Page Handoff]] | static, DB-backed |
-| 3 | About | `/[locale]/about` | [[About Page Handoff]] | static |
-| 4 | Skills | `/[locale]/skills` | [[Skills Page Handoff]] | static, DB-backed (as Home) |
-| 5 | Blog list | `/[locale]/blog` | [[Blog Page Handoff]] | static, DB-backed, paginated on the server |
-| 6 | Blog post | `/[locale]/blog/[slug]` | [[Post Page Handoff]] | static, DB-backed, `generateStaticParams` |
-| 7 | Contact | `/[locale]/contact` | [[Contact Page Handoff]] | static page + a Server Action |
-| 8 | Admin | `/admin` (not localized) | [[Admin Handoff]] | dynamic, behind auth |
+| 1 | Home | `/[locale]` | [[Home Page Handoff]] | static, from the content files |
+| 2 | Experience (work history) | `/[locale]/experience` | [[Experience Page Handoff]] | static, from the content files |
+| 3 | About | `/[locale]/about` | [[About Page Handoff]] | static, from the content files |
+| 4 | Skills | `/[locale]/skills` | [[Skills Page Handoff]] | static, from the content files |
 
-Build order:
-
-1. **Home** first. It introduces the tokens, the header with the locale and theme menus, tiles, chips and buttons that every other page reuses.
-2. **The public pages** in table order.
-3. **Admin** last. It edits exactly the fields the pages read, so build it once the content shapes are settled (Stage 3, DB).
+All four pages are built. Content shapes and rendering follow [[Content Model]] and [[Rendering Strategy]], not the handoffs' admin-oriented notes below.
 
 ## What changed since the 2026-11-01 package
 
@@ -60,39 +52,37 @@ Build order:
   - `desktop-dark-1…5.png` and `phone-dark-1…5.png` show the page scrolled from top (1) to bottom (5).
   - `*-light-1.png` shows the light theme.
   - Home has full-page renders instead.
-  - Admin has one render per section; see its spec.
   - The photo tile is blank in all renders because uploaded images do not load in the renderer.
-- **`post/` only:** it also holds `typography.dc.html` and `screens-typography/`. That board labels every text element with its size, line height, weight and color.
 
 ## Site-wide rules
 
 - **Header**, sticky on every page.
-  - Nav: Home · About · Projects · Skills · Blog · Contact.
+  - Nav: Home · About · Experience · Skills (Blog and Contact removed on 2026-11-04).
   - The active item is `text-brand` with a `deco` underline.
-  - Some prototype screens predate the Skills item; the six-item nav is correct.
+  - The prototype screens show the older six-item nav.
 - **No footer** on any page. Pages end with their last section.
-- **"‹ Back" link**, the first element in the content of every inner page (Projects, About, Skills, Blog, Post, Contact).
+- **"‹ Back" link**, the first element in the content of every inner page (Experience, About, Skills).
   - A chevron-left icon (16 px) and "Back".
   - `text-brand`, 600 weight, 15 px, underlined with a 2 px `deco` line offset 5 px. Min height 32 px, and 30 px below it on every page (owner's decision of 2026-11-02).
   - On hover, the chevron moves 3 px left.
-  - It is a plain link (`/` for top-level pages, `/blog` for a post), never a step in the history: the visitor must not leave the site through it (owner's decision of 2026-11-02).
-  - On Projects (desktop) it sits at the top of the sticky aside. On phone it sits in a row above the sticky progress bar.
+  - It is a plain link to `/`, never a step in the history: the visitor must not leave the site through it (owner's decision of 2026-11-02).
+  - On Experience (desktop) it sits at the top of the sticky aside. On phone it sits in a row above the sticky progress bar.
 - **Section labels** are mono, uppercase, 11–12 px, `muted-foreground`.
 - **Page heroes:** a mono label, an h1 at 56 px desktop / 36 px phone, and a one-line intro.
-- **Sticky side panels** (Skills, Blog, Contact) sit at `top: 20px` inside the content column on desktop. On phone they become normal blocks above the list. Blog and Contact add the collapsing behaviour described in their specs.
+- **Sticky side panels** (Skills) sit at `top: 20px` inside the content column on desktop. On phone they become normal blocks above the list.
 - **Chips:**
   - Filter chips are pills, 36 px tall, mono 12 px. An active filter is `bg-selected text-selected-foreground`.
-  - Tag chips are `brand` text on a `card-border` outline. An active tag is filled with `brand`.
+  - Tag chips are `brand` text on a `card-border` outline.
 - **Links** like "Read more →" / "Learn more →" are `text-brand`, 600 weight, with a 2 px `deco` underline offset 5 px.
 - **Contact buttons** (Home) are themed:
   - `bg-card`, a 1 px `card-border` border and `text-foreground`.
   - The icon is in `brand`, and the arrow-up-right is in `brand`.
   - On hover, the border turns `brand`.
   - Download CV is the filled `primary` button.
-- **Anchors:** every work place has an id (`glovo`, `sony`, `epam`), and Home links to `/projects#<id>`. Anchored sections need `scroll-margin-top` equal to the header height (plus any sticky bar).
+- **Anchors:** every work place has an id (`glovo`, `sony`, `epam`), and Home links to `/experience#<id>`. Anchored sections need `scroll-margin-top` equal to the header height (plus any sticky bar).
 - **Motion** respects `prefers-reduced-motion`: reveals and progress animations are skipped, and content is visible immediately.
 - **All text is server-rendered.** Filters and scroll effects are small client components layered on top. With JavaScript off, every page still reads as a plain article or list.
-- **Rich text** from the admin (Tiptap) is stored as sanitized HTML. It is rendered with one shared `<RichText>` component whose styles match the post typography (scaled down outside posts).
+- **Rich text** is Markdown in the content files, rendered on the server by `src/shared/ui/Markdown.tsx` (since 2026-11-04; the handoff's Tiptap HTML no longer applies).
 
 ## Open questions
 

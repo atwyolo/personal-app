@@ -1,15 +1,17 @@
 ---
 tags: [spec, blog]
-status: done
+status: dropped
 date: 2026-11-03
-updated: 2026-11-03
+updated: 2026-11-04
 ---
 
 # Blog List Design
 
+> **Dropped on 2026-11-04:** the blog was removed from the code by [[2026-11-04-content-in-files]] ([[2026-11-04-content-in-files-design]]). This note records what was built and why.
+
 Status: **done 2026-11-04.** Plan: [[2026-11-03-blog-list]], whose "Rulings while building" record every change made while building. The first of two Stage 4 specs (owner, 2026-11-03): this one covers the data changes and the list `/[locale]/blog`; the second covers the post page `/[locale]/blog/[slug]` (the view counter was dropped on 2026-11-04).
 
-Related: [[Blog Page Handoff]] (visual contract, with its "Overrides" section), `docs/design/README.md` (site-wide rules), [[2026-11-03-skills-page-design]] (the filter panel's behavior), [[Data Model]], [[Rendering Strategy]], [[ADR-0007 Testing]], [[Roadmap]].
+Related: [[Blog Page Handoff]] (visual contract, with its "Overrides" section), `docs/design/README.md` (site-wide rules), [[2026-11-03-skills-page-design]] (the filter panel's behavior), [[Content Model]], [[Rendering Strategy]], [[ADR-0007 Testing]], [[Roadmap]].
 
 ## Intent
 
@@ -198,7 +200,7 @@ Visual contract: [[Blog Page Handoff]] and the site-wide rules of `docs/design/R
 ## Documents to update when the list is done
 
 - [[Roadmap]]: a line for the Blog list; Stage 4 stays open until the second spec.
-- [[Data Model]]: `content_short` and `content_full` applied; drop "not applied yet".
+- [[Content Model]]: `content_short` and `content_full` applied; drop "not applied yet".
 - [[Rendering Strategy]]: the blog row as built.
 - [[Open Questions]]: the tag suggestions question is answered (they come with the server's answer).
 - [[Blog Page Handoff]]: point its "Overrides" to this spec.

@@ -7,6 +7,9 @@ import { cn } from "@/shared/lib/utils";
 const EXTERNAL_HREF = /^([a-z][a-z\d+.-]*:|\/\/)/i;
 const WEB_HREF = /^(https?:)?\/\//i;
 
+/** A web address of another site: `Link` opens it in a new tab. */
+export const isWebHref = (href: string): boolean => WEB_HREF.test(href);
+
 interface LinkProps extends Omit<ComponentPropsWithoutRef<"a">, "href"> {
   href: string;
   /** Adds a decorative arrow after the text; it stays out of the accessible name. */
@@ -56,7 +59,7 @@ export const Link: FC<LinkProps> = (props) => {
     );
   }
 
-  const newTab = WEB_HREF.test(href) ? { target: "_blank", rel: "noopener noreferrer" } : undefined;
+  const newTab = isWebHref(href) ? { target: "_blank", rel: "noopener noreferrer" } : undefined;
 
   return (
     <a href={href} className={classes} {...newTab} {...rest}>

@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { type FC, useLayoutEffect, useRef, useState } from "react";
 
-import type { SkillList } from "@/db/queries/home";
+import type { SkillList } from "@/content/skills";
 import { SkillRow } from "@/features/skill-row/SkillRow";
 import { useDebouncedValue } from "@/shared/lib/useDebouncedValue";
 import { useFoldingPanel } from "@/shared/lib/useFoldingPanel";
@@ -36,7 +36,7 @@ interface SkillsExplorerProps {
  */
 export const SkillsExplorer: FC<SkillsExplorerProps> = (props) => {
   const { skills, domains } = props;
-  const t = useTranslations("SkillsPage");
+  const t = useTranslations("Pages.Skills");
   const [query, setQuery] = useState("");
   const [domain, setDomain] = useState(ALL);
   const [searchFocused, setSearchFocused] = useState(false);

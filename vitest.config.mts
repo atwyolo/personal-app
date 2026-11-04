@@ -1,3 +1,5 @@
+import { fileURLToPath } from "node:url";
+
 import { defineConfig } from "vitest/config";
 
 /**
@@ -10,6 +12,11 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   resolve: {
     tsconfigPaths: true,
+    alias: {
+      // `server-only` throws outside the react-server condition, which Vitest does not set. The Next.js testing guide
+      // maps it to an empty module for Jest; this is the same for Vitest (the package's own react-server entry).
+      "server-only": fileURLToPath(new URL("./node_modules/server-only/empty.js", import.meta.url)),
+    },
   },
   test: {
     environment: "jsdom",

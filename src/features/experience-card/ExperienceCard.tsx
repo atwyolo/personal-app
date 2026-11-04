@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
 import type { FC } from "react";
 
-import type { Experience } from "@/db/queries/home";
+import type { ExperienceEntry } from "@/content/experience";
 import { formatMonthYear, getDurationYears } from "@/shared/lib/period";
 import { cn } from "@/shared/lib/utils";
 import { Chip } from "@/shared/ui/Chip";
@@ -10,7 +10,7 @@ import { Link } from "@/shared/ui/Link";
 import { Tile } from "@/shared/ui/Tile";
 
 interface ExperienceCardProps {
-  job: Experience;
+  job: ExperienceEntry;
   className?: string;
 }
 
@@ -23,7 +23,7 @@ interface ExperienceCardProps {
 export const ExperienceCard: FC<ExperienceCardProps> = (props) => {
   const { job, className } = props;
   const { slug, company, startDate, endDate, today, imageUrl, descriptionShort, skills } = job;
-  const t = useTranslations("Home.experience");
+  const t = useTranslations("Pages.Home.experience");
 
   const end = endDate ? formatMonthYear(endDate) : t("present");
   const duration = t("duration", { years: getDurationYears(startDate, endDate, today) });
@@ -54,7 +54,7 @@ export const ExperienceCard: FC<ExperienceCardProps> = (props) => {
             ))}
           </ul>
         )}
-        <Link href={`/projects#${slug}`} showArrowIcon className="mt-auto self-start py-1 text-[15px]">
+        <Link href={`/experience#${slug}`} showArrowIcon className="mt-auto self-start py-1 text-[15px]">
           {t("learnMore")}
         </Link>
       </div>

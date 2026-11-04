@@ -2,7 +2,7 @@ import type { Page } from "@playwright/test";
 
 import { expect, test } from "./fixtures";
 
-// The Skills page: every skill from the database, filtered on the client. The owner edits the skills, so the tests
+// The Skills page: every skill from the content files, filtered on the client. The owner edits the skills, so the tests
 // read properties (order, counts, matches), not names. A route left behind stays in the DOM, hidden, so every
 // locator keeps to what is visible.
 const rows = (page: Page) => page.getByRole("main").getByRole("meter").filter({ visible: true });

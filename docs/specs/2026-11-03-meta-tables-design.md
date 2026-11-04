@@ -9,7 +9,7 @@ updated: 2026-11-03
 
 Status: **done 2026-11-03.** Plan: [[2026-11-03-meta-tables]].
 
-Related: [[Data Model]], [[Rendering Strategy]], [[ADR-0002 Database and ORM]], [[ADR-0003 Content Localization]], [[ADR-0007 Testing]], [[Admin Handoff]], [[2026-10-29-home-page-design]] (step 4, localized metadata), [[2026-11-03-skills-page-design]] (paused until this is done).
+Related: [[Content Model]], [[Rendering Strategy]], [[ADR-0002 Database and ORM]], [[ADR-0003 Content Localization]], [[ADR-0007 Testing]], [[Admin Handoff]], [[2026-10-29-home-page-design]] (step 4, localized metadata), [[2026-11-03-skills-page-design]] (paused until this is done).
 
 ## Intent
 
@@ -49,7 +49,7 @@ Storing per-page SEO fields in the database is the common pattern of content-man
 
 ## Data
 
-Conventions of [[Data Model]]: every table has `id` (except translations, keyed by `(<entity>_id, locale)`), `created_at`, `updated_at`; translation tables follow the shape described there, with a check that makes the `en` row complete and a per-field fallback to `en`.
+Conventions of [[Content Model]]: every table has `id` (except translations, keyed by `(<entity>_id, locale)`), `created_at`, `updated_at`; translation tables follow the shape described there, with a check that makes the `en` row complete and a per-field fallback to `en`.
 
 ### `meta_site_settings` (singleton, `CHECK (id = 1)`, as `profile`)
 
@@ -175,7 +175,7 @@ Pages set no `robots`, so the layout's value reaches every page.
 ## Documents to update when this is done
 
 - New ADR in `docs/decisions/`: metadata in the database, the four tables, the fallback and the `hidden_from_search` rule.
-- [[Data Model]]: a "Metadata entities" section; `meta_description` leaves `profile_translations`.
+- [[Content Model]]: a "Metadata entities" section; `meta_description` leaves `profile_translations`.
 - [[Rendering Strategy]]: the root layout reads cached metadata; the `meta` tag.
 - [[Roadmap]]: this work as done; the two Stage 8 items above.
 - [[Admin Handoff]]: a note that a metadata section is needed (site settings and per-page fields), to be designed before Stage 6.

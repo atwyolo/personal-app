@@ -24,13 +24,13 @@ interface ContactListProps {
 }
 
 /**
- * The contact buttons. Every one is optional on purpose: the UI does not rely on the database's NOT NULL rules,
+ * The contact buttons. Every one is optional on purpose: the UI does not rely on the content schema's required fields,
  * so a contact without a value simply has no button. `display` decides, because a derived `href` is never empty.
  */
 export const ContactList: FC<ContactListProps> = (props) => {
   const { contacts, cvUrl, className } = props;
   const { whatsapp, email, linkedin } = contacts;
-  const t = useTranslations("Contacts");
+  const t = useTranslations("Pages.Common.Contacts");
 
   if (!whatsapp?.display && !email?.display && !linkedin?.display && !cvUrl) return null;
 

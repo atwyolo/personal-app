@@ -1,33 +1,32 @@
 ---
 tags: [architecture]
-updated: 2026-11-03
+updated: 2026-11-04
 ---
 
 # Rendering Strategy
 
-Deliberately mix rendering modes so each one is learned in practice. Every page file states its mode in a one-line comment.
+Every page file states its mode in a one-line comment. Since 2026-11-04 all content comes from files ([[ADR-0015 Content in Files]]), so every route is static: new content arrives with a deploy, and `cacheLife("max")` re-renders a page in the background at most every 30 days.
 
 | Route | Mode | Why |
 |---|---|---|
-| `/[locale]` (home) | static, DB-backed: `"use cache"` + `cacheLife("max")` + `cacheTag` per entity; admin calls `updateTag` | content changes rarely; built once per locale, refreshed only when edited |
-| `/[locale]/about` | static | same |
-| `/[locale]/projects` | static, DB-backed, as home: same `getExperience`, same tags, admin calls `updateTag` | content changes rarely; one read per locale serves both pages |
-| `/[locale]/skills` | static, DB-backed, as home: the same `getSkills` read with the `skills` tag, handed to a client explorer that only filters | content changes rarely; the full list is in the HTML, so the page reads without JavaScript |
-| `/[locale]/blog` | Partial Prerender (◐ in the build): the hero and a skeleton are the static shell; the panel, the list, the counts and the pagination read `searchParams` inside `<Suspense>`. Three `"use cache"` reads tagged `posts` and `post-topics` (catalog per locale, facets per filter, page per state), reached only by a state validated against the catalog. Every control is a link; `NavigationScope` pushes same-page links in a transition without scrolling and blocks clicks while pending | posts change rarely; the list can grow past what fits in one HTML page, so it is paginated on the server (owner's decision, 2026-11-03) |
-| `/[locale]/blog/[slug]` | static, DB-backed: `generateStaticParams` (every published slug; a placeholder when there is none, since Cache Components rejects an empty list) + cached reads tagged `posts` and `post-topics`. `ensureStatic = "navigation"`: a slug published after the build waits for its complete render on the first request instead of getting the App Shell, so `notFound()` gives a real 404 and the new post is stored for later requests. The rendered 404 of an unknown slug is stored too, one entry per requested path (tagged `posts`, so publishing that slug replaces it). Accepted as it is (owner, 2026-11-04): negative caching keeps bots off the renderer, and a personal site's volume stays within Vercel Hobby's limits | the post changes only when edited; new posts must appear without a rebuild (owner, 2026-11-04) |
-| `/[locale]/contact` | dynamic (Server Action) | form submission |
-| `/admin/**` | dynamic, no caching | authenticated, always fresh |
+| `/[locale]` (home) | static: each block reads its own `"use cache"` + `cacheLife("max")` getter from `src/content/` | the content is in the repository; it changes with a deploy |
+| `/[locale]/about` | static, as home | same |
+| `/[locale]/experience` | static, as home: the same `getExperience` as Home's cards | one read per locale serves both pages |
+| `/[locale]/skills` | static, as home: `getSkills`, handed to a client explorer that only filters | the full list is in the HTML, so the page reads without JavaScript |
+| `/[locale]/[...rest]` | dynamic: `notFound()` for any unknown path, rendered inside the locale layout | the 404 page keeps the header and the locale |
 
-The project runs with `cacheComponents: true`, so "ISR" means cached functions with tags, not a route-level `revalidate` export.
+The project runs with `cacheComponents: true`. Content is read with `fs.readFileSync`, which Cache Components treat as predictable (prerendered with the page); the getters stay `"use cache"` functions so that several blocks share one read per locale and Experience can read the clock for a running job. There are no cache tags. `cacheLife("max")` means: `stale` 5 minutes in the browser's router, `revalidate` 30 days (the first visit after that gets the cached page and triggers a background re-render), `expire` one year (after a year without visits the next one waits for a fresh render); a deploy resets all of it. The files in a deployment never change, so a re-render differs only where the clock matters, the duration of a running job (owner's choice over a never-revalidating profile, 2026-11-04).
+
+**Runtime reads.** A render at request time runs in a Vercel function that holds only traced files: the 404 of an unknown path (whose header shows the profile name) and the 30-day background revalidation of every page. `outputFileTracingIncludes: { "/**": ["./messages/**/*.md"] }` in `next.config.ts` adds the Markdown files to every server route; the JSON messages are traced because `load-messages.ts` imports them.
 
 `cacheComponents` also keeps a left route in the DOM: `<Activity>` hides it with `display: none`. Its state survives, and a CSS animation on it restarts when the visitor comes back, which is why [[2026-10-30-home-motion]] needs `RevealOnce`. A locator such as `h1` can match the hidden page too.
 
 `experimental.inlineCss` puts the CSS of a first load into a `<style>` tag instead of a render-blocking `<link>`, on every route. See [[ADR-0011 Inline CSS]].
 
-Metadata comes from the `meta_` tables through `"use cache"` functions tagged `meta` ([[ADR-0014 Metadata in the Database]]): the root layout reads the site-wide part (default title, icons, `noindex` while hidden) and each page its own, so metadata stays in the static shell. `/favicon.ico` is a route handler on the same cached read; under Cache Components a `GET` that reads only cached data is prerendered too (`x-nextjs-cache: HIT`).
+Metadata comes from `Meta` in the merged messages through `"use cache"` getters (`src/content/meta.ts`): the root layout reads the site-wide part (default title, icons, `noindex` while hidden) and each page its own, so metadata stays in the static shell. `/favicon.ico` is a route handler on the same cached read; under Cache Components a `GET` that reads only cached data is prerendered too.
 
-No route uses time-based revalidation: every DB-backed page is refreshed by `updateTag` from the admin (owner's decision for the blog, 2026-11-03).
+Until 2026-11-04 the blog list was a Partial Prerender and the post page used `ensureStatic = "navigation"`; both left with the blog ([[2026-11-04-content-in-files-design]]).
 
 Notes to expand: `loading.tsx` / `error.tsx` per segment.
 
-Related: [[ADR-0001 Framework and Rendering]]
+Related: [[ADR-0001 Framework and Rendering]], [[Content Model]]

@@ -24,6 +24,28 @@ describe("mergeMessages", () => {
     expect(mergeMessages(en, { hero: { title: "" } }).hero).toEqual({ title: "Hello" });
   });
 
+  describe("non-string leaves (metadata in Meta.*)", () => {
+    const meta = { site: { hidden: true, iconUrl: "https://a.dev/icon.svg", logoUrl: null, size: 32 } };
+
+    it("treats null in the locale as untranslated", () => {
+      expect(mergeMessages(meta, { site: { iconUrl: null } }).site.iconUrl).toBe("https://a.dev/icon.svg");
+    });
+
+    it("lets false override true", () => {
+      expect(mergeMessages(meta, { site: { hidden: false } }).site.hidden).toBe(false);
+    });
+
+    it("lets a number override", () => {
+      expect(mergeMessages(meta, { site: { size: 48 } }).site.size).toBe(48);
+    });
+
+    it("lets a string replace a null fallback", () => {
+      expect(mergeMessages(meta, { site: { logoUrl: "https://a.dev/logo.svg" } }).site.logoUrl).toBe(
+        "https://a.dev/logo.svg",
+      );
+    });
+  });
+
   it("does not mutate its arguments", () => {
     const ru = { nav: { home: "Главная" } };
     mergeMessages(en, ru);

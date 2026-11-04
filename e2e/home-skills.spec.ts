@@ -12,7 +12,7 @@ const countColumns = async (page: Page) => {
   return new Set(lefts).size;
 };
 
-// My top skills: the skills marked `top` in the database. The owner edits them, so the tests read properties, not names.
+// My top skills: the skills marked `top` in the content files. The owner edits them, so the tests read properties, not names.
 test("lists the marked skills from the highest level down", async ({ page }) => {
   await page.goto("/en");
 

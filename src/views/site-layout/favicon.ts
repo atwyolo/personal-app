@@ -1,4 +1,4 @@
-import { getSiteMeta } from "@/db/queries/meta";
+import { getSiteMeta } from "@/content/meta";
 
 /**
  * `/favicon.ico` for clients that skip the HTML (bots, feed readers) and ask the site root directly.
