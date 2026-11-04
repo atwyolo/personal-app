@@ -1,10 +1,13 @@
 ---
 tags: [adr, admin]
-status: accepted
+status: superseded
 date: 2026-10-26
+updated: 2026-11-04
 ---
 
 # ADR-0004 Hand-written Admin
+
+**Superseded by [[ADR-0015 Content in Files]] (2026-11-04).** The admin left the plan on 2026-11-04: content changes with a deploy.
 
 ## Context
 Admin needs: login form, menu mirroring the site structure, per-entity forms, rich text in some fields, multilingual editing.

@@ -1,10 +1,13 @@
 ---
 tags: [adr, metadata, database, seo]
-status: accepted
+status: superseded
 date: 2026-11-03
+updated: 2026-11-04
 ---
 
 # ADR-0014 Metadata in the Database
+
+**Superseded by [[ADR-0015 Content in Files]] (2026-11-04).** Metadata lives in `Meta` of `messages/<locale>.json` with the same fields and fallbacks; `hiddenFromSearch` is a file edit.
 
 ## Context
 The owner wants to correct every configurable piece of metadata without touching code: the title and description of any page, its link preview image, the site's icons, the site name in link previews, and whether search engines may index the site (2026-11-03). Before this, metadata lived in three places: `profile_translations.meta_description` (Home), `messages/en.json` (About and Projects), and the code (titles assembled from the profile name, the template `src/app/favicon.ico`). The production deployment on `*.vercel.app` was open to indexing.

@@ -93,6 +93,6 @@ Grid `minmax(0, .9fr) minmax(0, 1.1fr)`, no outer gutter: the page is a full-wid
 
 ## Data notes
 
-The page shows work experience, while the Data Model also has a separate `projects` entity. For now the Projects page reads `experience` with the extra fields `role`, `body` (rich text), a `skills` relation and `image`. Record this in [[Data Model]] / [[Open Questions]] at Stage 3, together with whether a separate "projects" list is still needed.
+The page shows work experience, while the Data Model also has a separate `projects` entity. For now the Projects page reads `experience` with the extra fields `role`, `body` (rich text), a `skills` relation and `image`. Record this in [[Content Model]] / [[Open Questions]] at Stage 3, together with whether a separate "projects" list is still needed.
 
 Owner TODOs in `content.ts`: roles, all Omega-R content, and company images.

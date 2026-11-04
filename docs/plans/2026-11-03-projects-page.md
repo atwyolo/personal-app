@@ -9,7 +9,7 @@ updated: 2026-11-03
 
 Build `/[locale]/projects` on the `experience` tables: the database first, then Home, then the page and its reading progress. The checklist in this note is the ledger: a task is ticked when its delta is staged.
 
-Related: [[2026-11-03-projects-page-design]] (the spec, read it with this plan), [[Experience Page Handoff]], [[Data Model]], [[ADR-0002 Database and ORM]], [[ADR-0007 Testing]].
+Related: [[2026-11-03-projects-page-design]] (the spec, read it with this plan), [[Experience Page Handoff]], [[Content Model]], [[ADR-0002 Database and ORM]], [[ADR-0007 Testing]].
 
 ## Global constraints
 

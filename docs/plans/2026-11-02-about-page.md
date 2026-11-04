@@ -9,7 +9,7 @@ updated: 2026-11-03
 
 Build `/[locale]/about` as an interview: database tables and content first, then the page, then its client behavior. Each task ends green and staged. The checklist in this note is the ledger.
 
-Related: [[2026-11-02-about-page-design]] (the spec, read it with this plan), [[About Page Handoff]], [[Data Model]], [[ADR-0003 Content Localization]], [[ADR-0007 Testing]].
+Related: [[2026-11-02-about-page-design]] (the spec, read it with this plan), [[About Page Handoff]], [[Content Model]], [[ADR-0003 Content Localization]], [[ADR-0007 Testing]].
 
 ## Global constraints
 

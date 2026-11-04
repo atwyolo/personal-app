@@ -17,7 +17,7 @@ Remove the blog, move every page and all metadata from Neon into `messages/`, re
 
 **Spec:** [[2026-11-04-content-in-files-design]] (read it with this plan).
 
-Related: [[Data Model]], [[Localization]], [[Rendering Strategy]], [[ADR-0007 Testing]].
+Related: [[Content Model]], [[Localization]], [[Rendering Strategy]], [[ADR-0007 Testing]].
 
 ## Global constraints
 
@@ -230,12 +230,14 @@ Key mapping (`messages/en.json` root becomes `{ "Pages": { … } }`; `Meta` arri
 
 ## Task 9: Documents
 
-- [ ] New `docs/decisions/ADR-0015 Content in Files.md` from the template: context, decision (the spec's decisions), alternatives (database kept without admin; a headless CMS; MDX; `content-collections`/Velite), consequences. ADR-0002, 0003, 0004 and 0014 get `status: superseded` and a line pointing to ADR-0015; ADR-0006 notes that no forms remain; ADR-0007 drops database writes.
-- [ ] `docs/architecture/Data Model.md` becomes `Content Model.md`: the files, their fields, merge and validation rules. `Localization.md` and `Rendering Strategy.md` updated (no tags, no blog, contact or admin rows, the runtime 404 and the trace include).
-- [ ] `Roadmap.md`, `Open Questions.md`, `Overview.md` updated as listed in the spec. The blog's specs and plans get `status: dropped` and a line pointing to the spec. Blog, Post, Contact and Admin handoffs and their folders are deleted with `git rm`.
-- [ ] `CLAUDE.md`: Stack (Data, i18n content, Forms, Admin), Conventions (`src/content` instead of `src/db`, `src/actions`, `src/schemas`, mutations), Commands (no `db:*`), the e2e note in Tests. `README.md` gets a short project section only if it describes the database (it does not today: no change).
-- [ ] `docs/journal/2026-11-04.md` gets today's summary; `docs/Home.md` links the spec, the plan, ADR-0015 and the renamed notes. The spec and this plan get `status: done` once Task 10 is decided.
-- [ ] Stage `docs/ CLAUDE.md`.
+- [x] New `docs/decisions/ADR-0015 Content in Files.md` from the template: context, decision (the spec's decisions), alternatives (database kept without admin; a headless CMS; MDX; `content-collections`/Velite), consequences. ADR-0002, 0003, 0004 and 0014 get `status: superseded` and a line pointing to ADR-0015; ADR-0006 notes that no forms remain; ADR-0007 drops database writes.
+- [x] `docs/architecture/Data Model.md` becomes `Content Model.md`: the files, their fields, merge and validation rules. `Localization.md` and `Rendering Strategy.md` updated (no tags, no blog, contact or admin rows, the runtime 404 and the trace include).
+- [x] `Roadmap.md`, `Open Questions.md`, `Overview.md` updated as listed in the spec. The blog's specs and plans get `status: dropped` and a line pointing to the spec. Blog, Post, Contact and Admin handoffs and their folders are deleted with `git rm`.
+- [x] `CLAUDE.md`: Stack (Data, i18n content, Forms, Admin), Conventions (`src/content` instead of `src/db`, `src/actions`, `src/schemas`, mutations), Commands (no `db:*`), the e2e note in Tests. `README.md` gets a short project section only if it describes the database (it does not today: no change).
+- [x] `docs/journal/2026-11-04.md` gets today's summary; `docs/Home.md` links the spec, the plan, ADR-0015 and the renamed notes. The spec and this plan get `status: done` once Task 10 is decided.
+- [x] Stage `docs/ CLAUDE.md`. *Done.*
+  - Ruling: `[[Data Model]]` links across the vault now point to `[[Content Model]]` (25 notes), so no link breaks; plain-text mentions in older notes stay. Links to the deleted handoffs remain in dropped and closed notes, where they record what existed. Cost if wrong: dead links in historical notes.
+  - Ruling: the flaky "recomputes the bars when the phone turns" test went into [[Open Questions]]. The design README's "What changed since the 2026-11-01 package" section stays as the package's history, under a line saying the content model and rendering strategy decide.
 
 ## Task 10: Delete the Neon database (owner-gated)
 

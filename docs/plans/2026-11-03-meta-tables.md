@@ -9,7 +9,7 @@ updated: 2026-11-03
 
 Move every configurable piece of metadata into four `meta_` tables, make Home, About, Projects and the root layout read them, and drop the old sources. The checklist in this note is the ledger: a task is ticked when its delta is staged.
 
-Related: [[2026-11-03-meta-tables-design]] (the spec, read it with this plan), [[Data Model]], [[ADR-0002 Database and ORM]], [[ADR-0003 Content Localization]], [[ADR-0007 Testing]], [[Rendering Strategy]].
+Related: [[2026-11-03-meta-tables-design]] (the spec, read it with this plan), [[Content Model]], [[ADR-0002 Database and ORM]], [[ADR-0003 Content Localization]], [[ADR-0007 Testing]], [[Rendering Strategy]].
 
 ## Global constraints
 

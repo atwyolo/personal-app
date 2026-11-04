@@ -9,7 +9,7 @@ updated: 2026-11-03
 
 Status: **done 2026-11-03.** Plan: [[2026-11-03-skills-page]].
 
-Related: [[Skills Page Handoff]] (visual contract), `docs/design/README.md` (site-wide rules), [[Home Page Handoff]], [[Data Model]], [[Rendering Strategy]], [[ADR-0007 Testing]], [[2026-11-03-projects-page-design]].
+Related: [[Skills Page Handoff]] (visual contract), `docs/design/README.md` (site-wide rules), [[Home Page Handoff]], [[Content Model]], [[Rendering Strategy]], [[ADR-0007 Testing]], [[2026-11-03-projects-page-design]].
 
 ## Intent
 

@@ -9,7 +9,7 @@ updated: 2026-11-04
 
 Status: **approved by the owner 2026-11-04.** Plan: [[2026-11-04-content-in-files]].
 
-Related: [[Data Model]], [[Localization]], [[Rendering Strategy]], [[ADR-0002 Database and ORM]], [[ADR-0003 Content Localization]], [[ADR-0004 Hand-written Admin]], [[ADR-0014 Metadata in the Database]], [[ADR-0007 Testing]], [[ADR-0013 Version Tracking]], [[Roadmap]].
+Related: [[Content Model]], [[Localization]], [[Rendering Strategy]], [[ADR-0002 Database and ORM]], [[ADR-0003 Content Localization]], [[ADR-0004 Hand-written Admin]], [[ADR-0014 Metadata in the Database]], [[ADR-0007 Testing]], [[ADR-0013 Version Tracking]], [[Roadmap]].
 
 ## Intent
 
@@ -144,7 +144,7 @@ messages/
 ## Documents to update
 
 - New ADR: content in files (supersedes [[ADR-0002 Database and ORM]], [[ADR-0003 Content Localization]], [[ADR-0004 Hand-written Admin]], [[ADR-0014 Metadata in the Database]]). [[ADR-0006 Forms]] and [[ADR-0007 Testing]] (database writes in e2e) are updated.
-- [[Data Model]] becomes a content model of the files. [[Localization]] and [[Rendering Strategy]] are updated (no tags, no blog, no contact, no admin rows).
+- [[Content Model]] becomes a content model of the files. [[Localization]] and [[Rendering Strategy]] are updated (no tags, no blog, no contact, no admin rows).
 - Blog specs and plans ([[2026-11-03-blog-list-design]], [[2026-11-04-post-page-design]], [[2026-10-30-home-blog]], [[2026-11-03-blog-list]], [[2026-11-04-post-page]]) get `status: dropped` and a one-line note pointing to this spec.
 - [[Roadmap]]: the blog stage and its notes, Stage 5, Stage 6 and the Rich text stage are removed or marked dropped; Stage 7 loses Neon; Stage 8 keeps the `hiddenFromSearch` step (now a file edit).
 - [[Open Questions]]: questions about the admin, drafts, uploads, contact notifications, a second admin user and the separate `projects` table are closed.

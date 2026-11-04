@@ -9,7 +9,7 @@ updated: 2026-11-03
 
 Status: **done, the page was closed on 2026-11-03.** Plan: [[2026-11-02-about-page]].
 
-Related: [[About Page Handoff]] (visual contract), [[Data Model]], [[Rendering Strategy]], [[ADR-0002 Database and ORM]], [[ADR-0003 Content Localization]], [[ADR-0007 Testing]].
+Related: [[About Page Handoff]] (visual contract), [[Content Model]], [[Rendering Strategy]], [[ADR-0002 Database and ORM]], [[ADR-0003 Content Localization]], [[ADR-0007 Testing]].
 
 ## Intent
 
@@ -40,7 +40,7 @@ Related: [[About Page Handoff]] (visual contract), [[Data Model]], [[Rendering S
 
 ## Data
 
-See [[Data Model]] for the conventions.
+See [[Content Model]] for the conventions.
 
 ### `about_pairs`
 
@@ -111,7 +111,7 @@ The visual contract is [[About Page Handoff]] and the site-wide rules of `docs/d
 
 **Differences from the handoff:** chips use `link_text`; the bubble's larger upper line is `question_title`, with `question_message` under it, smaller; no hero label; no contact buttons; no call to action for now.
 
-**The README says rich text is stored as sanitized HTML.** The project stores Tiptap JSON (`CLAUDE.md`, [[Data Model]]), which wins.
+**The README says rich text is stored as sanitized HTML.** The project stores Tiptap JSON (`CLAUDE.md`, [[Content Model]]), which wins.
 
 **Rendering:** static per locale, `generateStaticParams` already comes from the root layout. The route file re-exports the view, as `src/app/[locale]/page.tsx` does.
 
@@ -158,7 +158,7 @@ The visual contract is [[About Page Handoff]] and the site-wide rules of `docs/d
 ## Documentation
 
 Updated with the work:
-- [[Data Model]]: the new tables, `job_title`, and `about_full` removed.
+- [[Content Model]]: the new tables, `job_title`, and `about_full` removed.
 - [[About Page Handoff]]: `link_text` and `question_title`, no contact buttons.
 - [[Admin Handoff]]: no Page header block, new Link text and Slug fields, a Job title field in the Home form, the "Needs answer" badge (see below).
 - `docs/design/README.md`: the "About contact buttons" open question closed.
