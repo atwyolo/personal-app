@@ -42,7 +42,7 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[2026-11-03-skills-page-design]] — Skills page: search and domain filters, done 2026-11-03
 - [[2026-11-03-blog-list-design]] — Blog list: deep links, server-side filters and pagination, dropped 2026-11-04
 - [[2026-11-04-post-page-design]] — Post page: static, the lead text and the body, cards open it in a new tab, dropped 2026-11-04
-- [[2026-11-04-content-in-files-design]] — no database: content in `messages/` (JSON + Markdown), blog, contact and admin removed, approved 2026-11-04
+- [[2026-11-04-content-in-files-design]] — no database: content in `messages/` (JSON + Markdown), blog, contact and admin removed, done 2026-11-04
 
 ## Plans
 - [[2026-10-30-home-experience]] — Experience block, done; deferred items listed there
@@ -55,7 +55,7 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[2026-11-03-skills-page]] — Skills page, done
 - [[2026-11-03-blog-list]] — Blog list, dropped 2026-11-04
 - [[2026-11-04-post-page]] — Post page, dropped 2026-11-04
-- [[2026-11-04-content-in-files]] — content in files, Tasks 0–9 done; Task 10 (delete Neon) waits for the production check
+- [[2026-11-04-content-in-files]] — content in files, done; Neon deleted 2026-11-04
 
 ## Journal
 - [[2026-10-26]] — kickoff: decisions, scaffold

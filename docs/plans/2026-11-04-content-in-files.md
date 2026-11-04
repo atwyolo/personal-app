@@ -1,6 +1,6 @@
 ---
 tags: [plan, content, i18n, architecture]
-status: in-progress
+status: done
 date: 2026-11-04
 updated: 2026-11-04
 ---
@@ -259,6 +259,7 @@ A fresh reviewer (Opus, read-only) reviewed `918f824..637bf32`: ready "with fixe
 
 ## Task 10: Delete the Neon database (owner-gated)
 
-- [ ] After the staged work is committed, merged and deployed, the owner checks the production site on files and confirms.
-- [ ] Show the owner the exact actions: Vercel dashboard → project → Storage → the Neon database → remove the connection and delete the database; then Vercel → Settings → Environment Variables: remove `DATABASE_URL` and the other `PG*`/`POSTGRES_*`/`NEON_*` variables the integration added. Nothing runs without the confirmation.
-- [ ] Record the date in the Roadmap (Stage 7) and the journal; stage.
+- [x] After the staged work is committed, merged and deployed, the owner checks the production site on files and confirms. *Done: `0.9.0+f4d2866` on https://peronal-app.vercel.app; the browser capture of the seven URLs matched the local one, the 404 renders the header from `profile.md` (no `ENOENT`), `/en/projects` and `/en/blog` are 404.*
+- [x] Show the owner the exact actions: Vercel dashboard → project → Storage → the Neon database → remove the connection and delete the database; then Vercel → Settings → Environment Variables: remove `DATABASE_URL` and the other `PG*`/`POSTGRES_*`/`NEON_*` variables the integration added. Nothing runs without the confirmation.
+- [x] Record the date in the Roadmap (Stage 7) and the journal; stage. *Done: the owner deleted the database and its variables on 2026-11-04; the production capture afterwards was identical to the one before.*
+  - Finding (not caused by this plan): on Vercel `/favicon.ico` answers 200 with an empty body (`x-vercel-cache: HIT`) while no icon is set, where `next start` answers 404; recorded in [[Open Questions]].
