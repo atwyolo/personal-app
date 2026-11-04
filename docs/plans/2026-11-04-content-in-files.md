@@ -173,10 +173,13 @@ Key mapping (`messages/en.json` root becomes `{ "Pages": { … } }`; `Meta` arri
 
 `Meta.Experience` holds today's `projects` row unchanged; its title becomes "Experience — …" in Task 7, so the Task 6 baseline diff stays empty.
 
-- [ ] Show the owner the script's queries (all `select`). Run it. Tiptap JSON → Markdown: `paragraph` → text + blank line, `bold` mark → `**…**`, `bulletList`/`listItem` → `- …`; any other node type stops the script.
-- [ ] Each written body passes `assertAllowedMarkdown`; each file passes `loadLocalized` with its schema (a scratch check run through Vitest's `--dir` on a temporary test, or `tsx`, then deleted).
-- [ ] Read the files: field order as in the spec's table, readable YAML, no `null` noise (absent optional fields are omitted).
-- [ ] Definition of done (nothing reads the files yet, so all green). Stage `messages/`.
+- [x] Show the owner the script's queries (all `select`). Run it. Tiptap JSON → Markdown: `paragraph` → text + blank line, `bold` mark → `**…**`, `bulletList`/`listItem` → `- …`; any other node type stops the script.
+- [x] Each written body passes `assertAllowedMarkdown`; each file passes `loadLocalized` with its schema (a scratch check run through Vitest's `--dir` on a temporary test, or `tsx`, then deleted).
+- [x] Read the files: field order as in the spec's table, readable YAML, no `null` noise (absent optional fields are omitted).
+- [x] Definition of done (nothing reads the files yet, so all green). Stage `messages/`. *Done: 11 Markdown files and `Meta` in `en.json`; unit 301/301, e2e 491 passed / 123 skipped, lint, tsc and build clean. `Meta` keys are in no client chunk and no prerendered HTML/RSC file, while `Pages` strings are in 32 of 47 HTML files (Task 2's check).*
+  - Ruling: the script also checks every conversion by parsing the Markdown back with the site's parser and comparing the blocks and bold marks with the Tiptap document; a mismatch stops it. Dates are read as `::text` so no time zone touches them.
+  - Ruling: YAML is dumped without line folding (`lineWidth: -1`) and with lists of objects in flow style (`- {name: React, level: 9, …}`), one skill per line. Cost if wrong: formatting only.
+  - Ruling: Markdown-significant characters in text are escaped, so the placeholders read `\[2–3 sentences…\]` in the files and `[2–3 sentences…]` on the site. Cost if wrong: the owner removes the backslashes when replacing the placeholders.
 
 ## Task 6: Read pages and metadata from files
 
