@@ -54,7 +54,7 @@ export const ExperienceCard: FC<ExperienceCardProps> = (props) => {
             ))}
           </ul>
         )}
-        <Link href={`/projects#${slug}`} showArrowIcon className="mt-auto self-start py-1 text-[15px]">
+        <Link href={`/experience#${slug}`} showArrowIcon className="mt-auto self-start py-1 text-[15px]">
           {t("learnMore")}
         </Link>
       </div>

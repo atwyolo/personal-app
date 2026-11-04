@@ -5,25 +5,25 @@ import { Link } from "@/shared/lib/i18n/navigation";
 import { BackLink } from "@/shared/ui/BackLink";
 import { Image } from "@/shared/ui/Image";
 
-import { getJobAttributes, type ProjectJob } from "../project-job";
+import { getJobAttributes, type ExperienceJob } from "../experience-job";
 
-interface ProjectsColumnProps {
+interface ExperienceColumnProps {
   title: string;
-  jobs: ProjectJob[];
+  jobs: ExperienceJob[];
 }
 
 /**
  * The pinned left column. Never `display: none`, because the `h1` must exist on phones, where this column is only the
  * row of the Back link. A `<div>`, not an `<aside>`: a page heading does not belong in a complementary landmark.
  */
-export const ProjectsColumn: FC<ProjectsColumnProps> = (props) => {
+export const ExperienceColumn: FC<ExperienceColumnProps> = (props) => {
   const { title, jobs } = props;
   const t = useTranslations("Pages.Experience");
   const common = useTranslations("Pages.Common");
 
   return (
     <div
-      data-projects-column
+      data-experience-column
       className="px-[18px] pt-3 lg:sticky lg:top-[73px] lg:flex lg:h-[calc(100dvh-73px)] lg:flex-col lg:border-r lg:border-card-border lg:bg-card lg:pt-10 lg:pr-10 lg:pb-8 lg:pl-12 print:hidden"
     >
       <BackLink label={common("back")} />
@@ -39,7 +39,7 @@ export const ProjectsColumn: FC<ProjectsColumnProps> = (props) => {
             so there the image shrinks first and the name stays whole. Below 640 px it would be a sliver, so it goes.
           */}
           <div
-            data-projects-stage
+            data-experience-stage
             aria-hidden
             className="mt-5 hidden min-h-0 grow lg:grid lg:grid-rows-[minmax(0,1fr)] lg:overflow-clip"
           >

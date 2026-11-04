@@ -5,10 +5,10 @@ import { Chip } from "@/shared/ui/Chip";
 import { Image } from "@/shared/ui/Image";
 import { Markdown } from "@/shared/ui/Markdown";
 
-import type { ProjectJob } from "../project-job";
+import type { ExperienceJob } from "../experience-job";
 
-interface ProjectSectionProps {
-  job: ProjectJob;
+interface ExperienceSectionProps {
+  job: ExperienceJob;
 }
 
 /**
@@ -17,7 +17,7 @@ interface ProjectSectionProps {
  * From `lg` the image moves to the stage of the left column. CSS cannot carry one element between the two places, so
  * there are two copies, and the hidden one is never fetched: a lazy image with `display: none` does not load.
  */
-export const ProjectSection: FC<ProjectSectionProps> = (props) => {
+export const ExperienceSection: FC<ExperienceSectionProps> = (props) => {
   const { job } = props;
   const { slug, company, role, period, duration, imageUrl, descriptionShort, descriptionFull, skills } = job;
   const t = useTranslations("Pages.Experience");

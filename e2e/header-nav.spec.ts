@@ -160,9 +160,9 @@ test.describe("desktop", () => {
     await openHydrated(page);
     const [start] = await readItems(page);
 
-    const frames = await followAndSample(page, ["Projects"]);
+    const frames = await followAndSample(page, ["Experience"]);
 
-    await expectUnder(page, "Projects");
+    await expectUnder(page, "Experience");
     const [, , target] = await readItems(page);
     const lefts = frames.map((frame) => frame.left);
     const between = lefts.filter((left) => left > start.x + 1 && left < target.x - 1);
@@ -195,7 +195,7 @@ test.describe("desktop", () => {
     await openHydrated(page);
     const items = await readItems(page);
 
-    for (const name of ["About", "Projects", "Skills"]) {
+    for (const name of ["About", "Experience", "Skills"]) {
       await navigation(page).getByRole("link", { name }).click();
       await expect(navigation(page).getByRole("link", { name })).toHaveAttribute("aria-current", "page");
 
@@ -216,9 +216,9 @@ test.describe("desktop", () => {
     test("moves at once", async ({ page }) => {
       await openHydrated(page);
 
-      const frames = await followAndSample(page, ["Projects"]);
+      const frames = await followAndSample(page, ["Experience"]);
 
-      await expectUnder(page, "Projects");
+      await expectUnder(page, "Experience");
       expect(new Set(frames.map((frame) => frame.left)).size).toBeLessThanOrEqual(2);
     });
   });

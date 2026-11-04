@@ -9,7 +9,7 @@ updated: 2026-11-03
 
 Build `/[locale]/projects` on the `experience` tables: the database first, then Home, then the page and its reading progress. The checklist in this note is the ledger: a task is ticked when its delta is staged.
 
-Related: [[2026-11-03-projects-page-design]] (the spec, read it with this plan), [[Projects Page Handoff]], [[Data Model]], [[ADR-0002 Database and ORM]], [[ADR-0007 Testing]].
+Related: [[2026-11-03-projects-page-design]] (the spec, read it with this plan), [[Experience Page Handoff]], [[Data Model]], [[ADR-0002 Database and ORM]], [[ADR-0007 Testing]].
 
 ## Global constraints
 
@@ -20,7 +20,7 @@ Related: [[2026-11-03-projects-page-design]] (the spec, read it with this plan),
 - **Definition of done for a task:** `npm run test:run`, `npm run test:e2e`, `npm run lint`, `npx tsc --noEmit`, `npm run build`. Tasks 1 and 2 share one run, at the end of Task 2 (owner's order of the work, see the spec).
 - **Conventions from `CLAUDE.md`:** `FC<Props>`, named exports, props destructured on the first line, Server Components by default, `src/shared/ui/Image.tsx` for images, no barrels, English in the repository.
 - **Next.js:** read the matching guide in `node_modules/next/dist/docs/` before a task that uses a Next API for the first time here.
-- **Visual values** come from [[Projects Page Handoff]] and `docs/design/README.md`, except where the spec overrides them.
+- **Visual values** come from [[Experience Page Handoff]] and `docs/design/README.md`, except where the spec overrides them.
 
 ## Decisions made while planning
 
@@ -230,6 +230,6 @@ No code unless a check finds something.
 - [x] **Step 1: Run the code review** of `git diff --cached` (`requesting-code-review`), then `receiving-code-review` for its findings. Each fix starts with a test that fails.
 - [x] **Step 2: iOS simulator,** by the method of [[2026-10-30-home-motion]], production build: the sticky bar, a real swipe, rotation both ways, a deep link from Home.
 - [x] **Step 3: Lighthouse** on `/en/projects`, mobile and desktop, locally. Report the numbers. The Vercel run waits for a deployment.
-- [x] **Step 4: Both themes.** Compare with `docs/design/projects/screens/` in dark and light, minding the corrections.
+- [x] **Step 4: Both themes.** Compare with `docs/design/experience/screens/` in dark and light, minding the corrections.
 - [x] **Step 5: End of the step.** Compare with `origin/develop` after `git fetch origin develop`, and ask the owner whether everything can be committed and whether to bump the version: the proposal is `minor`, `0.4.0`.
 - [x] **Step 6: On the owner's yes,** bring the documentation up to date, as the spec's "Documentation" lists, and add this plan's result and the journal. Bump the version as answered, stage everything, and give the Conventional Commit message.

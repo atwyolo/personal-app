@@ -10,9 +10,9 @@ import { readPageMeta, readSiteMeta } from "./meta-content";
 const pages = [
   { locale: "en", key: "Home", path: "" },
   { locale: "en", key: "About", path: "/about" },
-  { locale: "en", key: "Experience", path: "/projects" },
+  { locale: "en", key: "Experience", path: "/experience" },
   { locale: "en", key: "Skills", path: "/skills" },
-  { locale: "ru", key: "Experience", path: "/projects" },
+  { locale: "ru", key: "Experience", path: "/experience" },
 ] as const;
 
 for (const { locale, key, path } of pages) {
@@ -88,7 +88,7 @@ test.describe("404 page", () => {
 
 // Site-wide metadata from `Meta.Common`. Each test follows the files, so flipping the flag or uploading
 // the icons later does not break the suite.
-for (const path of ["", "/about", "/projects"]) {
+for (const path of ["", "/about", "/experience"]) {
   test(`/en${path} follows hiddenFromSearch`, async ({ page }) => {
     const site = await readSiteMeta();
     await page.goto(`/en${path}`);

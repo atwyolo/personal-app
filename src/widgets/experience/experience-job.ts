@@ -1,7 +1,7 @@
 import type { ExperienceEntry } from "@/content/experience";
 
 /** A job with the texts every part of the page shows, formatted once. */
-export interface ProjectJob extends ExperienceEntry {
+export interface ExperienceJob extends ExperienceEntry {
   /** "11/2024 – 10/2026". */
   period: string;
   /** "2 years". */

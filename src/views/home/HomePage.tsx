@@ -3,7 +3,7 @@ import type { FC } from "react";
 
 import { About } from "@/widgets/about/About";
 import { Contacts } from "@/widgets/contacts/Contacts";
-import { Experience } from "@/widgets/experience/Experience";
+import { ExperienceCards } from "@/widgets/experience-cards/ExperienceCards";
 import { Hero } from "@/widgets/hero/Hero";
 import { ProfilePhoto } from "@/widgets/profile-photo/ProfilePhoto";
 import { TopSkills } from "@/widgets/top-skills/TopSkills";
@@ -27,7 +27,7 @@ export const HomePage: FC = () => {
         <About className="reveal [grid-area:about]" />
       </div>
 
-      <Experience />
+      <ExperienceCards />
 
       <TopSkills />
     </main>

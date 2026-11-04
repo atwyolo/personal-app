@@ -7,13 +7,13 @@ const ROLE = "Senior Frontend Software Engineer";
 const article = (page: Page, slug: string) => page.locator(`main article#${slug}`);
 const rows = (page: Page) => page.getByRole("navigation", { name: "Places of work" }).getByRole("link");
 const h1 = (page: Page) => page.getByRole("heading", { level: 1, name: "Projects · 2021 — 2026" });
-const bar = (page: Page) => page.locator("[data-projects-bar]");
+const bar = (page: Page) => page.locator("[data-experience-bar]");
 const heading = (page: Page, name: string) => page.getByRole("heading", { level: 2, name });
-const activeBlock = (page: Page) => page.locator("[data-projects-stage] [data-active]");
+const activeBlock = (page: Page) => page.locator("[data-experience-stage] [data-active]");
 
 /** A click before hydration is the browser's own jump to the anchor: right for a visitor, but not what these tests read. */
 const openHydrated = async (page: Page) => {
-  await page.goto("/en/projects");
+  await page.goto("/en/experience");
   await expect(rows(page).first()).toHaveAttribute("style", /--progress/);
 };
 
@@ -49,7 +49,7 @@ const expectProgressToMatchPage = async (page: Page) => {
 
 test.describe("content", () => {
   test("shows one article per job in order", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
     await expect(page.getByRole("heading", { level: 2 })).toHaveText(["Glovo", "Sony PlayStation", "EPAM"]);
     const ids = await page.locator("main article").evaluateAll((items) => items.map((item) => item.id));
@@ -57,7 +57,7 @@ test.describe("content", () => {
   });
 
   test("shows the role, the period and the duration under the name", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
     await expect(article(page, "glovo")).toContainText(`${ROLE} · 11/2024 – 10/2026 · 2 years`);
     await expect(article(page, "sony")).toContainText(`${ROLE} · 08/2023 – 11/2024 · 1.3 years`);
@@ -65,7 +65,7 @@ test.describe("content", () => {
   });
 
   test("shows the short description, then the full one with no heading", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
     const glovo = article(page, "glovo");
     await expect(glovo.getByText(/^Built an AI-powered chat for user support and set up frontend monitoring\./)).toBeVisible();
@@ -76,14 +76,14 @@ test.describe("content", () => {
   });
 
   test("starts every article with its heading, with no years above it", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
     const firstTags = await page.locator("main article").evaluateAll((items) => items.map((item) => item.firstElementChild?.tagName));
     expect(firstTags).toEqual(["H2", "H2", "H2"]);
   });
 
   test("shows the skills under their own heading", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
     const glovo = article(page, "glovo");
     await expect(glovo.getByRole("heading", { level: 3, name: "Skills" })).toBeVisible();
@@ -91,17 +91,17 @@ test.describe("content", () => {
   });
 
   test("has one page heading", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
     await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
     await expect(h1(page)).toHaveCount(1);
   });
 
   test("describes the page for search and social cards", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
-    await expect(page).toHaveTitle("Projects — Mikhail Aleksandrov");
-    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /\/en\/projects$/);
+    await expect(page).toHaveTitle("Experience — Mikhail Aleksandrov");
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /\/en\/experience$/);
     await expect(page.locator('meta[name="description"]')).toHaveAttribute(
       "content",
       "The full story of every place I have worked as a frontend engineer: the products, the results and the skills behind them.",
@@ -109,22 +109,22 @@ test.describe("content", () => {
   });
 
   test("links the page in every language", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
     const links = page.locator('link[rel="alternate"][hreflang]');
     await expect(links).toHaveCount(9);
-    await expect(page.locator('link[hreflang="ru"]')).toHaveAttribute("href", /\/ru\/projects$/);
-    await expect(page.locator('link[hreflang="x-default"]')).toHaveAttribute("href", /\/projects$/);
+    await expect(page.locator('link[hreflang="ru"]')).toHaveAttribute("href", /\/ru\/experience$/);
+    await expect(page.locator('link[hreflang="x-default"]')).toHaveAttribute("href", /\/experience$/);
   });
 
   test("leads home with the Back link", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
     await expect(page.getByRole("link", { name: "Back", exact: true })).toHaveAttribute("href", "/en");
   });
 
   test("goes to the top of Home from anywhere on the page", async ({ page }) => {
-    await page.goto("/en/projects#epam");
+    await page.goto("/en/experience#epam");
     await expect(heading(page, "EPAM")).toBeInViewport();
 
     await page.getByRole("link", { name: "Back", exact: true }).click();
@@ -135,7 +135,7 @@ test.describe("content", () => {
 
   // Review focus 4.
   test("falls back to the English jobs in a locale without translations", async ({ page }) => {
-    await page.goto("/ru/projects");
+    await page.goto("/ru/experience");
 
     await expect(page.locator("html")).toHaveAttribute("lang", "ru");
     await expect(page.getByRole("heading", { level: 2 })).toHaveText(["Glovo", "Sony PlayStation", "EPAM"]);
@@ -143,19 +143,19 @@ test.describe("content", () => {
 
   // Review focus 4.
   test("stays on the page through the language menu", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
     await page.locator("header button").first().click();
     await page.getByRole("menuitemradio", { name: /Русский/ }).click();
 
-    await page.waitForURL("**/ru/projects");
+    await page.waitForURL("**/ru/experience");
   });
 
   test.describe("without JavaScript", () => {
     test.use({ javaScriptEnabled: false });
 
     test("reads as an article", async ({ page }) => {
-      await page.goto("/en/projects");
+      await page.goto("/en/experience");
 
       for (const slug of ["glovo", "sony", "epam"]) await expect(article(page, slug)).toBeVisible();
       await expect(article(page, "epam").getByText("Raised conversion by 12.4% and made pages load 37% faster.")).toBeVisible();
@@ -168,10 +168,10 @@ test.describe("desktop layout", () => {
   test.skip(({ isMobile }) => isMobile, "the split starts at lg");
 
   test("shows the page heading above a stage with the first job", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
     await expect(h1(page)).toBeVisible();
-    const stage = page.locator("[data-projects-stage]");
+    const stage = page.locator("[data-experience-stage]");
     await expect(stage).toHaveAttribute("aria-hidden", "true");
     await expect(stage.locator("[data-active]")).not.toContainText("2024");
     await expect(stage.locator("[data-active]")).toContainText("Glovo");
@@ -179,7 +179,7 @@ test.describe("desktop layout", () => {
   });
 
   test("links a row to every job", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
     await expect(rows(page)).toHaveText([
       "01Glovo11/2024 – 10/2026",
@@ -192,9 +192,9 @@ test.describe("desktop layout", () => {
   });
 
   test("splits the page under the header", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
-    const left = await page.locator("[data-projects-column]").boundingBox();
+    const left = await page.locator("[data-experience-column]").boundingBox();
     const right = await article(page, "glovo").boundingBox();
     expect(left).toMatchObject({ x: 0, y: 73 });
     expect(left!.height).toBe(800 - 73);
@@ -203,7 +203,7 @@ test.describe("desktop layout", () => {
   });
 
   test("keeps the Back link 30 px above the page heading", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
     const back = await page.getByRole("link", { name: "Back", exact: true }).boundingBox();
     const heading = await h1(page).boundingBox();
@@ -211,14 +211,14 @@ test.describe("desktop layout", () => {
   });
 
   test("gives every job a screen", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
     const box = await article(page, "sony").boundingBox();
     expect(box!.height).toBeGreaterThanOrEqual(800 * 0.95);
   });
 
   test("moves the image from the articles to the stage", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
     await expect(article(page, "glovo").getByRole("img")).toHaveCount(0);
     await expect(activeBlock(page).locator("img")).toBeVisible();
@@ -226,7 +226,7 @@ test.describe("desktop layout", () => {
   });
 
   test("shows a placeholder on the stage for a job with no image", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
     await scrollToJob(page, "sony");
 
@@ -236,7 +236,7 @@ test.describe("desktop layout", () => {
   });
 
   test("puts the image above the name, at its height", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
     const image = await activeBlock(page).locator("img").boundingBox();
     const name = await activeBlock(page).getByText("Glovo", { exact: true }).boundingBox();
@@ -245,9 +245,9 @@ test.describe("desktop layout", () => {
   });
 
   test("centers the image, the name and the role in the stage", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
-    const stage = await page.locator("[data-projects-stage]").boundingBox();
+    const stage = await page.locator("[data-experience-stage]").boundingBox();
     const image = await activeBlock(page).locator("img").boundingBox();
     const role = await activeBlock(page).getByText(`${ROLE} · 2 years`).boundingBox();
     const above = image!.y - stage!.y;
@@ -261,7 +261,7 @@ test.describe("desktop layout", () => {
     test.use({ viewport: { width: 1280, height: 640 } });
 
     test("shows it at a useful height", async ({ page }) => {
-      await page.goto("/en/projects");
+      await page.goto("/en/experience");
 
       expect((await activeBlock(page).locator("img").boundingBox())!.height).toBeGreaterThanOrEqual(100);
     });
@@ -272,7 +272,7 @@ test.describe("desktop layout", () => {
     test.use({ viewport: { width: 1024, height: 600 } });
 
     test("keeps the rows inside the window", async ({ page }) => {
-      await page.goto("/en/projects");
+      await page.goto("/en/experience");
 
       const last = await rows(page).last().boundingBox();
       expect(last!.y + last!.height).toBeLessThanOrEqual(600);
@@ -284,10 +284,10 @@ test.describe("desktop layout", () => {
     test.use({ viewport: { width: 1280, height: 520 } });
 
     test("gives up the image before the name, with no sliver left", async ({ page }) => {
-      await page.goto("/en/projects");
+      await page.goto("/en/experience");
 
       await expect(activeBlock(page).locator("img")).toBeHidden();
-      const stage = await page.locator("[data-projects-stage]").boundingBox();
+      const stage = await page.locator("[data-experience-stage]").boundingBox();
       const name = await activeBlock(page).getByText("Glovo", { exact: true }).boundingBox();
       const role = await activeBlock(page).getByText(`${ROLE} · 2 years`).boundingBox();
 
@@ -296,7 +296,7 @@ test.describe("desktop layout", () => {
     });
 
     test("leaves every row clickable from edge to edge", async ({ page }) => {
-      await page.goto("/en/projects");
+      await page.goto("/en/experience");
 
       const missed = await rows(page).evaluateAll((links) =>
         links.flatMap((link, index) => {
@@ -318,17 +318,17 @@ test.describe("desktop layout", () => {
     test.use({ viewport: { width: 1024, height: 800 } });
 
     test("does not widen the page", async ({ page }) => {
-      await page.goto("/en/projects");
+      await page.goto("/en/experience");
 
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(1024);
     });
 
     // The company name wraps inside the column's padding.
     test("keeps a long company name inside the column", async ({ page }) => {
-      await page.goto("/en/projects");
+      await page.goto("/en/experience");
 
-      const [nameRight, contentRight] = await page.locator("[data-projects-column]").evaluate((column) => {
-        const name = column.querySelector('[data-projects-stage] [data-job="1"] > :nth-child(2)') as Element;
+      const [nameRight, contentRight] = await page.locator("[data-experience-column]").evaluate((column) => {
+        const name = column.querySelector('[data-experience-stage] [data-job="1"] > :nth-child(2)') as Element;
         const range = document.createRange();
         range.selectNodeContents(name);
         const { right, width } = column.getBoundingClientRect();
@@ -345,21 +345,21 @@ test.describe("mobile layout", () => {
   test.skip(({ isMobile }) => !isMobile, "mobile layout");
 
   test("keeps the page heading for a screen reader only", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
     const box = await h1(page).boundingBox();
     expect(box!.width).toBeLessThanOrEqual(1);
   });
 
   test("hides the stage and the rows", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
-    await expect(page.locator("[data-projects-stage]")).toBeHidden();
+    await expect(page.locator("[data-experience-stage]")).toBeHidden();
     await expect(page.getByRole("navigation", { name: "Places of work" })).toBeHidden();
   });
 
   test("shows the first job in the bar, hidden from a screen reader", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
     await expect(bar(page)).toHaveAttribute("aria-hidden", "true");
     await expect(bar(page).locator("[data-active]").first()).toContainText("Glovo");
@@ -368,14 +368,14 @@ test.describe("mobile layout", () => {
   });
 
   test("pins the bar under the header", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
     await page.evaluate(() => window.scrollTo(0, 600));
 
     await expect.poll(async () => (await bar(page).boundingBox())?.y).toBe(64);
   });
 
   test("shows the image between the role and the description, at its height", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
     const tags = await article(page, "glovo").evaluate((item) => [...item.children].slice(0, 4).map((child) => child.tagName));
     expect(tags).toEqual(["H2", "P", "DIV", "P"]);
@@ -386,7 +386,7 @@ test.describe("mobile layout", () => {
   });
 
   test("shows a placeholder for a job with no image", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
     await expect(article(page, "sony").getByRole("img", { name: "Sony PlayStation" })).toHaveJSProperty("tagName", "DIV");
   });
@@ -396,7 +396,7 @@ test.describe("mobile layout", () => {
     test.use({ viewport: { width: 844, height: 390 } });
 
     test("leaves the first heading below the bar", async ({ page }) => {
-      await page.goto("/en/projects");
+      await page.goto("/en/experience");
 
       const barBox = await bar(page).boundingBox();
       const heading = await page.getByRole("heading", { level: 2, name: "Glovo" }).boundingBox();
@@ -409,7 +409,7 @@ test.describe("mobile layout", () => {
     test.use({ viewport: { width: 320, height: 640 } });
 
     test("wraps the bar instead of widening the page", async ({ page }) => {
-      await page.goto("/en/projects");
+      await page.goto("/en/experience");
 
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(320);
     });
@@ -420,7 +420,7 @@ test.describe("mobile layout", () => {
     test.use({ viewport: { width: 280, height: 640 } });
 
     test("clears the bar on two lines too", async ({ page }) => {
-      await page.goto("/en/projects#sony");
+      await page.goto("/en/experience#sony");
 
       const name = heading(page, "Sony PlayStation");
       await expect(name).toBeInViewport();
@@ -436,7 +436,7 @@ test.describe("reading progress on desktop", () => {
   test.skip(({ isMobile }) => isMobile, "the rows are shown from lg");
 
   test("moves the active row as the page scrolls", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
     await scrollToJob(page, "sony");
     await expect(rows(page).nth(1)).toHaveAttribute("aria-current", "true");
@@ -444,11 +444,11 @@ test.describe("reading progress on desktop", () => {
 
     await scrollToJob(page, "epam");
     await expect(rows(page).nth(2)).toHaveAttribute("aria-current", "true");
-    await expect(page.locator("[data-projects-stage] [data-active]")).toContainText("EPAM");
+    await expect(page.locator("[data-experience-stage] [data-active]")).toContainText("EPAM");
   });
 
   test("grows the bars with the reading", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
     await page.evaluate(() => window.scrollTo(0, 500));
 
     await expectProgressToMatchPage(page);
@@ -456,7 +456,7 @@ test.describe("reading progress on desktop", () => {
   });
 
   test("finishes everything at the end of the page", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
     await scrollToEnd(page);
 
@@ -465,11 +465,11 @@ test.describe("reading progress on desktop", () => {
   });
 
   test("keeps the column pinned", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
     await scrollToEnd(page);
 
-    await expect.poll(async () => (await page.locator("[data-projects-column]").boundingBox())?.y).toBe(73);
+    await expect.poll(async () => (await page.locator("[data-experience-column]").boundingBox())?.y).toBe(73);
   });
 
   test("lands a clicked job below the header, with the focus on it", async ({ page }) => {
@@ -536,8 +536,8 @@ test.describe("reading progress on desktop", () => {
 
     await page.getByRole("banner").getByRole("link", { name: "About" }).click();
     await page.waitForURL("**/en/about");
-    await page.getByRole("banner").getByRole("link", { name: "Projects" }).click();
-    await page.waitForURL("**/en/projects");
+    await page.getByRole("banner").getByRole("link", { name: "Experience" }).click();
+    await page.waitForURL("**/en/experience");
 
     await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
     await expect(rows(page).first()).toHaveAttribute("aria-current", "true");
@@ -556,7 +556,7 @@ test.describe("reading progress on desktop", () => {
     await page.getByRole("banner").getByRole("link", { name: "About" }).click();
     await page.waitForURL("**/en/about");
     await page.goBack();
-    await page.waitForURL("**/en/projects#sony");
+    await page.waitForURL("**/en/experience#sony");
 
     await expectProgressToMatchPage(page);
     const expected = await page.evaluate(
@@ -573,7 +573,7 @@ test.describe("reading progress on desktop", () => {
     test.use({ viewport: { width: 1280, height: 1400 } });
 
     test("finishes everything at the end of the page", async ({ page }) => {
-      await page.goto("/en/projects");
+      await page.goto("/en/experience");
 
       await scrollToEnd(page);
 
@@ -595,13 +595,13 @@ test.describe("reading progress on desktop", () => {
     });
 
     test("swaps the stage without a transition", async ({ page }) => {
-      await page.goto("/en/projects");
+      await page.goto("/en/experience");
 
-      await expect(page.locator("[data-projects-stage] [data-job]").first()).toHaveCSS("transition-property", "none");
+      await expect(page.locator("[data-experience-stage] [data-job]").first()).toHaveCSS("transition-property", "none");
     });
 
     test("still updates the bars", async ({ page }) => {
-      await page.goto("/en/projects");
+      await page.goto("/en/experience");
       await page.evaluate(() => window.scrollTo(0, 500));
 
       await expectProgressToMatchPage(page);
@@ -613,7 +613,7 @@ test.describe("reading progress on phones", () => {
   test.skip(({ isMobile }) => !isMobile, "the bar is shown below lg");
 
   test("shows the job being read in the bar", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
     await scrollToJob(page, "sony");
 
@@ -623,7 +623,7 @@ test.describe("reading progress on phones", () => {
   });
 
   test("finishes everything at the end of the page", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
 
     await scrollToEnd(page);
 
@@ -633,7 +633,7 @@ test.describe("reading progress on phones", () => {
 
   // Review focus 3.
   test("recomputes the bars when the phone turns", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
     await scrollToJob(page, "sony");
     await expectProgressToMatchPage(page);
 
@@ -648,7 +648,7 @@ test.describe("reading progress on phones", () => {
 test.describe("deep links", () => {
   // Review focus 1.
   test("lands a fresh link to a job below the sticky bars, with that job active", async ({ page, isMobile }) => {
-    await page.goto("/en/projects#epam");
+    await page.goto("/en/experience#epam");
 
     const name = heading(page, "EPAM");
     await expect(name).toBeInViewport();
@@ -665,7 +665,7 @@ test.describe("deep links", () => {
     const card = page.getByRole("region", { name: "Experience" }).getByRole("article").nth(1);
     await card.getByRole("link", { name: "Learn more" }).click();
 
-    await page.waitForURL("**/en/projects#sony");
+    await page.waitForURL("**/en/experience#sony");
     await expect(heading(page, "Sony PlayStation")).toBeInViewport();
     const barBox = await bar(page).boundingBox();
     const stickyBottom = isMobile ? barBox!.y + barBox!.height : 73;
@@ -678,10 +678,10 @@ test.describe("deep links", () => {
 
 test.describe("in print", () => {
   test("keeps the articles and drops what follows them", async ({ page, isMobile }) => {
-    await page.goto("/en/projects");
+    await page.goto("/en/experience");
     await page.emulateMedia({ media: "print" });
 
-    await expect(page.locator("[data-projects-column]")).toBeHidden();
+    await expect(page.locator("[data-experience-column]")).toBeHidden();
     await expect(bar(page)).toBeHidden();
     await expect(article(page, "epam")).toBeVisible();
     if (isMobile) return;
@@ -689,5 +689,17 @@ test.describe("in print", () => {
     await expect(article(page, "sony")).toHaveCSS("min-height", "0px");
     expect((await article(page, "sony").boundingBox())!.width).toBe(1280);
     await expect(article(page, "glovo").getByRole("img", { name: "Glovo" })).toBeVisible();
+  });
+});
+
+test.describe("old address", () => {
+  // The browser logs its own console error for any 404 document.
+  test.use({ allowedConsoleErrors: [/status of 404/] });
+
+  // The page moved from /projects without a redirect (owner, 2026-11-04): the site is hidden from search engines.
+  test("/projects is no longer a page", async ({ page }) => {
+    const response = await page.goto("/en/projects");
+
+    expect(response?.status()).toBe(404);
   });
 });

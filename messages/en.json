@@ -26,7 +26,7 @@
       "ogImageUrl": null
     },
     "Experience": {
-      "title": "Projects — Mikhail Aleksandrov",
+      "title": "Experience — Mikhail Aleksandrov",
       "description": "The full story of every place I have worked as a frontend engineer: the products, the results and the skills behind them.",
       "ogImageUrl": null
     }
@@ -40,7 +40,7 @@
         "nav": {
           "home": "Home",
           "about": "About",
-          "projects": "Projects",
+          "experience": "Experience",
           "skills": "Skills"
         },
         "openMenu": "Open menu",

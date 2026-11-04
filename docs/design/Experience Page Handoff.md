@@ -1,10 +1,12 @@
 ---
-tags: [design, handoff, projects]
+tags: [design, handoff, experience]
 status: approved
-updated: 2026-11-03
+updated: 2026-11-04
 ---
 
-# Projects Page Handoff
+# Experience Page Handoff
+
+**Renamed on 2026-11-04** ([[2026-11-04-content-in-files-design]], decision 13): the page was Projects. The route is `/[locale]/experience`, the navigation label and the `<title>` say "Experience"; the page label stays `Projects · {from} — {to}`. The text below keeps the old name where it describes the design as it was handed over.
 
 `/[locale]/projects` shows the full story of every place of work on one page. All jobs are in the HTML at once, so they are all indexed. The presentation is "scrollytelling": a pinned column tracks which job you are reading. Approved variant: **C v2** on the design canvas. The owner corrected it on 2026-11-03: the section "Changes since 2026-11-01" and the text below are older, and [[2026-11-03-projects-page-design]] wins where they differ.
 

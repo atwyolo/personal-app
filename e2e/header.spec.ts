@@ -31,9 +31,9 @@ test.describe("desktop", () => {
 
     const nav = page.getByRole("navigation", { name: "Main navigation" });
     const links = nav.getByRole("link");
-    await expect(links).toHaveText(["Home", "About", "Projects", "Skills"]);
+    await expect(links).toHaveText(["Home", "About", "Experience", "Skills"]);
     const hrefs = await links.evaluateAll((anchors) => anchors.map((a) => a.getAttribute("href")));
-    expect(hrefs).toEqual(["/de", "/de/about", "/de/projects", "/de/skills"]);
+    expect(hrefs).toEqual(["/de", "/de/about", "/de/experience", "/de/skills"]);
     await expect(nav.getByRole("link", { name: "Home" })).toHaveAttribute("aria-current", "page");
   });
 });
@@ -53,7 +53,7 @@ test.describe("mobile", () => {
     const trigger = page.getByRole("button", { name: "Open menu" });
     await trigger.click();
     const panel = page.getByRole("dialog", { name: "Main navigation" });
-    await expect(panel.getByRole("link")).toHaveText(["Home", "About", "Projects", "Skills"]);
+    await expect(panel.getByRole("link")).toHaveText(["Home", "About", "Experience", "Skills"]);
     await expect(panel.getByRole("link", { name: "Home" })).toHaveAttribute("href", "/ru");
     await expect(panel.getByRole("link", { name: "Home" })).toHaveAttribute("aria-current", "page");
 

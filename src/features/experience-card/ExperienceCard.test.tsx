@@ -83,9 +83,9 @@ describe("ExperienceCard", () => {
     expect(screen.queryByRole("list")).not.toBeInTheDocument();
   });
 
-  it("links to the job on the projects page", () => {
+  it("links to the job on the experience page", () => {
     renderCard({ slug: "sony" });
 
-    expect(screen.getByRole("link", { name: "Learn more" })).toHaveAttribute("href", "/projects#sony");
+    expect(screen.getByRole("link", { name: "Learn more" })).toHaveAttribute("href", "/experience#sony");
   });
 });

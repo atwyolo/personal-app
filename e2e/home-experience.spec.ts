@@ -59,7 +59,7 @@ const switchSnapOff = (page: Page) =>
     track.style.scrollSnapType = "none";
   });
 
-// Experience block: the jobs from the content files. "Learn more" leads to its job on /projects, "All experience" to the page.
+// Experience block: the jobs from the content files. "Learn more" leads to its job on /experience, "All experience" to the page.
 test("shows the jobs from the content files in their order", async ({ page }) => {
   await page.goto("/en");
 
@@ -96,8 +96,8 @@ test("keeps the current locale in the links", async ({ page }) => {
   await page.goto("/de");
 
   const section = page.getByRole("region", { name: "Experience" });
-  await expect(section.getByRole("link", { name: "Learn more" }).first()).toHaveAttribute("href", "/de/projects#glovo");
-  await expect(section.getByRole("link", { name: "All experience" })).toHaveAttribute("href", "/de/projects");
+  await expect(section.getByRole("link", { name: "Learn more" }).first()).toHaveAttribute("href", "/de/experience#glovo");
+  await expect(section.getByRole("link", { name: "All experience" })).toHaveAttribute("href", "/de/experience");
 });
 
 test("styles all experience as the primary pill", async ({ page }) => {

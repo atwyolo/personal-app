@@ -1,20 +1,20 @@
 import type { FC } from "react";
 
-import { getJobAttributes, type ProjectJob } from "../project-job";
+import { getJobAttributes, type ExperienceJob } from "../experience-job";
 
-interface ProjectsBarProps {
-  jobs: ProjectJob[];
+interface ExperienceBarProps {
+  jobs: ExperienceJob[];
 }
 
 /** The phone's sticky bar: the job being read and a segment of progress per job. It repeats the articles, so it is hidden from screen readers. */
-export const ProjectsBar: FC<ProjectsBarProps> = (props) => {
+export const ExperienceBar: FC<ExperienceBarProps> = (props) => {
   const { jobs } = props;
 
   if (jobs.length === 0) return null;
 
   return (
     <div
-      data-projects-bar
+      data-experience-bar
       aria-hidden
       className="sticky top-16 z-[5] flex flex-col gap-2 border-b border-card-border bg-card px-4 pt-2.5 pb-3 lg:hidden print:hidden"
     >

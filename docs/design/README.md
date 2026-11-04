@@ -17,7 +17,7 @@ These are the approved designs for the whole site, ready to implement: seven pub
 | # | Page | Route | Spec | Rendering |
 |---|---|---|---|---|
 | 1 | Home | `/[locale]` | [[Home Page Handoff]] | static |
-| 2 | Projects (work experience) | `/[locale]/projects` | [[Projects Page Handoff]] | static, DB-backed |
+| 2 | Experience (work history) | `/[locale]/experience` | [[Experience Page Handoff]] | static, from the content files |
 | 3 | About | `/[locale]/about` | [[About Page Handoff]] | static |
 | 4 | Skills | `/[locale]/skills` | [[Skills Page Handoff]] | static, DB-backed (as Home) |
 | 5 | Blog list | `/[locale]/blog` | [[Blog Page Handoff]] | static, DB-backed, paginated on the server |
@@ -76,7 +76,7 @@ Build order:
   - `text-brand`, 600 weight, 15 px, underlined with a 2 px `deco` line offset 5 px. Min height 32 px, and 30 px below it on every page (owner's decision of 2026-11-02).
   - On hover, the chevron moves 3 px left.
   - It is a plain link (`/` for top-level pages, `/blog` for a post), never a step in the history: the visitor must not leave the site through it (owner's decision of 2026-11-02).
-  - On Projects (desktop) it sits at the top of the sticky aside. On phone it sits in a row above the sticky progress bar.
+  - On Experience (desktop) it sits at the top of the sticky aside. On phone it sits in a row above the sticky progress bar.
 - **Section labels** are mono, uppercase, 11–12 px, `muted-foreground`.
 - **Page heroes:** a mono label, an h1 at 56 px desktop / 36 px phone, and a one-line intro.
 - **Sticky side panels** (Skills, Blog, Contact) sit at `top: 20px` inside the content column on desktop. On phone they become normal blocks above the list. Blog and Contact add the collapsing behaviour described in their specs.
@@ -89,7 +89,7 @@ Build order:
   - The icon is in `brand`, and the arrow-up-right is in `brand`.
   - On hover, the border turns `brand`.
   - Download CV is the filled `primary` button.
-- **Anchors:** every work place has an id (`glovo`, `sony`, `epam`), and Home links to `/projects#<id>`. Anchored sections need `scroll-margin-top` equal to the header height (plus any sticky bar).
+- **Anchors:** every work place has an id (`glovo`, `sony`, `epam`), and Home links to `/experience#<id>`. Anchored sections need `scroll-margin-top` equal to the header height (plus any sticky bar).
 - **Motion** respects `prefers-reduced-motion`: reveals and progress animations are skipped, and content is visible immediately.
 - **All text is server-rendered.** Filters and scroll effects are small client components layered on top. With JavaScript off, every page still reads as a plain article or list.
 - **Rich text** from the admin (Tiptap) is stored as sanitized HTML. It is rendered with one shared `<RichText>` component whose styles match the post typography (scaled down outside posts).
