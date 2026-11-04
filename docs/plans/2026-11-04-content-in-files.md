@@ -120,7 +120,7 @@ Key mapping (`messages/en.json` root becomes `{ "Pages": { … } }`; `Meta` arri
 - `markdownToPlainText(source: string): string`: text content, blocks joined by `\n`.
 - Zod schemas `profileSchema`, `skillsSchema`, `experienceSchema`, `aboutPairSchema` with the frontmatter fields of the spec's table; dates as `isoDate` (`z.iso.date()` or a `Date` converted to `YYYY-MM-DD`); `whatsappPhone` E.164 (`/^\+[1-9]\d{6,14}$/`); `level` integer 1–10; URLs `https://` or absent.
 
-- [ ] Write the failing tests:
+- [x] Write the failing tests:
   - `loadLocalized` with no `ru` file returns the `en` data (Review focus 1).
   - A `ru` file with only `name` keeps every other `en` field and the `en` body.
   - A `ru` file whose `en` counterpart is missing throws.
@@ -129,8 +129,14 @@ Key mapping (`messages/en.json` root becomes `{ "Pages": { … } }`; `Meta` arri
   - An unquoted YAML date becomes `"2021-03-01"`.
   - `assertAllowedMarkdown` accepts `"# Title\n\nLine one  \nline two \\- escaped\n\n1. a\n2. *b* **c** [d](https://x.dev)"` (Review focus 3) and rejects `"<img src=x onerror=alert(1)>"` with `"html"` (Review focus 4), `"![a](b.png)"` with `"image"`, `"> q"` with `"blockquote"`, a fenced code block with `"code"`.
   - `markdownToPlainText("Lead.\n\n**Results:**\n\n- One\n- Two")` is `"Lead.\nResults:\nOne\nTwo"`.
-- [ ] Run: fail. Implement. Run: pass.
-- [ ] Definition of done. Stage.
+- [x] Run: fail. Implement. Run: pass.
+- [x] Definition of done. Stage. *Done: 30 new tests (unit 291/291), e2e 491 passed / 123 skipped, lint, tsc and build clean.*
+  - Ruling: `mdast-util-from-markdown` (+ `@types/mdast`, dev) instead of `unified` + `remark-parse`: the loader only needs the syntax tree, and that package is the parser `remark-parse` wraps, so one dependency instead of two and the same tree `react-markdown` builds. Cost if wrong: swap one import.
+  - Ruling: `mergeFields` and `loadLocalized` live in `localize.ts`, `readContentFile` and `listSlugs` in `read.ts`; `listSlugs` also rejects a locale file with no English counterpart (the spec's rule, which `loadLocalized` alone cannot see). Cost if wrong: a move.
+  - Ruling: a locale list item whose key English lacks throws (`domains: no English item with key "cor"`), the item-level form of the same rule. Cost if wrong: a translation typo stops the build instead of being ignored.
+  - Ruling: schemas are `z.strictObject`, so a misspelt optional field (`endDat`) fails instead of being dropped. Cost if wrong: none found.
+  - Ruling: tests build their files in a temporary folder (`test-tree.ts`) instead of `__fixtures__/`: each test shows the files it reads. Error messages name the file relative to the working directory, so the tests match the path's tail.
+  - Ruling: Vitest maps `server-only` to its empty `react-server` entry (`vitest.config.mts`), as the Next.js testing guide does for Jest.
 
 ## Task 4: `Markdown` component
 
