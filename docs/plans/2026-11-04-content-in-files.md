@@ -147,9 +147,11 @@ Key mapping (`messages/en.json` root becomes `{ "Pages": { … } }`; `Meta` arri
 **Interfaces:**
 - Produces: `Markdown: FC<MarkdownProps>` with `interface MarkdownProps { source: string; headingOffset?: number; className?: string }`. Same wrapper and list and bold styling as today's `RichText` default size (the `post` size is not ported). Not a client component; reads `Pages.Common.newTab` with `useTranslations`. `skipHtml` is on, as a second guard.
 
-- [ ] Failing tests (rendered inside `NextIntlClientProvider` with `en` messages): two paragraphs → two `<p>`; `**b**` → `<strong>` with `font-semibold`; `- a` → `<ul>` with the bullet classes; `1. a` → `<ol>`; `# T` with `headingOffset={2}` → an `<h3>` with the level-1 size classes; `###### T` with `headingOffset={2}` → `<h6>`; `[x](https://a.dev)` → `target="_blank"`, `rel="noopener noreferrer"` and the `(opens in a new tab)` text; `[x](/en/about)` → no `target`; a raw `<img>` in the source renders no `img`; the escaped `\-` renders as `-` (Review focus 3).
-- [ ] Run: fail. Implement with `react-markdown`'s `components`. Run: pass.
-- [ ] Definition of done. Stage.
+- [x] Failing tests (rendered inside `NextIntlClientProvider` with `en` messages): two paragraphs → two `<p>`; `**b**` → `<strong>` with `font-semibold`; `- a` → `<ul>` with the bullet classes; `1. a` → `<ol>`; `# T` with `headingOffset={2}` → an `<h3>` with the level-1 size classes; `###### T` with `headingOffset={2}` → `<h6>`; `[x](https://a.dev)` → `target="_blank"`, `rel="noopener noreferrer"` and the `(opens in a new tab)` text; `[x](/en/about)` → no `target`; a raw `<img>` in the source renders no `img`; the escaped `\-` renders as `-` (Review focus 3).
+- [x] Run: fail. Implement with `react-markdown`'s `components`. Run: pass.
+- [x] Definition of done. Stage. *Done: 10 new tests (unit 301/301), e2e 491 passed / 123 skipped, lint, tsc and build clean.*
+  - Ruling: links render through the existing `shared/ui/Link` (router for site paths, a new tab for web addresses); `Link.tsx` now exports `isWebHref` so `Markdown` adds the hidden "(opens in a new tab)" exactly when `Link` opens one. Site links in content are written without the locale (`/about`), since one file serves every locale. Cost if wrong: an author writing `/en/about` gets `/en/en/about`; the loader could reject it later.
+  - Ruling: the square markers are set on `ul` for its items (`*:` variant), because in react-markdown 10 an `li` cannot tell which list holds it; numbered lists use `list-decimal` with brand-colored mono numbers (Claude's call, no design). The test asserts the list's class instead of the item's. Cost if wrong: a styling tweak.
 
 ## Task 5: Export the database to files
 
