@@ -1,13 +1,13 @@
 ---
 tags: [spec, content, i18n, architecture]
-status: approved
+status: done
 date: 2026-11-04
 updated: 2026-11-04
 ---
 
 # Content in Files Design
 
-Status: **approved by the owner 2026-11-04.** Plan: [[2026-11-04-content-in-files]].
+Status: **done 2026-11-04**, Neon deleted the same day. Plan: [[2026-11-04-content-in-files]].
 
 Related: [[Content Model]], [[Localization]], [[Rendering Strategy]], [[ADR-0002 Database and ORM]], [[ADR-0003 Content Localization]], [[ADR-0004 Hand-written Admin]], [[ADR-0014 Metadata in the Database]], [[ADR-0007 Testing]], [[ADR-0013 Version Tracking]], [[Roadmap]].
 

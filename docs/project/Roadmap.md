@@ -7,7 +7,7 @@ updated: 2026-11-04
 
 Each stage ends with a working build.
 
-**Content in files** ([[2026-11-04-content-in-files-design]]): the owner changed the foundation on 2026-11-04, see [[2026-11-04-content-in-files]] and [[ADR-0015 Content in Files]]. No database: every page and all metadata read `messages/` (JSON + Markdown); new content arrives with a deploy. The blog was removed from the code, the contact page and the admin left the plan, and Projects became Experience (`/experience`). The Neon database is deleted after the owner confirms the site on files in production.
+**Content in files** ([[2026-11-04-content-in-files-design]]): the owner changed the foundation on 2026-11-04, see [[2026-11-04-content-in-files]] and [[ADR-0015 Content in Files]]. No database: every page and all metadata read `messages/` (JSON + Markdown); new content arrives with a deploy. The blog was removed from the code, the contact page and the admin left the plan, and Projects became Experience (`/experience`). Live as `0.9.0`, released as `1.0.0` the same day; the Neon database and its variables were deleted on 2026-11-04 after the owner confirmed the site on files in production.
 
 **Home page** ([[2026-10-29-home-page-design]]): done 2026-11-02. It spans stages 1–3 and borrows blocks from later ones. Verification on Vercel: desktop 100 on all four, mobile 98, 100, 100, 100 (2026-11-01), measured before the sliding navigation and the contact buttons of 2026-11-02; the iOS simulator check passed ([[2026-10-30-home-motion]]).
 
@@ -41,7 +41,7 @@ Each stage ends with a working build.
 - ~~**Stage 5 — Contact form**~~: dropped (owner, 2026-11-04).
 - ~~**Stage 6 — Admin**~~: dropped (owner, 2026-11-04). Content changes with a deploy.
 - ~~**Rich text**~~: dropped (2026-11-04). Markdown bodies render links, italic and numbered lists through `react-markdown`; underline does not exist in Markdown.
-- [ ] **Stage 7 — Deploy**: Vercel project, Vercel Blob for files. The Neon integration and its env vars are removed after the owner confirms the site on files (Task 10 of [[2026-11-04-content-in-files]]). *In progress:* the public Blob store holds the photo and CV, uploaded by hand (2026-10-30); builds show their version, and pull requests into `develop` must raise it ([[ADR-0013 Version Tracking]], 2026-11-02).
+- [ ] **Stage 7 — Deploy**: Vercel project, Vercel Blob for files. The Neon database and its env vars were removed on 2026-11-04 (Task 10 of [[2026-11-04-content-in-files]]). *In progress:* the public Blob store holds the photo and CV, uploaded by hand (2026-10-30); builds show their version, and pull requests into `develop` must raise it ([[ADR-0013 Version Tracking]], 2026-11-02).
 - [ ] **Stage 8 — Polish**: sitemap/robots, OG images, loading/error boundaries, Suspense streaming, Lighthouse pass, `theme-color` following the chosen theme. `robots.txt` must allow everything while `hiddenFromSearch` is true: a crawler that may not load a page never sees its `noindex`. **Last step:** set `Meta.Common.hiddenFromSearch` to `false` in `messages/en.json` once the domain is connected, deploy, then request indexing in Search Console.
 
 Later / optional: translations of the content (`messages/<locale>/`), a Markdown CV in a separate repository built from the same files, analytics.
