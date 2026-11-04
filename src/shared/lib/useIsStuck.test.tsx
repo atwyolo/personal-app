@@ -15,8 +15,6 @@ const Probe = (props: { onStuck: (stuck: boolean) => void }) => {
 
 describe("useIsStuck", () => {
   beforeEach(() => {
-    // Runs the frame at once. It returns 0 because the hook stores the id after the callback has reset it:
-    // a non-zero id would look like a frame still pending and block every later measurement.
     vi.spyOn(window, "requestAnimationFrame").mockImplementation((callback) => {
       callback(0);
       return 0;
@@ -27,9 +25,6 @@ describe("useIsStuck", () => {
     vi.restoreAllMocks();
   });
 
-  // Safari reports a transitioning `top` at its end value: a panel folding from 64 px to 2 px reads "2px" while it is
-  // still at 30 px. Measured against that, it looked unstuck, unfolded, looked stuck again: a loop, seen in the iOS
-  // simulator on 2026-11-03. The unfolded offset in `--stick-top` never transitions.
   it("measures against the unfolded offset in --stick-top, not the transitioning top", () => {
     const seen: boolean[] = [];
     const { getByTestId } = render(<Probe onStuck={(stuck) => seen.push(stuck)} />);

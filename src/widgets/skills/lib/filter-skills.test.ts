@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 
 import { filterSkills } from "./filter-skills";
 
-// In the page's order: level desc, then sort, then name.
 const skills = [
   { name: "React", level: 9, domain: "frameworks" },
   { name: "Docker", level: 6, domain: "tools" },

@@ -7,7 +7,6 @@ import { ButtonLink } from "@/shared/ui/ButtonLink";
 import { Carousel } from "@/shared/ui/Carousel";
 import { SectionHeader } from "@/shared/ui/SectionHeader";
 
-/** Home's Experience block: the jobs as cards in their `sort` order, then the way to the Experience page. */
 export const ExperienceCards: FC = async () => {
   const locale = await getLocale();
   const [jobs, t] = await Promise.all([getExperience(locale), getTranslations("Pages.Home.experience")]);

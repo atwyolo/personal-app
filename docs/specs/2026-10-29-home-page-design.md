@@ -2,6 +2,7 @@
 tags: [spec, home, architecture]
 status: done
 date: 2026-10-29
+updated: 2026-11-04
 ---
 
 # Home Page Design
@@ -37,9 +38,7 @@ src/
 │  ├─ ui/      our components and adapters over shadcn (own API)
 │  ├─ shadcn/  generated shadcn components (moved from src/components/ui), private to shared/ui
 │  └─ lib/     utilities: cn, locales, rich text (moved from src/lib)
-├─ db/         schema, queries, seed: infrastructure outside the layers (unchanged)
-├─ actions/    Server Actions, outside the layers, no import-order rules
-└─ schemas/    Zod schemas shared by forms and actions, outside the layers, no import-order rules
+└─ content/    the content loader and cached getters over messages/, outside the layers (was db/; actions/ and schemas/ left with the forms, 2026-11-04)
 ```
 
 - **Layer roles** (owner's definition): views = frames; widgets = large blocks (e.g. the whole Experience block: header, cards, carousel, "All experience"); features = concrete implementations of business logic (e.g. the experience card); shared = reusable, no business meaning (e.g. the tile).
@@ -47,9 +46,9 @@ src/
 - **Import rule:** a layer imports only from layers below it. No feature → feature, no widget → widget imports.
 - **No barrel `index.ts` files.** Import directly from component files. Reason: a barrel pulls every re-exported module into the importer's module graph, so a client component importing one helper from a barrel drags server-only/DB code with it (build error on `server-only`, or DB code in the browser bundle without it); `next dev` has no tree-shaking, so barrels also slow HMR.
 - **Public files rule:** only files in a slice's root are importable from outside (e.g. `features/experience-card/ExperienceCard.tsx`). Internals live in `lib/`, `model/`, `ui/` subfolders and are importable only from inside the slice.
-- **Enforcement:** `eslint-plugin-boundaries` v7 in `npm run lint` (Claude's call; Steiger is the official FSD alternative): layer order, public files rule, and `@/shared/shadcn/*` importable only from `shared/ui`. Also: `@base-ui/*` importable only from `shared/shadcn`; features may import `db` only with `import type`; every file in `src/` must belong to a layer (`no-unknown-files`).
+- **Enforcement:** `eslint-plugin-boundaries` v7 in `npm run lint` (Claude's call; Steiger is the official FSD alternative): layer order, public files rule, and `@/shared/shadcn/*` importable only from `shared/ui`. Also: `@base-ui/*` importable only from `shared/shadcn`; features may import `content` only with `import type`; every file in `src/` must belong to a layer (`no-unknown-files`).
 - **Naming and code style:** JSX files are PascalCase, components are `FC` arrow functions with props destructured on the first line; see `CLAUDE.md` → Code style (owner's rule, 2026-10-29).
-- **Data access:** only views and widgets (Server Components) call `src/db/queries`. Features receive data as serializable props, so they stay testable in Vitest without a database.
+- **Data access:** only views and widgets (Server Components) call the `src/content` getters. Features receive data as serializable props, so they stay testable in Vitest without reading files.
 - **Next special files** stay in `src/app`. A route file imports its view and re-exports `generateMetadata` / `generateStaticParams` when needed.
 - Next.js is unopinionated about project structure and documents "project files outside `app`" as a strategy; the rules above are the explicit additions that keep it safe.
 

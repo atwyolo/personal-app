@@ -2,8 +2,6 @@ import type { Page } from "@playwright/test";
 
 import { expect, test } from "./fixtures";
 
-// Contact buttons: stacked under the photo, links built from the profile. The CV is checked by its URL only:
-// downloading it would hit Blob on every run.
 test("lists WhatsApp, mail, LinkedIn and the CV in that order", async ({ page }) => {
   await page.goto("/en");
 
@@ -40,7 +38,6 @@ test("opens WhatsApp and LinkedIn in a new tab, safely", async ({ page }) => {
 
 const CHANNELS = ["WhatsApp: +374 93 310039", "Mail: mikhail.aleksandrov.job@gmail.com", "LinkedIn profile"];
 
-/** The computed value of a theme token. A variable, not a utility class: Tailwind scans this file and would ship the class. */
 const themeColor = (page: Page, token: string) =>
   page.evaluate((name) => {
     const probe = document.createElement("i");
@@ -60,7 +57,6 @@ for (const colorScheme of ["light", "dark"] as const) {
 
     test.beforeEach(async ({ page }) => {
       await page.goto("/en");
-      // The tokens below are read from the page, so this is what proves the theme really changed.
       await expect(page.locator("html")).toHaveClass(new RegExp(`\\b${colorScheme}\\b`));
     });
 

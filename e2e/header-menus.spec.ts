@@ -2,7 +2,6 @@ import type { Locator, Page } from "@playwright/test";
 
 import { expect, test } from "./fixtures";
 
-// The selected item of the locale and theme menus is in the accent color as a whole: label, hint and check.
 const colorOf = (page: Page, className: string) =>
   page.evaluate((name) => {
     const probe = document.createElement("i");

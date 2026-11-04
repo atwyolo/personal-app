@@ -7,7 +7,6 @@ import { LocaleMenu } from "./LocaleMenu";
 
 const replace = vi.hoisted(() => vi.fn());
 
-// next-intl navigation needs the Next router; the test checks what the menu asks it to do.
 vi.mock("@/shared/lib/i18n/navigation", () => ({
   usePathname: () => "/blog",
   useRouter: () => ({ replace }),

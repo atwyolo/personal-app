@@ -1,4 +1,3 @@
-// TEMPORARY: minimal 404 inside the locale layout. Real copy and styling come with the design pass.
 import type { FC } from "react";
 
 const NotFound: FC = () => (

@@ -37,8 +37,15 @@ describe("content schemas", () => {
     expect(experienceSchema.safeParse({ ...job, endDat: "2024-01-01" }).success).toBe(false);
   });
 
-  it("converts an unquoted YAML date back to YYYY-MM-DD", () => {
-    expect(experienceSchema.parse({ ...job, startDate: new Date("2023-01-01") }).startDate).toBe("2023-01-01");
+  it("accepts a job that ends after it starts", () => {
+    expect(experienceSchema.safeParse({ ...job, endDate: "2024-06-01" }).success).toBe(true);
+  });
+
+  it("rejects a job that ends before it starts, naming endDate", () => {
+    const result = experienceSchema.safeParse({ ...job, endDate: "2022-12-01" });
+
+    expect(result.success).toBe(false);
+    expect(result.error?.issues[0].path).toEqual(["endDate"]);
   });
 
   it("rejects an About pair without its question", () => {

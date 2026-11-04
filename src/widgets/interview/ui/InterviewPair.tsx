@@ -8,13 +8,11 @@ interface InterviewPairProps {
   initials: string;
 }
 
-/** One question and its answer. The title stays out of the `h2`, so the heading reads as the question alone. */
 export const InterviewPair: FC<InterviewPairProps> = (props) => {
   const { pair, initials } = props;
   const { slug, questionTitle, questionMessage, answerTitle, answerMessage } = pair;
 
   return (
-    // The margin clears the header, the chips and 12 px of air when a chip scrolls here. `tabIndex` lets a chip move the focus.
     <section
       id={slug}
       tabIndex={-1}

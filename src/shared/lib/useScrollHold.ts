@@ -1,20 +1,13 @@
 import { useCallback, useEffect, useRef } from "react";
 
-/**
- * What a visitor's own scroll starts with. `scroll` itself cannot tell it from the scroll a click started,
- * so these only mark the intent, and the next `scroll` confirms it. A press that moves nothing changes nothing.
- */
 const HAND_INPUT_EVENTS = ["wheel", "touchmove", "keydown", "pointerdown"] as const;
 
 interface UseScrollHold {
-  /** Holds a choice from now on. The press that made the choice does not count as the visitor's scroll. */
   hold: () => void;
-  /** Ends the hold without a scroll, e.g. for a page that came back from the kept routes with its old state. */
   release: () => void;
   isHeld: () => boolean;
 }
 
-/** Keeps a chosen section until the visitor scrolls by hand, for links that scroll the page to a section themselves. */
 export const useScrollHold = (): UseScrollHold => {
   const heldRef = useRef(false);
   const handInputRef = useRef(false);

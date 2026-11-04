@@ -8,14 +8,9 @@ import { Markdown } from "@/shared/ui/Markdown";
 import { Tile } from "@/shared/ui/Tile";
 
 interface AboutProps {
-  /** Grid placement from the page. */
   className?: string;
 }
 
-/**
- * About tile of the first screen: the whole `aboutShort` document on every breakpoint, then a link to the About page.
- * The first paragraph is the lead, which only this block enlarges, so its size lives here and not in Markdown.
- */
 export const About: FC<AboutProps> = async (props) => {
   const { className } = props;
   const locale = await getLocale();

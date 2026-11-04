@@ -90,7 +90,6 @@ describe("buildSiteMetadata", () => {
   it("gives pages without a title the default one, with no template around full titles", () => {
     const metadata = buildSiteMetadata(noIcons);
 
-    // A layout's string title is the default of its child segments, as `title.default` would be.
     expect(metadata.title).toBe("M. A.");
   });
 
@@ -134,7 +133,6 @@ describe("buildSiteMetadata", () => {
     });
 
     expect(metadata.icons).toEqual({
-      // `sizes="32x32"`, not "any", on the .ico: with "any" Chromium prefers it over the SVG.
       icon: [
         { url: ico, sizes: "32x32" },
         { url: png, type: "image/png", sizes: "96x96" },

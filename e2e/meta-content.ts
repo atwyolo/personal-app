@@ -4,12 +4,6 @@ import path from "node:path";
 import { mergeMessages, type MessagesTree } from "@/shared/lib/i18n/merge-messages";
 import type { Locale } from "@/shared/lib/locales";
 
-/**
- * The `Meta` node of the messages files for the e2e suite: tests compare the page with the files instead of hard-coding
- * a title, a URL or the `hiddenFromSearch` flag, so editing them later does not break the suite. A locale is merged over
- * English with the site's own `mergeMessages`, so a translation added later does not break it either.
- */
-
 export interface SiteMetaRow {
   siteName: string;
   defaultTitle: string;

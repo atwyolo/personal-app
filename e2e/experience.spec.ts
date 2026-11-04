@@ -11,7 +11,6 @@ const bar = (page: Page) => page.locator("[data-experience-bar]");
 const heading = (page: Page, name: string) => page.getByRole("heading", { level: 2, name });
 const activeBlock = (page: Page) => page.locator("[data-experience-stage] [data-active]");
 
-/** A click before hydration is the browser's own jump to the anchor: right for a visitor, but not what these tests read. */
 const openHydrated = async (page: Page) => {
   await page.goto("/en/experience");
   await expect(rows(page).first()).toHaveAttribute("style", /--progress/);
@@ -27,7 +26,6 @@ const getProgress = (page: Page) =>
     .locator(page.viewportSize()!.width >= 1024 ? "nav a[data-job]" : "[data-segment]")
     .evaluateAll((items) => items.map((item) => Number((item as HTMLElement).style.getPropertyValue("--progress"))));
 
-/** What the handoff's formula gives for the page as it stands now, to compare with what the component wrote. */
 const getExpectedProgress = (page: Page) =>
   page.evaluate(() =>
     [...document.querySelectorAll("main article")].map((item) => {
@@ -133,7 +131,6 @@ test.describe("content", () => {
     await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
   });
 
-  // Review focus 4.
   test("falls back to the English jobs in a locale without translations", async ({ page }) => {
     await page.goto("/ru/experience");
 
@@ -141,7 +138,6 @@ test.describe("content", () => {
     await expect(page.getByRole("heading", { level: 2 })).toHaveText(["Glovo", "Sony PlayStation", "EPAM"]);
   });
 
-  // Review focus 4.
   test("stays on the page through the language menu", async ({ page }) => {
     await page.goto("/en/experience");
 
@@ -267,7 +263,6 @@ test.describe("desktop layout", () => {
     });
   });
 
-  // Review focus 3.
   test.describe("in a short window", () => {
     test.use({ viewport: { width: 1024, height: 600 } });
 
@@ -279,7 +274,6 @@ test.describe("desktop layout", () => {
     });
   });
 
-  // Review focus 3. The stage shrinks and clips: nothing of it may cover a row, seen or unseen.
   test.describe("in a very short window", () => {
     test.use({ viewport: { width: 1280, height: 520 } });
 
@@ -313,7 +307,6 @@ test.describe("desktop layout", () => {
     });
   });
 
-  // Review focus 5.
   test.describe("at the first width of the split", () => {
     test.use({ viewport: { width: 1024, height: 800 } });
 
@@ -323,7 +316,6 @@ test.describe("desktop layout", () => {
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(1024);
     });
 
-    // The company name wraps inside the column's padding.
     test("keeps a long company name inside the column", async ({ page }) => {
       await page.goto("/en/experience");
 
@@ -391,7 +383,6 @@ test.describe("mobile layout", () => {
     await expect(article(page, "sony").getByRole("img", { name: "Sony PlayStation" })).toHaveJSProperty("tagName", "DIV");
   });
 
-  // Review focus 3.
   test.describe("turned to landscape", () => {
     test.use({ viewport: { width: 844, height: 390 } });
 
@@ -404,7 +395,6 @@ test.describe("mobile layout", () => {
     });
   });
 
-  // Review focus 5.
   test.describe("at 320 px", () => {
     test.use({ viewport: { width: 320, height: 640 } });
 
@@ -415,7 +405,6 @@ test.describe("mobile layout", () => {
     });
   });
 
-  // The name and the period no longer fit one line, so the bar is at its tallest here.
   test.describe("at 280 px", () => {
     test.use({ viewport: { width: 280, height: 640 } });
 
@@ -528,7 +517,6 @@ test.describe("reading progress on desktop", () => {
     await expect(rows(page).nth(1)).toHaveAttribute("aria-current", "true");
   });
 
-  // Review focus 2. The route stays in the DOM, so the hold of the last visit must not come back with it.
   test("starts over after leaving for another page and coming back through the menu", async ({ page }) => {
     await openHydrated(page);
     await rows(page).nth(2).click();
@@ -544,7 +532,6 @@ test.describe("reading progress on desktop", () => {
     await expectProgressToMatchPage(page);
   });
 
-  // Review focus 2. Wherever the browser puts the page on the way back, the column must agree with it.
   test("agrees with the page after the browser's Back", async ({ page }) => {
     await openHydrated(page);
     await rows(page).nth(1).click();
@@ -568,7 +555,6 @@ test.describe("reading progress on desktop", () => {
     await expect(rows(page).nth(expected)).toHaveAttribute("aria-current", "true");
   });
 
-  // Review focus 3.
   test.describe("in a tall window", () => {
     test.use({ viewport: { width: 1280, height: 1400 } });
 
@@ -631,7 +617,6 @@ test.describe("reading progress on phones", () => {
     await expect.poll(() => getProgress(page)).toEqual([1, 1, 1]);
   });
 
-  // Review focus 3.
   test("recomputes the bars when the phone turns", async ({ page }) => {
     await page.goto("/en/experience");
     await scrollToJob(page, "sony");
@@ -646,7 +631,6 @@ test.describe("reading progress on phones", () => {
 });
 
 test.describe("deep links", () => {
-  // Review focus 1.
   test("lands a fresh link to a job below the sticky bars, with that job active", async ({ page, isMobile }) => {
     await page.goto("/en/experience#epam");
 
@@ -693,10 +677,8 @@ test.describe("in print", () => {
 });
 
 test.describe("old address", () => {
-  // The browser logs its own console error for any 404 document.
   test.use({ allowedConsoleErrors: [/status of 404/] });
 
-  // The page moved from /projects without a redirect (owner, 2026-11-04): the site is hidden from search engines.
   test("/projects is no longer a page", async ({ page }) => {
     const response = await page.goto("/en/projects");
 

@@ -49,18 +49,19 @@ Pages
 - **`skills.md`:** `main` puts a skill in the hero chips (by `sort`, then name); `top` puts it in "My top skills" on Home, without a limit. Skill lists sort by level desc, then `sort`, then name. A domain with no skills is hidden. A locale's `skills.md` translates domain labels; its lists merge by `key` and `name`, never by index, and an item English does not have fails.
 - **`cvUrl`** is the Blob `downloadUrl` (`?download=1`), because `<a download>` is ignored cross-origin. A locale may set its own CV.
 - **Cross-file checks:** every skill of a job exists in `skills.md`; every skill's domain exists; names and keys are unique.
-- **Dates:** quote them (`"2021-03-01"`). An unquoted date, which YAML reads as a `Date`, is accepted and converted back.
+- **YAML 1.2** (the `yaml` package): an unquoted date stays the string written, and `yes`, `no`, `on`, `off` or `NO` stay text; only `true` and `false` are booleans. Frontmatter is read only from the very first line of the file. A YAML syntax error names the file, line and column.
+- **`endDate`** may not be before `startDate`.
 
 ## Markdown bodies
 
 CommonMark only: paragraphs, **bold**, *italic*, links, bullet and numbered lists (not nested), hard line breaks, headings. Images, tables, strikethrough, task lists, footnotes, code, block quotes, thematic breaks, nested lists and raw HTML fail the build with the file and the line (`src/content/markdown.ts`, which parses with GFM to see what Google Docs emits), so the files stay portable to the CV repository and render on GitHub. A YAML syntax error names its file too.
 
-- **Links:** a page of the site without the locale (`[About](/about)`); a web address opens in a new tab and says so.
+- **Links:** a page of the site without the locale (`[About](/about)`, `/experience#glovo`), `#anchor`, `https://` or `http://` (a new tab, announced), `mailto:`, `tel:`. Anything else fails the build; `/en/about` fails with the hint to write `/about`.
 - **Headings:** the level in the file sets the size (`#` the largest); the element is shifted below the page's outline, so `#` inside an About answer, which sits under an `h2`, renders as `h3`.
 - Google Docs: enable Markdown in Tools → Preferences, then Edit → Copy as Markdown. Styles "Heading 1–6" become `#`…`######`; font sizes and colors are not kept.
 
 ## Shared code
 
-`src/content/`: `read.ts` (files, slugs), `localize.ts` (merge, `loadLocalized`), `markdown.ts` (allowed nodes, plain text), `schemas.ts`, `order.ts`, and one getter module per entity (`profile`, `skills`, `experience`, `about`, `meta`), each a pure `read*` plus a cached `get*`.
+`src/content/`: `read.ts` (files, frontmatter, slugs), `localize.ts` (merge, `loadLocalized`), `markdown.ts` (allowed nodes and links), `schemas.ts`, `order.ts`, and one getter module per entity (`profile`, `skills`, `experience`, `about`, `meta`), each a pure `read*` plus a cached `get*`.
 
 Related: [[Localization]], [[Rendering Strategy]]

@@ -1,6 +1,5 @@
 import { expect, test } from "./fixtures";
 
-// Hero tile: the first block of the home page, built from the profile (name, headline, hero skills).
 test("shows the name as the page heading, the headline and the hero skills", async ({ page }) => {
   await page.goto("/en");
 
@@ -14,12 +13,10 @@ test("shows the name as the page heading, the headline and the hero skills", asy
 test.describe("desktop", () => {
   test.skip(({ isMobile }) => isMobile, "the four-column grid starts at lg");
 
-  // Columns 2-4 of the grid: column 1 is left for the photo and contacts.
   test("sits in columns 2 to 4 of the grid", async ({ page }) => {
     await page.goto("/en");
 
     const box = await page.getByRole("region", { name: "Mikhail Aleksandrov" }).boundingBox();
-    // Viewport 1280: 20px on the left, 60px on the right, columns (1200 - 3 * 16) / 4 = 288.
     expect(box?.x).toBeCloseTo(20 + 288 + 16, 0);
     expect(box?.width).toBeCloseTo(288 * 3 + 16 * 2, 0);
   });

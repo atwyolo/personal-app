@@ -5,7 +5,6 @@ import { expect, test } from "./fixtures";
 const getCarousel = (page: Page) => page.getByRole("group", { name: "Experience" });
 const getTrack = (page: Page) => getCarousel(page).getByRole("group", { name: "1 of 3" }).locator("..");
 
-/** Presses the next arrow and records the track's offset on every frame until it reaches the second card. */
 const recordScrollToSecondCard = async (page: Page, secondCard: number) => {
   const next = await getCarousel(page).getByRole("button", { name: "Next" }).elementHandle();
 
@@ -25,7 +24,6 @@ const recordScrollToSecondCard = async (page: Page, secondCard: number) => {
   );
 };
 
-/** A real touch gesture, so the browser's own scroll-snap decides where the track stops. */
 const swipeToNextCard = async (page: Page) => {
   await getCarousel(page).getByRole("group", { name: "1 of 3" }).scrollIntoViewIfNeeded();
 
@@ -39,7 +37,6 @@ const swipeToNextCard = async (page: Page) => {
   });
 };
 
-/** Moves to a card with the arrow, then waits for the track to stop on it. */
 const goToCard = async (page: Page, card: number, step: number) => {
   for (let position = 2; position <= card; position += 1) {
     await getCarousel(page).getByRole("button", { name: "Next" }).click();
@@ -49,17 +46,14 @@ const goToCard = async (page: Page, card: number, step: number) => {
   await expect.poll(() => getTrack(page).evaluate((track) => track.scrollLeft)).toBe((card - 1) * step);
 };
 
-/** A resize observer reports once a frame: Chromium brings the old offset back first, the observer changes it later. */
 const waitForResizeObservers = (page: Page) =>
   page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
 
-// iOS Safari leaves the offset where it was after a rotation, Chromium moves it to the card. Without snap it stays too.
 const switchSnapOff = (page: Page) =>
   getTrack(page).evaluate((track) => {
     track.style.scrollSnapType = "none";
   });
 
-// Experience block: the jobs from the content files. "Learn more" leads to its job on /experience, "All experience" to the page.
 test("shows the jobs from the content files in their order", async ({ page }) => {
   await page.goto("/en");
 
@@ -73,7 +67,6 @@ test("shows the jobs from the content files in their order", async ({ page }) =>
 test.describe("when an image fails to load", () => {
   test.use({ allowedConsoleErrors: [/status of 404/] });
 
-  // Failing every image shows the placeholder whichever jobs have one in the content files.
   test("frames the image area with the placeholder", async ({ page, isMobile }) => {
     await page.route("**/_next/image**", (route) => route.fulfill({ status: 404 }));
     await page.goto("/en");
@@ -82,10 +75,8 @@ test.describe("when an image fails to load", () => {
     await expect.poll(() => placeholder.evaluate((element) => element.tagName)).toBe("DIV");
     await expect(placeholder).toHaveCSS("border-top-style", "dashed");
     await expect(placeholder).toHaveCSS("border-top-left-radius", "14px");
-    // Thin lines, or the stripes hide the dashes of a border in the same color.
     await expect(placeholder).toHaveCSS("background-image", /^repeating-linear-gradient\(135deg,.* 1px, .* 10px\)$/);
 
-    // `sizes` in ExperienceCard is derived from this box.
     const box = await placeholder.boundingBox();
     expect(box!.width).toBeCloseTo(isMobile ? 332 : 359.33, 1);
     expect(box!.height).toBe(isMobile ? 140 : 180);
@@ -107,7 +98,6 @@ test("styles all experience as the primary pill", async ({ page }) => {
   await expect(link).toHaveCSS("height", "44px");
   await expect(link).toHaveCSS("text-decoration-line", "none");
 
-  // A pill: the browser reports `rounded-full` as a huge number, so compare it with half the 44px height.
   const radius = await link.evaluate((element) => Number.parseFloat(getComputedStyle(element).borderTopLeftRadius));
   expect(radius).toBeGreaterThanOrEqual(22);
 });
@@ -157,7 +147,6 @@ test.describe("desktop layout", () => {
     await expect(track).toHaveCSS("scroll-snap-type", "none");
   });
 
-  // object-cover scales a 16:9 file by the 180px height: it renders 320px wide, more than the 274px box at this width.
   test("loads a file as wide as the image scaled by its height", async ({ page }) => {
     await page.setViewportSize({ width: 1024, height: 800 });
     await page.goto("/en");
@@ -268,7 +257,6 @@ test.describe("mobile layout", () => {
     await goToCard(page, 2, 700);
     await switchSnapOff(page);
 
-    // 700 px still fit a narrow track, between two cards. The last card would prove nothing: the browser clamps to it.
     await page.setViewportSize({ width: 390, height: 844 });
 
     await expect.poll(() => getTrack(page).evaluate((track) => track.scrollLeft)).toBe(370);
@@ -302,7 +290,6 @@ test.describe("mobile layout", () => {
     }
 
     await expect(next).toBeFocused();
-    // The focus ring must stay readable on an arrow that is otherwise dimmed.
     await expect(next).toHaveAttribute("aria-disabled", "true");
     await expect(next).toHaveCSS("opacity", "1");
   });
@@ -343,7 +330,6 @@ test.describe("mobile layout", () => {
   test("does not widen the page", async ({ page }) => {
     await page.goto("/en");
 
-    // Not `window.innerWidth`: on a phone it grows with the content, so a wider page would still match it.
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(page.viewportSize()?.width);
   });
 
@@ -358,7 +344,6 @@ test.describe("mobile layout", () => {
   });
 });
 
-// The column stops growing at 720 px, so the card fills 688 px from there up to the last width below lg.
 for (const width of [720, 1023]) {
   test.describe(`tablet layout at ${width} px`, () => {
     test.skip(({ isMobile }) => isMobile, "a width needs only one browser");
@@ -387,7 +372,6 @@ for (const width of [720, 1023]) {
       await expect.poll(() => getTrack(page).evaluate((track) => track.scrollLeft)).toBe(700);
     });
 
-    // `sizes` in ExperienceCard names 662px here: the card minus its border and padding.
     test("loads a file as wide as the image", async ({ page }) => {
       await page.goto("/en");
 

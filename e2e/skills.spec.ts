@@ -2,9 +2,6 @@ import type { Page } from "@playwright/test";
 
 import { expect, test } from "./fixtures";
 
-// The Skills page: every skill from the content files, filtered on the client. The owner edits the skills, so the tests
-// read properties (order, counts, matches), not names. A route left behind stays in the DOM, hidden, so every
-// locator keeps to what is visible.
 const rows = (page: Page) => page.getByRole("main").getByRole("meter").filter({ visible: true });
 const field = (page: Page) => page.getByRole("searchbox", { name: "Search skills" }).filter({ visible: true });
 const count = (page: Page) => page.getByRole("status").filter({ visible: true });
@@ -15,30 +12,25 @@ const rowNames = (page: Page) =>
 
 const panel = (page: Page) => page.locator("[data-filter-panel]").filter({ visible: true });
 const chipRow = (page: Page) => page.locator("[data-scroll-fade]").filter({ visible: true });
-/** The phone header's height: a stuck panel starts there. */
 const HEADER = 64;
 const bottom = (box: { y: number; height: number } | null) => Math.round(box!.y + box!.height);
 
-/** Scrolls the window and lets two frames pass, so a once-per-frame handler sees the move. */
 const scrollBy = async (page: Page, dy: number) => {
   await page.evaluate((y) => window.scrollBy(0, y), dy);
   await page.evaluate(() => new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done))));
 };
 
-/** `RevealOnce` marks `<html>` from an effect: typing before that would go to a field React does not own yet. */
 const openHydrated = async (page: Page, path = "/en/skills") => {
   await page.goto(path);
   await expect(page.locator("html")).toHaveAttribute("data-revealed", "");
 };
 
-/** WCAG contrast of the chip's count against the chip, its opacity included. */
 const countContrast = (chip: ReturnType<typeof chips>) =>
   chip.evaluate((button) => {
     const rgb = (value: string) => value.match(/[\d.]+/g)!.map(Number);
     const count = button.querySelector("span")!;
     const [r, g, b] = rgb(getComputedStyle(count).color);
     const alpha = Number(getComputedStyle(count).opacity) * (rgb(getComputedStyle(count).color)[3] ?? 1);
-    // A transparent chip shows what is under it: the first ancestor with an opaque background.
     let element: Element | null = button;
     let background = rgb(getComputedStyle(element).backgroundColor);
     while ((background[3] ?? 1) === 0 && element.parentElement) {
@@ -63,7 +55,6 @@ test.describe("content", () => {
     await expect(page.getByRole("link", { name: "Back" })).toHaveAttribute("href", "/en");
     await expect(page.getByRole("heading", { level: 1, name: "Skills" })).toBeVisible();
     await expect(page.getByText("Everything I work with, rated from 1 to 10. Search or filter by domain.")).toBeVisible();
-    // Owner's corrections: no small "Skills" label under Back, no "All skills" label above the tile.
     await expect(page.getByRole("main").getByText("Skills", { exact: true })).toHaveCount(1);
     await expect(page.getByRole("main").getByText("All skills", { exact: true })).toHaveCount(0);
   });
@@ -117,7 +108,6 @@ test.describe("content", () => {
   });
 });
 
-// Forced colors (Windows high contrast) drop box-shadow rings and recolor borders, so the focus needs an outline.
 test("shows the focus of the search in forced colors", async ({ page }) => {
   await page.emulateMedia({ forcedColors: "active" });
   await page.goto("/en/skills");
@@ -134,7 +124,6 @@ test.describe("filters", () => {
     const query = all[0].slice(0, 3);
 
     await field(page).pressSequentially(query);
-    // Right after typing, the pause has not passed yet.
     expect(await rows(page).count()).toBe(all.length);
 
     await expect
@@ -180,8 +169,6 @@ test.describe("filters", () => {
 test.describe("leaving and coming back", () => {
   test.skip(({ isMobile }) => isMobile, "the header links are in the menu on phones");
 
-  // Owner's decision: the filters live only while the visitor is on the page. Next keeps the left route mounted,
-  // so the explorer resets itself each time the page is shown again.
   test("starts over with an empty search and the full list", async ({ page }) => {
     await openHydrated(page);
     const total = await rows(page).count();
@@ -205,7 +192,6 @@ test.describe("phone layout", () => {
   test.skip(({ isMobile }) => !isMobile, "phones only");
   test.use({ viewport: { width: 360, height: 780 } });
 
-  // iOS Safari zooms into a field whose text is smaller than 16 px and stays zoomed.
   test("keeps the search text at 16 px, so iOS does not zoom in", async ({ page }) => {
     await page.goto("/en/skills");
 
@@ -305,7 +291,6 @@ test.describe("phone layout", () => {
     test("moves the panel without a transition", async ({ page }) => {
       await page.goto("/en/skills");
 
-      // `transition-property: none` means no transition at all, whatever the duration says.
       await expect(panel(page)).toHaveCSS("transition-property", "none");
     });
   });
@@ -326,7 +311,6 @@ test.describe("desktop layout", () => {
     await expect(field(page)).toHaveCSS("font-size", "15px");
   });
 
-  // WCAG 1.4.3: the 12 px count on a chip needs 4.5:1, at rest and under the pointer, in the light theme.
   test("keeps the chip counts readable in the light theme", async ({ page }) => {
     await page.emulateMedia({ colorScheme: "light" });
     await page.goto("/en/skills");

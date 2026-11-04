@@ -9,11 +9,6 @@ import { locales } from "@/shared/lib/locales";
 import { Button } from "@/shared/ui/Button";
 import { Menu, type MenuItem } from "@/shared/ui/Menu";
 
-/**
- * Language switcher in the header: native names with the code as a hint. Picking a locale opens the same path
- * in that locale. The locale is the root layout's segment, so the whole tree remounts; on the request for the new page
- * the proxy stores the choice in the NEXT_LOCALE cookie when it differs from the browser language.
- */
 export const LocaleMenu: FC = () => {
   const t = useTranslations("Pages.Common.LocaleMenu");
   const locale = useLocale();
@@ -37,7 +32,6 @@ export const LocaleMenu: FC = () => {
     <Menu
       label={t("label")}
       trigger={
-        // The name has to contain the visible code, for voice control.
         <Button tone="brand" shape="circle-to-pill" aria-label={t("triggerAria", { code: currentCode })}>
           <span className="font-mono text-[13px]">{currentCode}</span>
           <ChevronDownIcon aria-hidden className="hidden size-3.5 lg:block" />

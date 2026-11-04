@@ -4,7 +4,6 @@ import { getReadingState } from "./reading-state";
 
 const getSections = (...tops: number[]) => tops.map((top) => ({ top, height: 800 }));
 
-// The line is at 400 px: 40% of a window 1000 px tall.
 const read = (sections: { top: number; height: number }[], atPageEnd = false) =>
   getReadingState({ sections, viewportHeight: 1000, atPageEnd });
 

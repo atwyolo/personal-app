@@ -1,6 +1,5 @@
 import type { FC, SVGProps } from "react";
 
-/** The design's outline glyphs: generic marks in the theme's color, not the official logos. */
 const OutlineIcon: FC<SVGProps<SVGSVGElement>> = (props) => (
   <svg
     viewBox="0 0 24 24"

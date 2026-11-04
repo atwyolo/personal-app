@@ -5,8 +5,6 @@ import { locales } from "@/shared/lib/locales";
 import { version } from "../package.json";
 import { readPageMeta, readSiteMeta } from "./meta-content";
 
-// Localized <head> from `Meta` in the messages files, compared with the files rather than with literals: editing a title,
-// a description or an image later, or translating them, must not break the suite. `ru` falls back to English per field.
 const pages = [
   { locale: "en", key: "Home", path: "" },
   { locale: "en", key: "About", path: "/about" },
@@ -27,7 +25,6 @@ for (const { locale, key, path } of pages) {
     await expect(page.locator('meta[property="og:site_name"]')).toHaveAttribute("content", site.siteName);
     await expect(page.locator('meta[property="og:locale"]')).toHaveAttribute("content", locale);
 
-    // No image anywhere means no tag at all, never one with an empty content.
     const image = meta.ogImageUrl ?? site.ogPlaceholderUrl;
     if (image) {
       await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", image);
@@ -49,7 +46,6 @@ for (const { locale, key, path } of pages) {
   });
 }
 
-// The deployment check: the tag names the build. The Playwright web server builds with BUILD_COMMIT, see playwright.config.ts.
 const appVersion = `${version}+abcdef0`;
 
 test("the home page carries the app version", async ({ page }) => {
@@ -59,10 +55,8 @@ test("the home page carries the app version", async ({ page }) => {
 });
 
 test.describe("404 page", () => {
-  // The browser logs its own console error for any 404 document.
   test.use({ allowedConsoleErrors: [/status of 404/] });
 
-  // In the DOM only: the 404 response is an error shell without the tag, and the page renders on the client.
   test("carries the app version", async ({ page }) => {
     await page.goto("/en/no-such-page");
 
@@ -76,7 +70,6 @@ test.describe("404 page", () => {
     await expect(page).toHaveTitle(site.defaultTitle);
   });
 
-  // Next adds its own `noindex` to a 404 page, so only the hidden case is ours to check here.
   test("is closed to search engines while the site is hidden", async ({ page }) => {
     const site = await readSiteMeta();
     test.skip(!site.hiddenFromSearch, "the site is open: the 404 page keeps only Next's own noindex");
@@ -86,8 +79,6 @@ test.describe("404 page", () => {
   });
 });
 
-// Site-wide metadata from `Meta.Common`. Each test follows the files, so flipping the flag or uploading
-// the icons later does not break the suite.
 for (const path of ["", "/about", "/experience"]) {
   test(`/en${path} follows hiddenFromSearch`, async ({ page }) => {
     const site = await readSiteMeta();
@@ -108,9 +99,6 @@ test("the icon links follow the content files", async ({ page }) => {
 
   const icons = await page.locator('link[rel="icon"]').evaluateAll((links) => links.map((l) => l.getAttribute("href")));
   const expected = [site.iconIcoUrl, site.iconPngUrl, site.iconSvgUrl].filter((url) => url !== null);
-  // No browser icon yet: exactly one empty icon. A browser asks the site root for /favicon.ico only when a page has
-  // no icon link at all, so the tag is the proof. Headless Chromium never requests a favicon, so watching the network
-  // here would pass with or without the tag.
   expect(icons).toEqual(expected.length > 0 ? expected : ["data:,"]);
 
   const apple = page.locator('link[rel="apple-touch-icon"]');
@@ -129,7 +117,6 @@ test("/favicon.ico follows the content files", async ({ request }) => {
     expect(response.status()).toBe(307);
     expect(response.headers().location).toBe(site.iconIcoUrl);
   } else {
-    // An empty body tells the handler's 404 from Next's own 404 page, which a missing route would return.
     expect(response.status()).toBe(404);
     expect(await response.body()).toHaveLength(0);
   }

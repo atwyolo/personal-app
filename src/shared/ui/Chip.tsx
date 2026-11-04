@@ -4,7 +4,6 @@ interface ChipProps {
   children: ReactNode;
 }
 
-/** Mono pill with colored text and no fill (same in both themes): skill tags in the hero and the experience. */
 export const Chip: FC<ChipProps> = (props) => {
   const { children } = props;
 

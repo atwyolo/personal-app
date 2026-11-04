@@ -5,11 +5,6 @@ import { cn } from "@/shared/lib/utils";
 
 const SEGMENTS = 10;
 
-/**
- * Grid placement per layout; the markup stays the same (name, bar, level), only the cells move.
- * - `home`: the name takes its own line below `lg`, the bar and the level share the next one.
- * - `list` (Skills page): the name and the level share the first line below `lg`, the bar runs under them.
- */
 const layouts = {
   home: {
     row: "grid-cols-[minmax(0,1fr)_44px] gap-x-3.5 gap-y-1.5 lg:grid-cols-[150px_minmax(0,1fr)_44px]",
@@ -27,14 +22,9 @@ const layouts = {
 
 interface SkillRowProps {
   skill: { name: string; level: number };
-  /** `home` by default. */
   layout?: keyof typeof layouts;
 }
 
-/**
- * A skill and its level on a ten-segment bar. A meter's content is presentational, so the label carries the name
- * and the level.
- */
 export const SkillRow: FC<SkillRowProps> = (props) => {
   const { skill, layout = "home" } = props;
   const { name, level } = skill;

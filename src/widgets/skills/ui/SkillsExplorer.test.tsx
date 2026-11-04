@@ -6,7 +6,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import messages from "../../../../messages/en.json";
 import { SkillsExplorer } from "./SkillsExplorer";
 
-// In the page's order: level desc, then sort, then name.
 const skills = [
   { name: "React", level: 9, domain: "frameworks" },
   { name: "Next.js", level: 9, domain: "frameworks" },
@@ -36,11 +35,8 @@ const count = () => screen.getByRole("status");
 const wait = (ms: number) => act(() => vi.advanceTimersByTime(ms));
 
 describe("SkillsExplorer", () => {
-  // `shouldAdvanceTime`: the fake clock also follows real time, so user-event's own pauses between keystrokes end;
-  // the 300 ms of the search are still moved by hand, and nothing in a test waits that long for real.
   beforeEach(() => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
-    // jsdom has no ResizeObserver, which the chips row uses to see whether it overflows.
     vi.stubGlobal(
       "ResizeObserver",
       class {
@@ -111,7 +107,6 @@ describe("SkillsExplorer", () => {
     expect(screen.getByText("No skills match “dock”.")).toBeVisible();
     expect(count()).toHaveTextContent("0 of 5");
 
-    // The chips count the query's matches, so "All" says 2.
     await user.click(screen.getByRole("button", { name: "All 2" }));
     expect(shownNames()).toEqual(["Docker", "Docker Compose"]);
     expect(screen.queryByText(/No skills match/)).not.toBeInTheDocument();
@@ -148,7 +143,6 @@ describe("SkillsExplorer", () => {
     expect(count()).toHaveTextContent("5 skills");
   });
 
-  // Owner's correction: a chip's count is what choosing it would show for the current query.
   it("counts the matches of the query on every chip, after the same pause", async () => {
     const user = renderExplorer();
     const chipTexts = () => within(screen.getByRole("group", { name: "Domain" })).getAllByRole("button").map((c) => c.textContent);

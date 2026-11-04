@@ -7,12 +7,10 @@ import messages from "../../../../messages/en.json";
 import { ExperienceBar } from "./ExperienceBar";
 import { ExperienceColumn } from "./ExperienceColumn";
 
-// next-intl navigation needs the Next router.
 vi.mock("@/shared/lib/i18n/navigation", () => ({
   Link: (props: AnchorHTMLAttributes<HTMLAnchorElement>) => <a {...props} />,
 }));
 
-// The experience folder may be emptied, and the page must stay a page.
 describe("with no jobs", () => {
   const renderColumn = () =>
     render(

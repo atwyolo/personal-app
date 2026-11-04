@@ -10,10 +10,6 @@ import { ExperienceSection } from "./ui/ExperienceSection";
 import { ExperienceBar } from "./ui/ExperienceBar";
 import { ExperienceColumn } from "./ui/ExperienceColumn";
 
-/**
- * The work history: a pinned column on desktop and a sticky bar on phones, both following the articles.
- * No jobs is a valid state: the experience folder may be emptied, and the Back link and the heading stay.
- */
 export const Experience: FC = async () => {
   const locale = await getLocale();
   const [experience, t] = await Promise.all([getExperience(locale), getTranslations("Pages.Experience")]);

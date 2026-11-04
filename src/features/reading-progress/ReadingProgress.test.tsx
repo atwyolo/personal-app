@@ -11,7 +11,6 @@ const rects: Record<string, { top: number; height: number }> = {
 const renderPage = () => {
   render(
     <>
-      {/* The page left behind holds the same id, first in the document, as it can after a language switch. */}
       <article id="sony" data-testid="hidden-copy" />
       <ReadingProgress>
         <a href="#glovo" data-job="0" data-active="" aria-current="true">
@@ -36,7 +35,6 @@ const renderPage = () => {
 
 beforeEach(() => {
   window.matchMedia = vi.fn().mockReturnValue({ matches: false });
-  // jsdom has no layout: every box is zero and the page always looks scrolled to its end.
   Object.defineProperty(document.documentElement, "scrollHeight", { configurable: true, value: 5000 });
   Element.prototype.getBoundingClientRect = vi.fn(function (this: Element) {
     return (rects[this.id] ?? { top: 0, height: 0 }) as DOMRect;
@@ -53,7 +51,6 @@ describe("ReadingProgress", () => {
   it("writes the progress on everything that follows a job", () => {
     renderPage();
 
-    // The window is 768 px tall in jsdom, so the line is at 307.2 px of the 800 px of the first job.
     expect(Number(screen.getByRole("link", { name: "Glovo" }).style.getPropertyValue("--progress"))).toBeCloseTo(0.384);
     expect(screen.getByTestId("stage-block").style.getPropertyValue("--progress")).toBe("0");
   });

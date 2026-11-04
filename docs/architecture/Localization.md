@@ -22,7 +22,7 @@ Chosen for job-market relevance: markets where the local language matters in hir
 - URL prefix for every locale, including the default (`/en/...`), to keep routing uniform and caching simple.
 - `lang` attribute and `hreflang` alternates come from the locale segment.
 - Dates/numbers formatted with `Intl` through `next-intl` helpers, never by hand.
-- A path without a locale (`/`, `/blog`) is redirected by `src/proxy.ts`: `NEXT_LOCALE` cookie first, then `Accept-Language`, then `en` (owner's decision, 2026-10-29). An unknown locale (`/xx`) is treated as a path and ends in a 404 under `/en/xx`.
+- A path without a locale (`/`, `/about`) is redirected by `src/proxy.ts`: `NEXT_LOCALE` cookie first, then `Accept-Language`, then `en` (owner's decision, 2026-10-29). An unknown locale (`/xx`) is treated as a path and ends in a 404 under `/en/xx`.
 - `NEXT_LOCALE` is set only when the visitor picks a locale other than their browser language, and lives one year (owner's decision; see the privacy item in [[Open Questions]]).
 - `messages/en.json` is the only complete messages file. Other locales contain only translated keys; `src/shared/lib/i18n/load-messages.ts` deep-merges them over English: empty strings and `null` count as missing, booleans and numbers override. The same holds per field for the Markdown files' frontmatter; a non-empty body replaces the English body.
 - Only `Pages` reaches the browser: the root layout gives `NextIntlClientProvider` `{ Pages }`, so `Meta` stays on the server.

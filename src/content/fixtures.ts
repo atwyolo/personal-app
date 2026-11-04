@@ -1,4 +1,3 @@
-/** Test helper: minimal valid content files, overridable per test. */
 export const skillsMd = [
   "---",
   "domains:",

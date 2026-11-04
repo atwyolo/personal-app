@@ -5,14 +5,9 @@ import { Link } from "@/shared/lib/i18n/navigation";
 
 interface BackLinkProps {
   label: string;
-  /** Path without the locale. */
   href?: string;
 }
 
-/**
- * The first element of an inner page, with the same 30 px below it everywhere.
- * Always a plain link, never a step in the history: that step could leave the site.
- */
 export const BackLink: FC<BackLinkProps> = (props) => {
   const { label, href = "/" } = props;
 

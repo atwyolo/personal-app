@@ -6,7 +6,6 @@ interface ExperienceBarProps {
   jobs: ExperienceJob[];
 }
 
-/** The phone's sticky bar: the job being read and a segment of progress per job. It repeats the articles, so it is hidden from screen readers. */
 export const ExperienceBar: FC<ExperienceBarProps> = (props) => {
   const { jobs } = props;
 

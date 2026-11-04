@@ -1,6 +1,5 @@
 import { expect, test } from "./fixtures";
 
-// Photo tile: the LCP element of the home page, served through the Next image optimizer.
 test("loads the photo through the image optimizer as AVIF", async ({ page }) => {
   const optimized = page.waitForResponse((response) => response.url().includes("/_next/image"));
   await page.goto("/en");
@@ -27,7 +26,6 @@ test("downloads the photo once, even with the error replay of next/image", async
 
   await page.goto("/en", { waitUntil: "networkidle" });
 
-  // Other images of the page go through the same optimizer, so match the source file.
   const sourceOf = (url: string) => new URL(url).searchParams.get("url");
   const photo = page.getByRole("img", { name: "Mikhail Aleksandrov" });
   const photoUrl = await photo.evaluate((image: HTMLImageElement) => image.currentSrc);
@@ -55,7 +53,6 @@ test.describe("desktop", () => {
     await page.goto("/en");
 
     const box = await page.getByRole("img", { name: "Mikhail Aleksandrov" }).locator("..").boundingBox();
-    // Viewport 1280: 20px on the left, 60px on the right, columns (1200 - 3 * 16) / 4 = 288.
     expect(box?.x).toBeCloseTo(20, 0);
     expect(box?.width).toBeCloseTo(288, 0);
     expect(box?.height).toBeGreaterThanOrEqual(380);

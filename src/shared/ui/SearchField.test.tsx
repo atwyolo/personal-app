@@ -6,8 +6,6 @@ import { describe, expect, it, vi } from "vitest";
 import { SearchField } from "./SearchField";
 
 describe("SearchField", () => {
-  // jsdom's role table does not know `<search>` yet, so the element is checked here and its `search` landmark role
-  // in a real browser by `e2e/skills.spec.ts`. An explicit `role="search"` would only repeat what browsers give it.
   it("holds a labelled search box in a search element", () => {
     const { container } = render(<SearchField label="Search skills" value="" onValueChange={() => {}} />);
 

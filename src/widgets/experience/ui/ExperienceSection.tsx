@@ -11,12 +11,6 @@ interface ExperienceSectionProps {
   job: ExperienceJob;
 }
 
-/**
- * One job. The margin clears the header and the phone's bar; when the bar wraps to two lines, the top padding covers the
- * difference. `tabIndex` lets a row move the focus here.
- * From `lg` the image moves to the stage of the left column. CSS cannot carry one element between the two places, so
- * there are two copies, and the hidden one is never fetched: a lazy image with `display: none` does not load.
- */
 export const ExperienceSection: FC<ExperienceSectionProps> = (props) => {
   const { job } = props;
   const { slug, company, role, period, duration, imageUrl, descriptionShort, descriptionFull, skills } = job;

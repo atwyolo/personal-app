@@ -22,6 +22,6 @@ Public pages: Home, About, Experience, Skills. The blog, the contact page and th
 
 ## Stack summary
 
-See [[ADR-0001 Framework and Rendering]], [[ADR-0005 UI Library]] and [[ADR-0015 Content in Files]]. Short version: Next 16 App Router · Tailwind v4 + shadcn/ui · next-intl · content in `messages/` (JSON + Markdown with frontmatter, `gray-matter` + Zod, `react-markdown`) · Vercel Blob for files.
+See [[ADR-0001 Framework and Rendering]], [[ADR-0005 UI Library]] and [[ADR-0015 Content in Files]]. Short version: Next 16 App Router · Tailwind v4 + shadcn/ui · next-intl · content in `messages/` (JSON + Markdown with frontmatter, `yaml` + Zod, `react-markdown`) · Vercel Blob for files.
 
 Related: [[Roadmap]], [[Content Model]], [[Rendering Strategy]]

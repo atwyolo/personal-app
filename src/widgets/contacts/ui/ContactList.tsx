@@ -23,10 +23,6 @@ interface ContactListProps {
   className?: string;
 }
 
-/**
- * The contact buttons. Every one is optional on purpose: the UI does not rely on the content schema's required fields,
- * so a contact without a value simply has no button. `display` decides, because a derived `href` is never empty.
- */
 export const ContactList: FC<ContactListProps> = (props) => {
   const { contacts, cvUrl, className } = props;
   const { whatsapp, email, linkedin } = contacts;
@@ -61,7 +57,6 @@ export const ContactList: FC<ContactListProps> = (props) => {
             mark={<EnvelopeIcon className={CHANNEL_ICON} />}
             className="reveal reveal-left"
           >
-            {/* The design's 15px keeps the address on one line from a 288px column; narrower ones wrap it at the dots, nowhere else. */}
             <span className="block text-base leading-tight lg:text-[15px]">
               {email.mailbox.split(".").map((part, index, parts) => (
                 <Fragment key={index}>

@@ -2,15 +2,10 @@ import type { Page } from "@playwright/test";
 
 import { expect, test } from "./fixtures";
 
-// The highlight of the desktop navigation: one indicator that slides between items, or the plain underline without support.
 const navigation = (page: Page) => page.getByRole("navigation", { name: "Main navigation" });
 
 const indicator = (page: Page) => navigation(page).locator(".nav-indicator");
 
-/**
- * Follows the links one after another and records the left edge and the width of the indicator on every frame. Each next link is clicked
- * `interruptAfter` ms after the previous one became current, so the indicator is still on its way.
- */
 const followAndSample = (page: Page, names: string[], interruptAfter = 0) =>
   page.evaluate(
     async ({ labels, delay }) => {
@@ -58,7 +53,6 @@ const followAndSample = (page: Page, names: string[], interruptAfter = 0) =>
     { labels: names, delay: interruptAfter },
   );
 
-/** Where every item sits, as x and width. */
 const readItems = (page: Page) =>
   navigation(page)
     .getByRole("link")
@@ -70,7 +64,6 @@ const readItems = (page: Page) =>
       }),
     );
 
-/** `RevealOnce` marks `<html>` from an effect: a click before that is a full page load, not client navigation. */
 const openHydrated = async (page: Page) => {
   await page.goto("/en");
   await expect(page.locator("html")).toHaveAttribute("data-revealed", "");
@@ -102,7 +95,6 @@ const expectUnder = async (page: Page, name: string) => {
 
 test.describe("desktop", () => {
   test.skip(({ isMobile }) => isMobile, "the navigation is shown from lg");
-  // Sections without a page yet lead to the 404 page (owner's decision); the browser logs the 404 itself.
   test.use({ allowedConsoleErrors: [/status of 404/] });
 
   test("the indicator sits under the current page, as wide as its item", async ({ page }) => {
@@ -114,7 +106,6 @@ test.describe("desktop", () => {
   test("it looks like the underline it replaces, and the link has none of its own", async ({ page }) => {
     await page.goto("/en");
 
-    // `exact`: the reserved width repeats the label, and it must stay out of the accessible name.
     const link = navigation(page).getByRole("link", { name: "Home", exact: true });
     await expect(link).toHaveCSS("text-decoration-line", "none");
     await expect(indicator(page)).toHaveCSS("border-top-width", "3px");
@@ -122,7 +113,6 @@ test.describe("desktop", () => {
   });
 
   test("leaves the focus ring whole on the current item", async ({ page }) => {
-    // After the wipe: its shutter is yellow too.
     await openHydrated(page);
     const link = navigation(page).getByRole("link", { name: "Home" });
 
@@ -168,14 +158,12 @@ test.describe("desktop", () => {
     const between = lefts.filter((left) => left > start.x + 1 && left < target.x - 1);
     expect(between.length).toBeGreaterThan(3);
     expect(lefts).toEqual([...lefts].sort((a, b) => a - b));
-    // Both edges move: the width grows on the way too, it does not snap at the end.
     const growing = frames.filter((frame) => frame.width > start.width + 0.5 && frame.width < target.width - 0.5);
     expect(growing.length).toBeGreaterThan(3);
   });
 
   test("turns around from where it is when another link interrupts it", async ({ page }) => {
     await openHydrated(page);
-    // Stretched, so the second click lands in the middle however long the first navigation takes.
     await page.addStyleTag({ content: ".nav-indicator { transition-duration: 3s !important; }" });
 
     const frames = await followAndSample(page, ["Skills", "About"], 1500);
@@ -184,7 +172,6 @@ test.describe("desktop", () => {
     const [, about, , skills] = await readItems(page);
     const lefts = frames.map((frame) => frame.left);
     const turn = Math.max(...lefts);
-    // Past the second target but short of the first, and with no jump: a jump is one step across most of the distance.
     expect(turn).toBeLessThan(skills.x - 1);
     expect(turn).toBeGreaterThan(about.x + 1);
     const steps = lefts.slice(1).map((left, index) => Math.abs(left - lefts[index]));
@@ -244,13 +231,11 @@ test.describe("desktop", () => {
     });
   });
 
-  // No browser Playwright ships lacks the feature, so the page gets a condition nothing supports: the fallback branch itself runs.
   test.describe("in a browser without anchor positioning", () => {
     test.beforeEach(async ({ page }) => {
       await page.route("**/en", async (route) => {
         const response = await route.fetch();
         const html = await response.text();
-        // The same length: the HTML also carries the CSS inside the RSC stream, whose rows are counted in bytes.
         const body = html.replaceAll("@supports (anchor-name:", "@supports (anchor-xame:");
         expect(body, "the stylesheet still holds the condition this test disables").not.toBe(html);
 
