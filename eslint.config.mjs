@@ -20,7 +20,6 @@ const architecture = {
       { type: "feature", pattern: "src/features/*", partialMatch: false, capture: ["slice"] },
       { type: "shadcn", pattern: "src/shared/shadcn", partialMatch: false },
       { type: "shared", pattern: "src/shared/*", partialMatch: false, capture: ["segment"] },
-      { type: "db", pattern: "src/db", partialMatch: false },
       { type: "content", pattern: "src/content", partialMatch: false },
     ],
     // Single files outside any element. Elements describe folders only, so files are classified here.
@@ -66,22 +65,22 @@ const architecture = {
             from: { element: { type: "view" } },
             allow: [
               { to: { element: { types: { anyOf: ["widget", "feature"] }, fileInternalPath: "*" } } },
-              { to: { element: { types: { anyOf: ["shared", "db", "content"] } } } },
+              { to: { element: { types: { anyOf: ["shared", "content"] } } } },
             ],
           },
           {
             from: { element: { type: "widget" } },
             allow: [
               { to: { element: { type: "feature", fileInternalPath: "*" } } },
-              { to: { element: { types: { anyOf: ["shared", "db", "content"] } } } },
+              { to: { element: { types: { anyOf: ["shared", "content"] } } } },
             ],
           },
-          // Features get data as props; they may only borrow types from db and content.
+          // Features get data as props; they may only borrow types from content.
           {
             from: { element: { type: "feature" } },
             allow: [
               { to: { element: { type: "shared" } } },
-              { to: { element: { types: { anyOf: ["db", "content"] } } }, dependency: { kind: "type" } },
+              { to: { element: { type: "content" } }, dependency: { kind: "type" } },
             ],
           },
           // shared/ui is the only consumer of generated shadcn code.
@@ -90,7 +89,7 @@ const architecture = {
             allow: { to: { element: { type: "shadcn" } } },
           },
           {
-            from: { element: { types: { anyOf: ["shared", "shadcn", "db", "content"] } } },
+            from: { element: { types: { anyOf: ["shared", "shadcn", "content"] } } },
             allow: { to: { element: { type: "shared", captured: { segment: "lib" } } } },
           },
         ],

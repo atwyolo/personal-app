@@ -224,8 +224,9 @@ Key mapping (`messages/en.json` root becomes `{ "Pages": { … } }`; `Meta` arri
 - Delete: `src/db/`, `drizzle.config.ts`, `e2e/meta-db.ts`, `src/shared/lib/rich-text.ts` + test.
 - Modify: `package.json` (drop `db:*` scripts and `drizzle-orm`, `drizzle-kit`, `@neondatabase/serverless`; `@next/env` only if `grep` shows no other user), `package-lock.json` via `npm uninstall`, `eslint.config.mjs` (drop the `db` element; `content` keeps its rules).
 
-- [ ] `grep -rn "DATABASE_URL\|@/db\|drizzle\|neon" src e2e *.ts *.mjs package.json` returns nothing.
-- [ ] Definition of done. Stage. The owner removes `DATABASE_URL` from `.env.local` when they want (the file is not versioned).
+- [x] `grep -rn "DATABASE_URL\|@/db\|drizzle\|neon" src e2e *.ts *.mjs package.json` returns nothing.
+- [x] Definition of done. Stage. The owner removes `DATABASE_URL` from `.env.local` when they want (the file is not versioned). *Done: unit 306/306 (the two `rich-text` tests left with it), e2e 495 passed / 123 skipped with `.env.local` moved away for the run, so the build and the site need no database variable; lint and tsc clean.*
+  - Ruling: `tsx` (dev) is removed too: only `db:seed` ran it. Cost if wrong: `npm i -D tsx` when a script needs it.
 
 ## Task 9: Documents
 
