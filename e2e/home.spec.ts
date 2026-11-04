@@ -32,8 +32,8 @@ test("keeps Cyrillic glyphs available on demand, without a preload", async ({ pa
   expect(faces.filter((face) => face.family.startsWith("Geist") && face.range.includes("U+400-45F"))).toHaveLength(1);
 });
 
-// Smoke test: the home page renders content that comes from the database.
-test("home page shows the profile from the database", async ({ page }) => {
+// Smoke test: the home page renders content that comes from the content files.
+test("home page shows the profile from the content files", async ({ page }) => {
   await page.goto("/en");
 
   await expect(page.getByRole("heading", { level: 1, name: "Mikhail Aleksandrov" })).toBeVisible();

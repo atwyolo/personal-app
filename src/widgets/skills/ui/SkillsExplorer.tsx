@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { type FC, useLayoutEffect, useRef, useState } from "react";
 
-import type { SkillList } from "@/db/queries/home";
+import type { SkillList } from "@/content/skills";
 import { SkillRow } from "@/features/skill-row/SkillRow";
 import { useDebouncedValue } from "@/shared/lib/useDebouncedValue";
 import { useFoldingPanel } from "@/shared/lib/useFoldingPanel";

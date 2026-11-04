@@ -3,20 +3,20 @@ import { expect, test } from "./fixtures";
 import { locales } from "@/shared/lib/locales";
 
 import { version } from "../package.json";
-import { readPageMeta, readSiteMeta } from "./meta-db";
+import { readPageMeta, readSiteMeta } from "./meta-content";
 
-// Localized <head> from the `meta_` tables, compared with the database rather than with literals: editing a title,
+// Localized <head> from `Meta` in the messages files, compared with the files rather than with literals: editing a title,
 // a description or an image later, or translating them, must not break the suite. `ru` falls back to English per field.
 const pages = [
-  { locale: "en", key: "home", path: "" },
-  { locale: "en", key: "about", path: "/about" },
-  { locale: "en", key: "projects", path: "/projects" },
-  { locale: "en", key: "skills", path: "/skills" },
-  { locale: "ru", key: "projects", path: "/projects" },
+  { locale: "en", key: "Home", path: "" },
+  { locale: "en", key: "About", path: "/about" },
+  { locale: "en", key: "Experience", path: "/projects" },
+  { locale: "en", key: "Skills", path: "/skills" },
+  { locale: "ru", key: "Experience", path: "/projects" },
 ] as const;
 
 for (const { locale, key, path } of pages) {
-  test(`/${locale}${path} has its metadata from the database and hreflang links`, async ({ page }) => {
+  test(`/${locale}${path} has its metadata from the messages files and hreflang links`, async ({ page }) => {
     const [meta, site] = await Promise.all([readPageMeta(key, locale), readSiteMeta(locale)]);
     await page.goto(`/${locale}${path}`);
 
@@ -69,7 +69,7 @@ test.describe("404 page", () => {
     await expect(page.locator('meta[name="app-version"]')).toHaveAttribute("content", appVersion);
   });
 
-  test("has the default title from the database", async ({ page }) => {
+  test("has the default title from the content files", async ({ page }) => {
     const site = await readSiteMeta();
     await page.goto("/en/no-such-page");
 
@@ -86,10 +86,10 @@ test.describe("404 page", () => {
   });
 });
 
-// Site-wide metadata from `meta_site_settings`. Each test follows the database, so flipping the flag or uploading
+// Site-wide metadata from `Meta.Common`. Each test follows the files, so flipping the flag or uploading
 // the icons later does not break the suite.
 for (const path of ["", "/about", "/projects"]) {
-  test(`/en${path} follows hidden_from_search`, async ({ page }) => {
+  test(`/en${path} follows hiddenFromSearch`, async ({ page }) => {
     const site = await readSiteMeta();
     await page.goto(`/en${path}`);
 
@@ -102,7 +102,7 @@ for (const path of ["", "/about", "/projects"]) {
   });
 }
 
-test("the icon links follow the database", async ({ page }) => {
+test("the icon links follow the content files", async ({ page }) => {
   const site = await readSiteMeta();
   await page.goto("/en");
 
@@ -121,7 +121,7 @@ test("the icon links follow the database", async ({ page }) => {
   }
 });
 
-test("/favicon.ico follows the database", async ({ request }) => {
+test("/favicon.ico follows the content files", async ({ request }) => {
   const site = await readSiteMeta();
   const response = await request.get("/favicon.ico", { maxRedirects: 0 });
 

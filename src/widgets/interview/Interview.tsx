@@ -1,15 +1,15 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import type { FC } from "react";
 
-import { getAboutPairs } from "@/db/queries/about";
-import { getProfile } from "@/db/queries/home";
+import { getAboutPairs } from "@/content/about";
+import { getProfile } from "@/content/profile";
 import { InterviewReveal } from "@/features/interview-reveal/InterviewReveal";
 import { QuestionNav } from "@/features/question-nav/QuestionNav";
 import { getInitials } from "@/shared/lib/initials";
 
 import { InterviewPair } from "./ui/InterviewPair";
 
-/** The conversation of the About page. No pairs is a valid state: the admin can delete them all, and the hero stays. */
+/** The conversation of the About page. No pairs is a valid state: the about folder may be emptied, and the hero stays. */
 export const Interview: FC = async () => {
   const locale = await getLocale();
   const [pairs, profile, t] = await Promise.all([

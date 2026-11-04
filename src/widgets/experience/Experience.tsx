@@ -1,13 +1,13 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import type { FC } from "react";
 
-import { getExperience } from "@/db/queries/home";
+import { getExperience } from "@/content/experience";
 import { ExperienceCard } from "@/features/experience-card/ExperienceCard";
 import { ButtonLink } from "@/shared/ui/ButtonLink";
 import { Carousel } from "@/shared/ui/Carousel";
 import { SectionHeader } from "@/shared/ui/SectionHeader";
 
-/** Experience block: the jobs in the database's order, then the way to the full list. */
+/** Experience block: the jobs in their `sort` order, then the way to the full list. */
 export const Experience: FC = async () => {
   const locale = await getLocale();
   const [jobs, t] = await Promise.all([getExperience(locale), getTranslations("Pages.Home.experience")]);

@@ -1,7 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import type { FC } from "react";
 
-import { getExperience } from "@/db/queries/home";
+import { getExperience } from "@/content/experience";
 import { ReadingProgress } from "@/features/reading-progress/ReadingProgress";
 import { formatMonthYear, getDurationYears, getYearSpan } from "@/shared/lib/period";
 
@@ -12,7 +12,7 @@ import { ProjectsColumn } from "./ui/ProjectsColumn";
 
 /**
  * The work history: a pinned column on desktop and a sticky bar on phones, both following the articles.
- * No jobs is a valid state: the admin can delete them all, and the Back link and the heading stay.
+ * No jobs is a valid state: the experience folder may be emptied, and the Back link and the heading stay.
  */
 export const Projects: FC = async () => {
   const locale = await getLocale();

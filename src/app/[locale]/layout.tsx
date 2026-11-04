@@ -26,7 +26,7 @@ const geistMono = Geist_Mono({
   preload: false,
 });
 
-// Site-wide metadata from the database: metadataBase, the app version, the default title, the icons and `noindex`.
+// Site-wide metadata from `Meta.Common` in the messages: metadataBase, the app version, the default title, the icons and `noindex`.
 export { generateMetadata } from "@/views/site-layout/metadata";
 
 // One prerendered tree per locale. Cache Components require at least one value for every root param.

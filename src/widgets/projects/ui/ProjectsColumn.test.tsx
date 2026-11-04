@@ -12,7 +12,7 @@ vi.mock("@/shared/lib/i18n/navigation", () => ({
   Link: (props: AnchorHTMLAttributes<HTMLAnchorElement>) => <a {...props} />,
 }));
 
-// The admin can delete every job, and the page must stay a page.
+// The experience folder may be emptied, and the page must stay a page.
 describe("with no jobs", () => {
   const renderColumn = () =>
     render(

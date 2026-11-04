@@ -3,7 +3,7 @@ import type { FC } from "react";
 
 import { Chip } from "@/shared/ui/Chip";
 import { Image } from "@/shared/ui/Image";
-import { RichText } from "@/shared/ui/RichText";
+import { Markdown } from "@/shared/ui/Markdown";
 
 import type { ProjectJob } from "../project-job";
 
@@ -43,7 +43,9 @@ export const ProjectSection: FC<ProjectSectionProps> = (props) => {
         />
       </div>
       <p className="text-base leading-[1.6] text-foreground-soft">{descriptionShort}</p>
-      {descriptionFull && <RichText doc={descriptionFull} className="text-base leading-[1.6] text-foreground-soft" />}
+      {descriptionFull && (
+        <Markdown source={descriptionFull} headingOffset={2} className="text-base leading-[1.6] text-foreground-soft" />
+      )}
       {skills.length > 0 && (
         <>
           <h3 className="mt-2 font-mono text-[13px] font-medium tracking-[0.08em] text-muted-foreground uppercase">

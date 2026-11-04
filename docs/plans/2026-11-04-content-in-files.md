@@ -194,11 +194,17 @@ Key mapping (`messages/en.json` root becomes `{ "Pages": { … } }`; `Meta` arri
 - Every getter: `"use cache"` + `cacheLife("max")`, no `cacheTag`. The content root is `path.join(process.cwd(), "messages")`. Cross-file checks run inside `getExperience` and `getSkills` (skills exist, domains exist; unique names).
 - `e2e/meta-content.ts`: `readPageMeta(key, locale)` and `readSiteMeta(locale)` with the same return types as `e2e/meta-db.ts`, reading the messages files through `mergeMessages`.
 
-- [ ] Failing tests over the fixtures: the getters' shapes; `getExperience` rejects a job whose skill `Vue` is missing from `skills.md`, naming `Vue` and the job file (Review focus 5); `getTopSkills` orders by level desc, then `sort`, then name; `getPageMeta("ru", "About")` falls back to `en` per field.
-- [ ] Implement the getters; switch every import; replace `RichText` with `Markdown`; switch `metadata.spec.ts` to `meta-content.ts`.
-- [ ] Add `outputFileTracingIncludes`. After `npm run build`: `grep -l "messages/en/profile.md" .next/server/app/**/*.nft.json` lists the `[locale]` routes, including `[...rest]` (Review focus 2). `grep -rl "hiddenFromSearch" .next/static` finds nothing (client messages are narrowed).
-- [ ] Definition of done, plus a new e2e test: `/ru/about` shows the first `en` question (Review focus 1).
-- [ ] Rerun the baseline script into `after.json`; `diff` shows no change. Stage.
+- [x] Failing tests over the fixtures: the getters' shapes; `getExperience` rejects a job whose skill `Vue` is missing from `skills.md`, naming `Vue` and the job file (Review focus 5); `getTopSkills` orders by level desc, then `sort`, then name; `getPageMeta("ru", "About")` falls back to `en` per field.
+- [x] Implement the getters; switch every import; replace `RichText` with `Markdown`; switch `metadata.spec.ts` to `meta-content.ts`.
+- [x] Add `outputFileTracingIncludes`. After `npm run build`: `grep -l "messages/en/profile.md" .next/server/app/**/*.nft.json` lists the `[locale]` routes, including `[...rest]` (Review focus 2). `grep -rl "hiddenFromSearch" .next/static` finds nothing (client messages are narrowed).
+- [x] Definition of done, plus a new e2e test: `/ru/about` shows the first `en` question (Review focus 1).
+- [x] Rerun the baseline script into `after.json`; `diff` shows no change. Stage. *Done: unit 308/308, e2e 493 passed / 123 skipped, lint, tsc and build clean; all 11 Markdown files are in the trace of every server route, `[...rest]` and `/favicon.ico` included. Against the database-backed capture after Task 2, the only difference is `li > p` becoming `li` in lists.*
+  - Ruling: every getter is split into a pure `read*(root, locale)` (tested on temporary trees) and a `"use cache"` wrapper reading `messages/`; `fixtures.ts` holds the shared test files. Cost if wrong: none.
+  - Ruling: `headingOffset` is 2 at all three call sites (Home's About tile, an About answer, a job's description): each text sits under an `h2`. The plan's 1 for the About tile was a slip. Cost if wrong: a heading level.
+  - Ruling: ties in names sort by code point (`byCodePoint` in `order.ts`), not `localeCompare`: the database's collation `C` put `RTK Query` before `React` and `styled-components` last, and the first capture caught `localeCompare` reordering the Skills page. Test: "breaks ties by name in code-point order" RED with `localeCompare`, GREEN with the fix. Cost if wrong: a natural, case-insensitive order is one line away if the owner prefers it.
+  - Ruling: tight Markdown lists render `li` without an inner `p` (CommonMark), where Tiptap had `li > p`. The text is the same and the `li` is the flex container with the marker, so the layout does not change. Cost if wrong: a visual check of the lists.
+  - Finding (not caused by this task): `e2e/projects.spec.ts` "recomputes the bars when the phone turns" fails about once in three parallel runs of the spec, on the committed database-backed version too (checked with the Task 6 work stashed). Reported to the owner; not fixed here.
+  - Ruling: comments that named the database, the `meta_` tables, the admin or cache tags now describe the files. `e2e/meta-db.ts` stays unused until Task 8 removes `src/db`.
 
 ## Task 7: Projects becomes Experience
 

@@ -12,6 +12,12 @@ const nextConfig: NextConfig = {
     inlineCss: true,
   },
   partialPrefetching: true,
+  // Content is read with fs at render time. Static pages read it during the build, but a render at request time (the 404
+  // of an unknown path, whose header shows the profile) runs in a function that holds only traced files, and `fs` paths
+  // built at runtime are not traced. Every server route gets the Markdown files.
+  outputFileTracingIncludes: {
+    "/**": ["./messages/**/*.md"],
+  },
   // Dev server only: the home subnet, to open the site on a phone whatever address the router hands out.
   allowedDevOrigins: ["192.168.1.*"],
   images: {

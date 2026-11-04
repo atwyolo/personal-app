@@ -59,8 +59,8 @@ const switchSnapOff = (page: Page) =>
     track.style.scrollSnapType = "none";
   });
 
-// Experience block: the jobs from the database. "Learn more" leads to its job on /projects, "All experience" to the page.
-test("shows the jobs from the database in their order", async ({ page }) => {
+// Experience block: the jobs from the content files. "Learn more" leads to its job on /projects, "All experience" to the page.
+test("shows the jobs from the content files in their order", async ({ page }) => {
   await page.goto("/en");
 
   const section = page.getByRole("region", { name: "Experience" });
@@ -73,7 +73,7 @@ test("shows the jobs from the database in their order", async ({ page }) => {
 test.describe("when an image fails to load", () => {
   test.use({ allowedConsoleErrors: [/status of 404/] });
 
-  // Failing every image shows the placeholder whichever jobs have one in the database.
+  // Failing every image shows the placeholder whichever jobs have one in the content files.
   test("frames the image area with the placeholder", async ({ page, isMobile }) => {
     await page.route("**/_next/image**", (route) => route.fulfill({ status: 404 }));
     await page.goto("/en");

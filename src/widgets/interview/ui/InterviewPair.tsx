@@ -1,7 +1,7 @@
 import type { FC } from "react";
 
-import type { AboutPair } from "@/db/queries/about";
-import { RichText } from "@/shared/ui/RichText";
+import type { AboutPair } from "@/content/about";
+import { Markdown } from "@/shared/ui/Markdown";
 
 interface InterviewPairProps {
   pair: AboutPair;
@@ -34,8 +34,9 @@ export const InterviewPair: FC<InterviewPairProps> = (props) => {
         </span>
         <div className="flex min-w-0 flex-col gap-3 rounded-[20px_20px_20px_6px] border border-card-border bg-card px-4 py-3.5 lg:px-5 lg:py-[18px]">
           <p className="text-base leading-[1.45] font-medium lg:text-[19px]">{answerTitle}</p>
-          <RichText
-            doc={answerMessage}
+          <Markdown
+            source={answerMessage}
+            headingOffset={2}
             className="text-[15px] leading-[1.6] text-foreground-soft lg:text-base lg:leading-[1.7]"
           />
         </div>

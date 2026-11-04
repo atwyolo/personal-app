@@ -1,6 +1,6 @@
 import { expect, test } from "./fixtures";
 
-// The About page: an interview read from the database. Sections are located by their id, because a route left
+// The About page: an interview read from the content files. Sections are located by their id, because a route left
 // behind stays in the DOM, hidden, and an unscoped `h1` could match it.
 const sections = (page: import("@playwright/test").Page) => page.locator("main section[id]");
 
@@ -29,6 +29,13 @@ const questions = [
 ];
 
 test.describe("about page", () => {
+  // No messages/ru/ folder exists: every field and every body falls back to English, file by file.
+  test("a locale without its own content files shows the English interview", async ({ page }) => {
+    await page.goto("/ru/about");
+
+    await expect(sections(page).locator("h2")).toHaveText(questions);
+  });
+
   test("shows the hero", async ({ page }) => {
     await page.goto("/en/about");
 

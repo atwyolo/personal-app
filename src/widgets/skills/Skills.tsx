@@ -1,7 +1,7 @@
 import { getLocale } from "next-intl/server";
 import type { FC } from "react";
 
-import { getSkills } from "@/db/queries/home";
+import { getSkills } from "@/content/skills";
 
 import { SkillsExplorer } from "./ui/SkillsExplorer";
 

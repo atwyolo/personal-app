@@ -1,4 +1,4 @@
-// Static per locale: every block reads its own cached data, which the admin refreshes by tag.
+// Static per locale: every block reads its own cached content, which changes with the next deploy.
 import type { FC } from "react";
 
 import { About } from "@/widgets/about/About";

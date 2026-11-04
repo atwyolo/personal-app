@@ -4,7 +4,7 @@ import type { LocaleAlternates } from "./i18n/alternates";
 import { type Locale, locales } from "./locales";
 
 /**
- * Builders of Next's `Metadata` from the `meta_` tables. Pure functions over plain data: `shared` does not import `db`,
+ * Builders of Next's `Metadata` from `Meta` in the messages. Pure functions over plain data: `shared` does not import `content`,
  * and the query results match these input types structurally.
  */
 

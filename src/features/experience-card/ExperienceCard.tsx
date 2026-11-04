@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
 import type { FC } from "react";
 
-import type { Experience } from "@/db/queries/home";
+import type { ExperienceEntry } from "@/content/experience";
 import { formatMonthYear, getDurationYears } from "@/shared/lib/period";
 import { cn } from "@/shared/lib/utils";
 import { Chip } from "@/shared/ui/Chip";
@@ -10,7 +10,7 @@ import { Link } from "@/shared/ui/Link";
 import { Tile } from "@/shared/ui/Tile";
 
 interface ExperienceCardProps {
-  job: Experience;
+  job: ExperienceEntry;
   className?: string;
 }
 

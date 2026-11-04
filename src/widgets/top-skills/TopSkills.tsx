@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import type { FC } from "react";
 
-import { getTopSkills } from "@/db/queries/home";
+import { getTopSkills } from "@/content/skills";
 import { SkillRow } from "@/features/skill-row/SkillRow";
 import { ButtonLink } from "@/shared/ui/ButtonLink";
 import { SectionHeader } from "@/shared/ui/SectionHeader";

@@ -1,7 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import type { FC } from "react";
 
-import { getProfile } from "@/db/queries/home";
+import { getProfile } from "@/content/profile";
 import { LocaleMenu } from "@/features/locale-menu/LocaleMenu";
 import { MobileNav } from "@/features/mobile-nav/MobileNav";
 import { ThemeMenu } from "@/features/theme-menu/ThemeMenu";

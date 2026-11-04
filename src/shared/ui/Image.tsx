@@ -6,7 +6,7 @@ import { type FC, useState } from "react";
 import { cn } from "@/shared/lib/utils";
 
 interface ImageProps {
-  /** Null renders the placeholder, e.g. a database field that is not filled yet. */
+  /** Null renders the placeholder, e.g. a content field that is not filled yet. */
   src: string | null;
   /** Also labels the placeholder, so a screen reader announces the same thing either way. */
   alt: string;

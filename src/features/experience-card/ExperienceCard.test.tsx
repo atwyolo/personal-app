@@ -2,7 +2,7 @@ import { render, screen, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import type { AnchorHTMLAttributes } from "react";
 import { describe, expect, it, vi } from "vitest";
-import type { Experience } from "@/db/queries/home";
+import type { ExperienceEntry } from "@/content/experience";
 import messages from "../../../messages/en.json";
 import { ExperienceCard } from "./ExperienceCard";
 
@@ -11,7 +11,7 @@ vi.mock("@/shared/lib/i18n/navigation", () => ({
   Link: (props: AnchorHTMLAttributes<HTMLAnchorElement>) => <a {...props} />,
 }));
 
-const job: Experience = {
+const job: ExperienceEntry = {
   slug: "glovo",
   company: "Glovo",
   role: null,
@@ -24,7 +24,7 @@ const job: Experience = {
   skills: ["Next.js", "Jest"],
 };
 
-const renderCard = (overrides: Partial<Experience> = {}) =>
+const renderCard = (overrides: Partial<ExperienceEntry> = {}) =>
   render(
     <NextIntlClientProvider locale="en" messages={messages}>
       <ExperienceCard job={{ ...job, ...overrides }} />

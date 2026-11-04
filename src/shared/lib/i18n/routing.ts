@@ -4,7 +4,7 @@ import { defaultLocale, locales } from "@/shared/lib/locales";
 
 /**
  * Locale routing for next-intl, shared by the proxy, navigation helpers and request config.
- * Locales come from the same list as the database enum.
+ * Locales come from the shared list in `src/shared/lib/locales.ts`.
  */
 export const routing = defineRouting({
   locales,

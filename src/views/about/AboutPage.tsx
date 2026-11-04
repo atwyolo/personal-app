@@ -1,7 +1,7 @@
 import { getLocale } from "next-intl/server";
 import type { FC } from "react";
 
-import { getProfile } from "@/db/queries/home";
+import { getProfile } from "@/content/profile";
 import { serializeJsonLd } from "@/shared/lib/json-ld";
 import { AboutHero } from "@/widgets/about-hero/AboutHero";
 import { Interview } from "@/widgets/interview/Interview";

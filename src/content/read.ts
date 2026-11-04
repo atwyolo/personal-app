@@ -16,6 +16,9 @@ export interface ContentFile {
   file: string;
 }
 
+/** The content folder of the site: `messages/` in the repository root. */
+export const contentRoot = path.join(process.cwd(), "messages");
+
 const isMissing = (error: unknown) => (error as NodeJS.ErrnoException).code === "ENOENT";
 
 /**
