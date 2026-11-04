@@ -14,13 +14,10 @@ import { readSkillsFile } from "./skills";
 export type HomeProfile = {
   name: string;
   headline: string;
-  /** Plain job title for structured data. */
   jobTitle: string;
   photoUrl: string | null;
   cvUrl: string | null;
-  /** Markdown: Home's About tile. */
   aboutShort: string;
-  /** Skills marked `main`, by `sort` then name. */
   heroSkills: string[];
   contacts: {
     whatsapp: { href: string; display: string };
@@ -56,7 +53,6 @@ export const readProfile = (root: string, locale: Locale): HomeProfile => {
   };
 };
 
-/** Cached as the other reads, see `skills.ts`. */
 export async function getProfile(locale: Locale): Promise<HomeProfile> {
   "use cache";
   cacheLife("max");

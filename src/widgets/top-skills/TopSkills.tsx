@@ -7,7 +7,6 @@ import { ButtonLink } from "@/shared/ui/ButtonLink";
 import { SectionHeader } from "@/shared/ui/SectionHeader";
 import { Tile } from "@/shared/ui/Tile";
 
-/** My top skills: the skills marked `top`, then the way to the full list. No marked skill, no block. */
 export const TopSkills: FC = async () => {
   const [{ skills, total }, t] = await Promise.all([getTopSkills(), getTranslations("Pages.Home.skills")]);
 

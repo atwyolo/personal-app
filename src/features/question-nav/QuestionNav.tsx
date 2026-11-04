@@ -15,20 +15,10 @@ interface QuestionNavProps {
 
 const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/**
- * The sticky row of question chips. It must sit next to its sections inside one parent: sections are looked up there,
- * because a page left behind stays in the DOM, hidden, with the same ids (`cacheComponents`).
- *
- * A chip is a real link, so it works without JavaScript. With it, the router only records the address (`scroll={false}`)
- * and the click scrolls: smooth scrolling stays on chips, where a site-wide `scroll-behavior` would also animate the
- * browser's own position restore on every history step. `replace` keeps chips out of the history, so the back button
- * leaves the page instead of walking the chips.
- */
 export const QuestionNav: FC<QuestionNavProps> = (props) => {
   const { label, items } = props;
   const navRef = useRef<HTMLElement>(null);
   const [active, setActive] = useState(0);
-  // A chosen section may be unable to rise to the top, so the choice holds until the visitor scrolls by hand.
   const { hold, isHeld } = useScrollHold();
 
   const getSections = () => [...(navRef.current?.parentElement?.querySelectorAll<HTMLElement>("section[id]") ?? [])];
@@ -41,7 +31,6 @@ export const QuestionNav: FC<QuestionNavProps> = (props) => {
 
     const section = getSections().find((item) => item.id === slug);
     section?.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth" });
-    // The router leaves the focus alone, and a keyboard or screen reader user has to arrive at the section too.
     section?.focus({ preventScroll: true });
   };
 
@@ -82,7 +71,6 @@ export const QuestionNav: FC<QuestionNavProps> = (props) => {
     };
   }, [hold, isHeld]);
 
-  // The row scrolls by itself: `scrollIntoView` would also move the page, against the scroll that changed the chip.
   useEffect(() => {
     const row = navRef.current;
     const chip = row?.querySelector<HTMLElement>('[aria-current="true"]');

@@ -5,7 +5,7 @@ updated: 2026-11-04
 
 # Rendering Strategy
 
-Every page file states its mode in a one-line comment. Since 2026-11-04 all content comes from files ([[ADR-0015 Content in Files]]), so every route is static: new content arrives with a deploy, and `cacheLife("max")` re-renders a page in the background at most every 30 days.
+The table is the one place that states each route's mode (the code has no comments, owner's rule of 2026-11-04). Since 2026-11-04 all content comes from files ([[ADR-0015 Content in Files]]), so every route is static: new content arrives with a deploy, and `cacheLife("max")` re-renders a page in the background at most every 30 days.
 
 | Route | Mode | Why |
 |---|---|---|

@@ -5,15 +5,8 @@ import { fromMarkdown } from "mdast-util-from-markdown";
 import { gfmFromMarkdown } from "mdast-util-gfm";
 import { gfm } from "micromark-extension-gfm";
 
-/**
- * The Markdown the site renders (owner's decision 14 in docs/specs/2026-11-04-content-in-files-design.md): CommonMark
- * paragraphs, emphasis, links, lists, hard breaks and headings. Anything else would render unstyled on the site or
- * break the CV built from the same files, so it fails the build.
- *
- * The source is parsed with GFM although the site renders CommonMark: Google Docs' "Copy as Markdown" emits GFM tables,
- * strikethrough and task lists, which a CommonMark parser reads as plain text and would let through as raw pipes and
- * tildes. Parsing them is the only way to see them and reject them.
- */
+import { locales } from "@/shared/lib/locales";
+
 const allowed = new Set<Nodes["type"]>([
   "root",
   "paragraph",
@@ -34,37 +27,32 @@ const walk = (node: Nodes, visit: (node: Nodes, inListItem: boolean) => void, in
   if ("children" in node) for (const child of node.children) walk(child, visit, inListItem || node.type === "listItem");
 };
 
-/** What a node is called in the error, or `null` when the site renders it. */
 const unsupported = (node: Nodes, inListItem: boolean): string | null => {
   if (!allowed.has(node.type)) return node.type;
-  // The bullets are a flex row, so a nested list would sit beside its parent's text (owner: reject, 2026-11-04).
   if (node.type === "list" && inListItem) return "list inside a list";
-  // GFM marks `- [ ] todo` with `checked`; CommonMark would show the brackets as text.
   if (node.type === "listItem" && typeof node.checked === "boolean") return "task list item";
   return null;
 };
 
-/** Throws on the first node the site does not render, with the file and the line. */
+const ALLOWED_LINK = /^(https?:\/\/|mailto:|tel:|#|\/(?!\/))/i;
+
+const localePrefix = (url: string) => locales.find((locale) => url === `/${locale}` || url.startsWith(`/${locale}/`) || url.startsWith(`/${locale}#`));
+
+const linkProblem = (url: string): string | null => {
+  if (!ALLOWED_LINK.test(url)) return "";
+  const locale = localePrefix(url);
+  if (locale) return `: write "${url.slice(locale.length + 1) || "/"}", one file serves every locale`;
+  return null;
+};
+
 export const assertAllowedMarkdown = (source: string, file: string): void => {
   walk(parse(source), (node, inListItem) => {
+    const line = node.position?.start.line ?? "?";
     const name = unsupported(node, inListItem);
-    if (name) throw new Error(`Unsupported Markdown "${name}" in ${file}, line ${node.position?.start.line ?? "?"}`);
+    if (name) throw new Error(`Unsupported Markdown "${name}" in ${file}, line ${line}`);
+    if (node.type === "link") {
+      const problem = linkProblem(node.url);
+      if (problem !== null) throw new Error(`Unsupported link "${node.url}" in ${file}, line ${line}${problem}`);
+    }
   });
-};
-
-const inlineText = (node: Nodes): string => {
-  if (node.type === "text") return node.value;
-  if (node.type === "break") return " ";
-  return "children" in node ? node.children.map(inlineText).join("") : "";
-};
-
-/** The text of every block, one per line: for meta descriptions and structured data. */
-export const markdownToPlainText = (source: string): string => {
-  const lines: string[] = [];
-
-  walk(parse(source), (node) => {
-    if (node.type === "paragraph" || node.type === "heading") lines.push(inlineText(node));
-  });
-
-  return lines.join("\n");
 };

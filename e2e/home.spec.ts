@@ -21,7 +21,6 @@ test("sends the CSS inside the document, so a first visit has no render-blocking
 test("keeps Cyrillic glyphs available on demand, without a preload", async ({ page }) => {
   await page.goto("/ru");
 
-  // Asks for a glyph directly: the Cyrillic on the page is content, which the owner replaces.
   const faces = await page.evaluate(async () => {
     const family = getComputedStyle(document.body).fontFamily;
     const loaded = await document.fonts.load(`16px ${family}`, "Ж");
@@ -32,7 +31,6 @@ test("keeps Cyrillic glyphs available on demand, without a preload", async ({ pa
   expect(faces.filter((face) => face.family.startsWith("Geist") && face.range.includes("U+400-45F"))).toHaveLength(1);
 });
 
-// Smoke test: the home page renders content that comes from the content files.
 test("home page shows the profile from the content files", async ({ page }) => {
   await page.goto("/en");
 

@@ -3,9 +3,7 @@ import type { AnchorHTMLAttributes } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { Link } from "./Link";
 
-// next-intl navigation needs the Next router; the marker tells the router link from a plain anchor.
 vi.mock("@/shared/lib/i18n/navigation", () => ({
-  // `prefetch` is a router prop, not an anchor attribute: the stand-in shows it as data.
   Link: (props: AnchorHTMLAttributes<HTMLAnchorElement> & { prefetch?: boolean }) => {
     const { prefetch, ...rest } = props;
     return <a data-router-link data-prefetch={prefetch === undefined ? undefined : String(prefetch)} {...rest} />;

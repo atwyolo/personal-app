@@ -4,7 +4,6 @@ import { expect, test } from "./fixtures";
 
 const RING = { light: "rgb(35, 71, 232)", dark: "rgb(198, 244, 50)" };
 
-/** Walks the page with the Tab key and returns the focus styles of every stop. */
 const tabThroughPage = async (page: Page) => {
   const stops = [];
 
@@ -16,7 +15,6 @@ const tabThroughPage = async (page: Page) => {
 
       if (!element || element === document.body) return null;
 
-      // Links and buttons fade their colors in: the ring is judged at the end of that transition.
       for (const transition of element.getAnimations()) transition.finish();
 
       const style = getComputedStyle(element);
@@ -51,7 +49,6 @@ test.describe("keyboard focus", () => {
           stop.outlineStyle === "solid" && stop.outlineWidth === "3px" && stop.outlineColor === color;
         const shadow = stop.boxShadow.includes(`${color} 0px 0px 0px 3px`);
 
-        // Exactly one of them: a link with both would show a double ring.
         return outline !== shadow;
       };
 
@@ -108,12 +105,10 @@ test("keeps the visible text inside the accessible name of every control", async
       .filter((control) => control.getClientRects().length > 0)
       .map((control) => ({
         label: control.getAttribute("aria-label") ?? "",
-        // `textContent`, not `innerText`: flex items get no space in the name, whatever the layout shows.
         visible: (control.textContent ?? "").replace(/\s+/g, " ").trim(),
       })),
   );
 
-  // Icon-only controls have nothing to compare.
   const withText = controls.filter((control) => control.visible);
 
   expect(withText.length).toBeGreaterThan(0);

@@ -39,7 +39,6 @@ describe("SkillRow", () => {
     expect(meter.querySelectorAll(".bg-placeholder")).toHaveLength(10 - level);
   });
 
-  // The layout is CSS placement only; e2e checks how it looks. Here: Home keeps its grid, the list gets the handoff's.
   it("keeps Home's grid by default", () => {
     renderRow(9);
 

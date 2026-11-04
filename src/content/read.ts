@@ -3,28 +3,22 @@ import "server-only";
 import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 
-import matter from "gray-matter";
+import { parse } from "yaml";
 
 import { type Locale, locales } from "@/shared/lib/locales";
 
 export interface ContentFile {
-  /** The frontmatter as YAML parsed it. */
   data: Record<string, unknown>;
-  /** The Markdown after the frontmatter. */
   body: string;
-  /** Path from the repository root, for error messages. */
   file: string;
 }
 
-/** The content folder of the site: `messages/` in the repository root. */
 export const contentRoot = path.join(process.cwd(), "messages");
+
+const FRONTMATTER = /^---[ \t]*\r?\n([\s\S]*?)^---[ \t]*(?:\r?\n|$)/m;
 
 const isMissing = (error: unknown) => (error as NodeJS.ErrnoException).code === "ENOENT";
 
-/**
- * Reads `<root>/<locale>/<file>` synchronously. A sync read is "predictable" for Cache Components and is prerendered with
- * the page (node_modules/next/dist/docs/01-app/01-getting-started/08-caching.md, "Prerendering"). Missing file: `null`.
- */
 export const readContentFile = (root: string, locale: Locale, file: string): ContentFile | null => {
   const absolute = path.join(root, locale, file);
   let source: string;
@@ -37,16 +31,20 @@ export const readContentFile = (root: string, locale: Locale, file: string): Con
   }
 
   const relative = path.relative(process.cwd(), absolute);
-  let parsed: matter.GrayMatterFile<string>;
+  const match = FRONTMATTER.exec(source);
+  if (!match || match.index !== 0) return { data: {}, body: source, file: relative };
+
+  let data: unknown;
   try {
-    // Any options object turns off gray-matter's cache, which returns one shared, mutable result per identical input.
-    parsed = matter(source, {});
+    data = parse(match[1]) ?? {};
   } catch (error) {
-    // A YAML syntax error names only a line; the build reports the page, which reads several files.
     throw new Error(`Invalid frontmatter in ${relative}: ${(error as Error).message}`);
   }
+  if (typeof data !== "object" || Array.isArray(data)) {
+    throw new Error(`Invalid frontmatter in ${relative}: expected a mapping of fields`);
+  }
 
-  return { data: parsed.data, body: parsed.content, file: relative };
+  return { data: data as Record<string, unknown>, body: source.slice(match[0].length), file: relative };
 };
 
 const markdownFiles = (folder: string): string[] => {
@@ -58,10 +56,6 @@ const markdownFiles = (folder: string): string[] => {
   }
 };
 
-/**
- * Slugs of `<root>/en/<folder>/*.md`, sorted. A file in another locale's folder without an English counterpart throws:
- * it would never be read, and a misspelt name would leave a translation silently unused.
- */
 export const listSlugs = (root: string, folder: string): string[] => {
   const english = markdownFiles(path.join(root, "en", folder));
 

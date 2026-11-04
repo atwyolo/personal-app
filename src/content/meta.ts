@@ -7,11 +7,9 @@ import { loadMergedMessages } from "@/shared/lib/i18n/load-messages";
 import type { MessagesTree } from "@/shared/lib/i18n/merge-messages";
 import type { Locale } from "@/shared/lib/locales";
 
-/** Every page with a node in `Meta`. A new page adds its key here and its node in messages/en.json. */
 export type PageKey = "Home" | "About" | "Skills" | "Experience";
 
 const text = z.string().trim().min(1);
-/** `null` or an absolute `https://` URL, so a relative or empty URL never reaches the fallbacks or a redirect. */
 const url = z.url({ protocol: /^https$/ }).nullable();
 
 const siteSchema = z.strictObject({
@@ -22,7 +20,6 @@ const siteSchema = z.strictObject({
   iconPngUrl: url,
   appleTouchIconUrl: url,
   ogPlaceholderUrl: url,
-  /** `true` adds `noindex, nofollow` to every page. */
   hiddenFromSearch: z.boolean(),
 });
 
@@ -53,10 +50,6 @@ export const readPageMeta = (messages: MessagesTree, key: PageKey): PageMeta => 
   return parse(pageSchema, node, `Meta.${key}`);
 };
 
-/**
- * Metadata in a locale, merged over English (`null` falls back). Cached like the content, so it stays in the static
- * shell; the locale is part of the cache key.
- */
 export async function getSiteMeta(locale: Locale): Promise<SiteMeta> {
   "use cache";
   cacheLife("max");

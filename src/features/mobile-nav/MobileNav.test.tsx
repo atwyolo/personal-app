@@ -6,7 +6,6 @@ import { describe, expect, it, vi } from "vitest";
 import messages from "../../../messages/en.json";
 import { MobileNav } from "./MobileNav";
 
-// next-intl navigation needs the Next router; links render as plain anchors, the current page is "/".
 vi.mock("@/shared/lib/i18n/navigation", () => ({
   usePathname: () => "/",
   Link: ({ href, ...props }: AnchorHTMLAttributes<HTMLAnchorElement>) => (

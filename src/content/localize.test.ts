@@ -1,4 +1,3 @@
-// @vitest-environment node
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
 
@@ -116,11 +115,10 @@ describe("loadLocalized", () => {
     );
   });
 
-  it("reads an unquoted YAML date as YYYY-MM-DD", () => {
+  it("reads an unquoted date as the string written", () => {
     const root = writeContentTree({ "en/job.md": "---\nstart: 2021-03-01\n---\n" });
-    const dateSchema = z.strictObject({ start: z.union([z.iso.date(), z.date().transform((d) => d.toISOString().slice(0, 10))]) });
 
-    expect(loadLocalized({ root, locale: "en", path: "job.md", schema: dateSchema }).start).toBe("2021-03-01");
+    expect(loadLocalized({ root, locale: "en", path: "job.md", schema: z.strictObject({ start: z.iso.date() }) }).start).toBe("2021-03-01");
   });
 
   it("rejects a body with Markdown the site does not render, naming the file", () => {

@@ -3,7 +3,6 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { useFoldingPanel } from "./useFoldingPanel";
 
-// The two measurements have their own tests; this hook only combines them.
 const measured = { stuck: false, hidden: false };
 vi.mock("./useIsStuck", () => ({ useIsStuck: () => ({ stuck: measured.stuck }) }));
 vi.mock("./useHideOnScroll", () => ({ useHideOnScroll: () => ({ hidden: measured.hidden }) }));

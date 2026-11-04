@@ -8,10 +8,6 @@ interface PageHeroProps {
   intro: string;
 }
 
-/**
- * The top of an inner page: the Back link, the page's `h1` and a one-line intro. Texts come as props, as `BackLink`
- * takes its label: `shared` does not read messages, the page does.
- */
 export const PageHero: FC<PageHeroProps> = (props) => {
   const { backLabel, title, intro } = props;
 

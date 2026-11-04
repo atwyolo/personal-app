@@ -1,4 +1,3 @@
-// @vitest-environment node
 import { describe, expect, it } from "vitest";
 
 import { listSlugs, readContentFile } from "./read";
@@ -19,6 +18,53 @@ describe("readContentFile", () => {
     const root = writeContentTree({ "en/experience/acme.md": '---\ncompany: "Acme\n---\n' });
 
     expect(() => readContentFile(root, "en", "experience/acme.md")).toThrow(/Invalid frontmatter in .*en\/experience\/acme\.md/);
+  });
+
+  it("reads YAML 1.2: unquoted dates and NO stay strings", () => {
+    const root = writeContentTree({ "en/job.md": "---\nstart: 2021-03-01\ncountry: NO\nlevel: 9\nmain: true\n---\n" });
+
+    expect(readContentFile(root, "en", "job.md")?.data).toEqual({ start: "2021-03-01", country: "NO", level: 9, main: true });
+  });
+
+  it("reads Windows line endings", () => {
+    const root = writeContentTree({ "en/profile.md": "---\r\nname: Mike\r\n---\r\n\r\nHello.\r\n" });
+
+    const file = readContentFile(root, "en", "profile.md");
+
+    expect(file?.data).toEqual({ name: "Mike" });
+    expect(file?.body.trim()).toBe("Hello.");
+  });
+
+  it("treats a file without frontmatter as a body with no fields", () => {
+    const root = writeContentTree({ "en/note.md": "Just text.\n" });
+
+    expect(readContentFile(root, "en", "note.md")).toMatchObject({ data: {}, body: "Just text.\n" });
+  });
+
+  it("only takes frontmatter from the very start of the file", () => {
+    const source = "Intro.\n\n---\nname: Mike\n---\n";
+    const root = writeContentTree({ "en/note.md": source });
+
+    expect(readContentFile(root, "en", "note.md")).toMatchObject({ data: {}, body: source });
+  });
+
+  it("reads an empty frontmatter as no fields", () => {
+    const root = writeContentTree({ "en/note.md": "---\n---\nText.\n" });
+
+    expect(readContentFile(root, "en", "note.md")).toMatchObject({ data: {}, body: "Text.\n" });
+  });
+
+  it("never runs a JavaScript frontmatter fence", () => {
+    const root = writeContentTree({ "en/note.md": "---js\n{ hacked: (globalThis.hacked = true) }\n---\n" });
+
+    expect(readContentFile(root, "en", "note.md")?.data).toEqual({});
+    expect((globalThis as { hacked?: boolean }).hacked).toBeUndefined();
+  });
+
+  it("rejects a frontmatter that is not a mapping, naming the file", () => {
+    const root = writeContentTree({ "en/note.md": "---\n- a\n- b\n---\n" });
+
+    expect(() => readContentFile(root, "en", "note.md")).toThrow(/Invalid frontmatter in .*en\/note\.md: .*mapping/);
   });
 
   it("returns null for a missing file", () => {

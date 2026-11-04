@@ -9,7 +9,6 @@ import { getInitials } from "@/shared/lib/initials";
 
 import { InterviewPair } from "./ui/InterviewPair";
 
-/** The conversation of the About page. No pairs is a valid state: the about folder may be emptied, and the hero stays. */
 export const Interview: FC = async () => {
   const locale = await getLocale();
   const [pairs, profile, t] = await Promise.all([

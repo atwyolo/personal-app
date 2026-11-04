@@ -6,10 +6,8 @@ import { describe, expect, it, vi } from "vitest";
 import messages from "../../../messages/en.json";
 import { Markdown } from "./Markdown";
 
-// next-intl navigation needs the Next router; the marker tells the router link from a plain anchor.
 vi.mock("@/shared/lib/i18n/navigation", () => ({
   Link: (props: AnchorHTMLAttributes<HTMLAnchorElement> & { prefetch?: boolean }) => {
-    // `prefetch` is a router prop, not an anchor attribute: the stand-in shows it as data.
     const { prefetch, ...rest } = props;
     return <a data-router-link data-prefetch={prefetch === undefined ? undefined : String(prefetch)} {...rest} />;
   },
@@ -54,7 +52,6 @@ describe("Markdown", () => {
     expect(list.tagName).toBe("UL");
     const items = within(list).getAllByRole("listitem");
     expect(items.map((item) => item.textContent)).toEqual(["One", "Two"]);
-    // The markers are set on the list for its items (`*:` variant): an item cannot tell a bullet list from a numbered one.
     expect(list.className).toContain("*:before:bg-deco");
   });
 
@@ -87,6 +84,14 @@ describe("Markdown", () => {
 
     const link = screen.getByRole("link", { name: "About" });
     expect(link).toHaveAttribute("data-router-link");
+    expect(link).not.toHaveAttribute("target");
+  });
+
+  it("keeps a phone link, in the same tab", () => {
+    renderMarkdown("[Call me](tel:+37493310039)");
+
+    const link = screen.getByRole("link", { name: "Call me" });
+    expect(link).toHaveAttribute("href", "tel:+37493310039");
     expect(link).not.toHaveAttribute("target");
   });
 

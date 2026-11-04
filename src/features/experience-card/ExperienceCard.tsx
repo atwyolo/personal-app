@@ -14,12 +14,6 @@ interface ExperienceCardProps {
   className?: string;
 }
 
-/**
- * One job: image, company, period with its duration, description, skills. Synchronous, so Vitest can render it.
- * `sizes` is the rendered image width, not the box width: the column minus the card's border and padding (359px at
- * 1280), but in a box narrower than 16:9 `object-cover` scales the file by the 180px height, so desktop takes at least
- * 320px. Below `lg` the box is wider than 16:9 and its width decides.
- */
 export const ExperienceCard: FC<ExperienceCardProps> = (props) => {
   const { job, className } = props;
   const { slug, company, startDate, endDate, today, imageUrl, descriptionShort, skills } = job;

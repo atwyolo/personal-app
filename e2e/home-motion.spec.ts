@@ -5,7 +5,6 @@ import { expect, test } from "./fixtures";
 const SCALE_OPEN = "matrix(0, 0, 0, 1, 0, 0)";
 const SCALE_COVERED = "matrix(1, 0, 0, 1, 0, 0)";
 
-/** Pseudo-element styles of every block with the wipe, in DOM order. */
 const readShutters = (page: Page) =>
   page.evaluate(() =>
     Array.from(document.querySelectorAll("main .reveal")).map((element) => {
@@ -26,7 +25,6 @@ const readShutters = (page: Page) =>
     }),
   );
 
-/** Stops every wipe at the given moment, so a test can look at the page mid-animation. */
 const freezeWipe = (page: Page, currentTime: number) =>
   page.evaluate((time) => {
     for (const animation of document.getAnimations()) {
@@ -36,9 +34,7 @@ const freezeWipe = (page: Page, currentTime: number) =>
     }
   }, currentTime);
 
-// The tests read properties, not the demo content: the owner replaces it in the admin.
 test.describe("wipe on load", () => {
-  // Without JavaScript the wipe stays switched on, so a test can read it however long the page takes.
   test.use({ javaScriptEnabled: false });
 
   test.beforeEach(async ({ page }) => {
@@ -49,18 +45,15 @@ test.describe("wipe on load", () => {
     const main = page.locator("main");
     const contacts = await main.locator("ul[aria-label] a").count();
     const cards = await main.locator("article").count();
-    // The block is not rendered without marked skills.
     const skills = await main.locator('section[aria-labelledby="skills-title"]').count();
 
     await expect(main.locator('section[aria-labelledby="hero-title"].reveal')).toHaveCount(1);
     await expect(main.locator('section[aria-labelledby="about-title"].reveal')).toHaveCount(1);
-    // `role="img"` is the placeholder of a missing photo.
     await expect(main.locator('.reveal:not(article):has(img, [role="img"])')).toHaveCount(1);
     await expect(main.locator("ul[aria-label] a.reveal")).toHaveCount(contacts);
     await expect(main.locator("article.reveal")).toHaveCount(cards);
     await expect(main.locator('section[aria-labelledby="skills-title"] > .reveal')).toHaveCount(skills);
 
-    // Hero, photo, About and nothing else: section headers, pills and carousel controls have no shutter.
     await expect(main.locator(".reveal")).toHaveCount(3 + skills + contacts + cards);
   });
 
@@ -79,7 +72,6 @@ test.describe("wipe on load", () => {
   test("leaves the carousel itself alone", async ({ page }) => {
     const carousel = page.locator('main [aria-roledescription="carousel"]').first();
 
-    // `overflow: clip` on the track would stop the swipe.
     await expect(carousel).not.toHaveClass(/\breveal\b/);
     await expect(carousel.locator(".snap-x.reveal, .snap-start.reveal")).toHaveCount(0);
   });
@@ -128,7 +120,6 @@ test.describe("wipe on load", () => {
     const sides = (await readShutters(page)).map((shutter) => shutter.side);
 
     expect(sides.length).toBeGreaterThan(1);
-    // Hero and photo come first in the DOM.
     expect(sides.slice(0, 2)).toEqual(["right", "left"]);
 
     const groups = await page.evaluate(() =>
@@ -165,7 +156,6 @@ test.describe("wipe on load", () => {
   });
 });
 
-/** Records the time of every wipe that starts on the page; a full load starts the list again. */
 const recordWipes = (page: Page) =>
   page.addInitScript(() => {
     const record = window as unknown as { wipes: number[] };
@@ -180,7 +170,6 @@ const readWipes = (page: Page) => page.evaluate(() => (window as unknown as { wi
 
 const countWipes = async (page: Page) => (await readWipes(page)).length;
 
-/** Leaves the home page through client navigation. */
 const leaveHome = async (page: Page) => {
   await page.locator('section[aria-labelledby="about-title"] a').click();
   await page.waitForURL("**/en/about");
@@ -225,7 +214,6 @@ test.describe("once per page load", () => {
     await page.locator("header a").first().click();
     await page.waitForURL("**/en");
     await expect(page.locator("#hero-title")).toBeVisible();
-    // Longer than the delay of the wipe, which is when `animationstart` fires.
     await page.waitForTimeout(400);
 
     expect(await countWipes(page)).toBe(played);
@@ -253,7 +241,6 @@ test.describe("once per page load", () => {
   });
 
   test("does not flash the shutter during a language switch", async ({ page }) => {
-    // `animationstart` fires after the delay, but the shutter covers the block during it: only a frame shows that.
     await page.evaluate(() => {
       const record = window as unknown as { shutters: string[] };
 

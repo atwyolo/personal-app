@@ -1,6 +1,5 @@
 import { expect, test } from "./fixtures";
 
-// About tile: the profile's rich text with its structure kept, then a link to the About page.
 test("shows the lead, the results list and the read more link", async ({ page }) => {
   await page.goto("/en");
 
@@ -54,7 +53,6 @@ test.describe("desktop", () => {
     await expect(about.locator("strong")).toHaveCSS("font-size", "16px");
   });
 
-  // Viewport 1280: 20px on the left, 60px on the right, columns (1200 - 3 * 16) / 4 = 288.
   test("sits in columns 2 to 4 and ends on the contacts' bottom line", async ({ page }) => {
     await page.goto("/en");
 

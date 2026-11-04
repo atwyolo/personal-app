@@ -29,7 +29,6 @@ describe("PageHero", () => {
 
     const link = screen.getByRole("link", { name: "Back" });
     expect(link).toHaveAttribute("href", "/");
-    // Back comes first in the document, before the heading.
     expect(link.compareDocumentPosition(screen.getByRole("heading"))).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
   });
 });

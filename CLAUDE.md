@@ -13,14 +13,14 @@ These rules apply to every reply and every task, however small. The owner's word
 
 ## Language
 
-- Everything inside this repository is written in **English**: code, comments, commit messages, docs in `docs/`, UI copy source strings.
+- Everything inside this repository is written in **English**: code, commit messages, docs in `docs/`, UI copy source strings.
 - Conversation with the owner happens in Russian (global rule). Never mix the two: no Russian in files, no English chat.
 
 ## Stack (decided, do not re-litigate)
 
 - Next.js 16 App Router, React 19, TypeScript strict, `src/` layout, `@/*` alias, npm.
 - Styling: Tailwind v4 + shadcn/ui (Base UI, style `base-nova`). Generated components live in `src/shared/shadcn` and are wrapped by our own adapters in `src/shared/ui`.
-- Content: **no database** (ADR-0015). Everything lives in `messages/`: `<locale>.json` with `Meta` (metadata, site settings) and `Pages` (UI strings), and Markdown with YAML frontmatter in `<locale>/` (`profile.md`, `skills.md`, `experience/<slug>.md`, `about/<slug>.md`). Read by `src/content/` with `gray-matter` and strict Zod schemas; bodies are CommonMark rendered by `react-markdown`. New content arrives with a deploy (see `docs/architecture/Content Model.md`).
+- Content: **no database** (ADR-0015). Everything lives in `messages/`: `<locale>.json` with `Meta` (metadata, site settings) and `Pages` (UI strings), and Markdown with YAML frontmatter in `<locale>/` (`profile.md`, `skills.md`, `experience/<slug>.md`, `about/<slug>.md`). Read by `src/content/` (frontmatter split by hand, YAML 1.2 parsed with `yaml`) and strict Zod schemas; bodies are CommonMark rendered by `react-markdown`. New content arrives with a deploy (see `docs/architecture/Content Model.md`).
 - i18n: `next-intl`. `en` is complete; other locales hold only what they translate and fall back to English per field (JSON and frontmatter alike). Locales: `en` (default, fallback), `ru`, `pt`, `es`, `de`, `fr`, `ja`, `pl`.
 - Tests: Vitest + React Testing Library (colocated `*.test.ts(x)`), Playwright in `e2e/` against a production build.
 - No blog, contact form or admin (dropped 2026-11-04).
@@ -111,7 +111,8 @@ export const HomePage: FC<HomePageProps> = (props) => {
 - Server Components by default. Add `"use client"` only where hooks, browser APIs or event handlers are required, and keep those leaves small.
 - Images render through `src/shared/ui/Image.tsx`, never `next/image` directly: it gives every image the placeholder for a missing source or a failed load.
 - Content access goes through `src/content/` getters (`"use cache"` + `cacheLife("max")`, no tags). Pages never read `messages/` files directly; Markdown bodies render through `src/shared/ui/Markdown.tsx`.
-- Rendering intent is explicit per route: static or dynamic. Note it in a one-line comment at the top of the page file.
+- Rendering intent per route lives in `docs/architecture/Rendering Strategy.md`.
+- **No comments in code** (owner's rule, 2026-11-04): no `//`, `/* */`, JSDoc or `{/* */}` anywhere in `src/`, `e2e/`, configs or CSS. Reasons go to the chat; project decisions go to `docs/`; old comments stay in git history (`git log -S`).
 - Commits: Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`). The owner commits; Claude stages each step's delta (see Feature workflow) and does not commit or push unless asked. Never put Claude session links into commits, PRs or issues.
 
 ## Commands

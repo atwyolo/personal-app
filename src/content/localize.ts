@@ -13,11 +13,6 @@ type Fields = Record<string, unknown>;
 
 const isMissing = (value: unknown) => value === null || value === undefined || value === "";
 
-/**
- * A locale's frontmatter over the English one, field by field: `null`, absent and empty values fall back to English.
- * `lists` names the fields that are lists of objects and the key of their items (`{ domains: "key" }`): those merge
- * item by item through that key, never by index, so reordering English cannot attach a translation to another item.
- */
 export const mergeFields = <T extends Fields>(en: T, locale: Fields | undefined, lists: Record<string, string> = {}): T => {
   const result: Fields = { ...en };
 
@@ -54,23 +49,16 @@ const validate = <S extends z.ZodType>(schema: S, data: unknown, file: string): 
 interface LoadLocalizedParams<S extends z.ZodType> {
   root: string;
   locale: Locale;
-  /** Path inside the locale folder, e.g. `experience/glovo.md`. */
   path: string;
   schema: S;
   lists?: Record<string, string>;
 }
 
 export type Localized<S extends z.ZodType> = z.infer<S> & {
-  /** Markdown body, trimmed; empty when the file has none. */
   body: string;
-  /** The file name without `.md`: the anchor and the key. */
   slug: string;
 };
 
-/**
- * One content file in a locale: the English file (required), the locale's file over it (optional), the body checked
- * against the Markdown the site renders, the result validated by `schema`. Every error names the file.
- */
 export const loadLocalized = <S extends z.ZodType>(params: LoadLocalizedParams<S>): Localized<S> => {
   const { root, locale, path: file, schema, lists } = params;
 
@@ -81,7 +69,6 @@ export const loadLocalized = <S extends z.ZodType>(params: LoadLocalizedParams<S
   assertAllowedMarkdown(en.body, en.file);
   if (translated) assertAllowedMarkdown(translated.body, translated.file);
 
-  // English alone first: it must be complete, and its errors must name its file even when a translation exists.
   let parsed = validate(schema, en.data, en.file);
   if (translated) {
     let data: Fields;
@@ -90,7 +77,6 @@ export const loadLocalized = <S extends z.ZodType>(params: LoadLocalizedParams<S
     } catch (error) {
       throw new Error(`Invalid content in ${translated.file}: ${(error as Error).message}`);
     }
-    // English passed, so what fails now comes from the translation.
     parsed = validate(schema, data, translated.file);
   }
 

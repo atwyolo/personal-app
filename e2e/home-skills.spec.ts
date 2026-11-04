@@ -5,14 +5,12 @@ import { expect, test } from "./fixtures";
 const getSection = (page: Page) => page.getByRole("region", { name: "My top skills" });
 const getRows = (page: Page) => getSection(page).getByRole("meter");
 
-/** Different left edges of the rows, so the number of columns whatever the skills are. */
 const countColumns = async (page: Page) => {
   const lefts = await getRows(page).evaluateAll((rows) => rows.map((row) => row.getBoundingClientRect().left));
 
   return new Set(lefts).size;
 };
 
-// My top skills: the skills marked `top` in the content files. The owner edits them, so the tests read properties, not names.
 test("lists the marked skills from the highest level down", async ({ page }) => {
   await page.goto("/en");
 
@@ -117,7 +115,6 @@ test.describe("mobile layout", () => {
     expect(bar.height).toBe(8);
     expect(bar.top).toBeGreaterThanOrEqual(name.bottom);
     expect(value.top).toBeGreaterThanOrEqual(name.bottom);
-    // Centered on the same line: the value's text is taller than the bar.
     expect((bar.top + bar.bottom) / 2).toBeCloseTo((value.top + value.bottom) / 2, 0);
     await expect(getRows(page).first().locator("span").last()).toHaveCSS("text-align", "right");
   });

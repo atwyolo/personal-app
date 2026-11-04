@@ -5,7 +5,6 @@ import { InterviewReveal } from "./InterviewReveal";
 
 type ObserverCallback = (entries: Partial<IntersectionObserverEntry>[]) => void;
 
-/** The two observers, in the order the component creates them. */
 const observers: ObserverStub[] = [];
 
 class ObserverStub {
@@ -33,7 +32,6 @@ class ObserverStub {
 const lineObserver = () => observers[0];
 const endObserver = () => observers[1];
 
-/** Sections by their distance from the top of the viewport, which is 1000 px tall. */
 const renderAt = (tops: Record<string, number>) => {
   vi.spyOn(Element.prototype, "getBoundingClientRect").mockImplementation(function (this: Element) {
     return { top: tops[this.id] ?? 0 } as DOMRect;

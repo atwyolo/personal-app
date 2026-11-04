@@ -6,7 +6,6 @@ import type { ExperienceEntry } from "@/content/experience";
 import messages from "../../../messages/en.json";
 import { ExperienceCard } from "./ExperienceCard";
 
-// next-intl navigation needs the Next router.
 vi.mock("@/shared/lib/i18n/navigation", () => ({
   Link: (props: AnchorHTMLAttributes<HTMLAnchorElement>) => <a {...props} />,
 }));

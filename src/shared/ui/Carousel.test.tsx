@@ -32,7 +32,6 @@ const renderCarousel = (count = 4) =>
 
 const getTrack = () => screen.getByRole("group", { name: "1 of 4" }).parentElement as HTMLElement;
 
-// jsdom has no layout: scrolling is the browser's job, so a test only reports where the track ended up.
 const scrollTrackTo = (scrollLeft: number, width = slideWidth) => {
   const track = getTrack();
   Object.defineProperty(track, "clientWidth", { configurable: true, value: width });
@@ -144,7 +143,6 @@ describe("Carousel", () => {
     expect(scrollTo).toHaveBeenCalledExactlyOnceWith({ left: 700, behavior: "instant" });
   });
 
-  // Narrowing the track clamps a far offset, and the browser reports that as a scroll to another slide.
   it("ignores the scroll that a narrower track causes", () => {
     vi.spyOn(Element.prototype, "clientWidth", "get").mockReturnValue(688);
     renderCarousel();
@@ -157,7 +155,6 @@ describe("Carousel", () => {
     expect(scrollTo).toHaveBeenCalledExactlyOnceWith({ left: 740, behavior: "instant" });
   });
 
-  // The last slide on a narrower track: the browser has clamped the offset there. A pixel off comes from a rounded width.
   it("leaves the track alone when the browser has already put it on the slide", () => {
     vi.spyOn(Element.prototype, "clientWidth", "get").mockReturnValue(688);
     renderCarousel();

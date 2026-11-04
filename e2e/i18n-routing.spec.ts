@@ -2,7 +2,6 @@ import { expect, test } from "./fixtures";
 
 import { locales } from "@/shared/lib/locales";
 
-// Locale routing: the proxy picks a locale for paths without one, every locale is its own page.
 test.describe("locale detection on /", () => {
   test("redirects to the browser language", async ({ browser }) => {
     const context = await browser.newContext({ locale: "ru-RU" });
@@ -49,7 +48,6 @@ test.describe("localized pages", () => {
 });
 
 test.describe("unknown paths", () => {
-  // The browser logs its own console error for any 404 document.
   test.use({ allowedConsoleErrors: [/status of 404/] });
 
   test("an unknown path inside a locale is a 404", async ({ page }) => {
@@ -80,7 +78,6 @@ test.describe("locale menu", () => {
     await expect(page.locator("html")).toHaveAttribute("lang", "de");
     await expect(page.getByRole("banner").getByRole("button", { name: "Language" })).toHaveText("DE");
 
-    // The browser speaks English, so the proxy stores the different choice for a year.
     await expect.poll(async () => (await context.cookies()).find((c) => c.name === "NEXT_LOCALE")?.value).toBe("de");
     const cookie = (await context.cookies()).find((c) => c.name === "NEXT_LOCALE");
     expect(cookie!.expires * 1000 - Date.now()).toBeGreaterThan(360 * 24 * 60 * 60 * 1000);

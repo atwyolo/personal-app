@@ -4,7 +4,6 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { QuestionNav } from "./QuestionNav";
 
-// `replace` and `scroll` are props of the router link; the markers show they arrived there.
 vi.mock("@/shared/lib/i18n/navigation", () => ({
   Link: ({
     replace,
@@ -21,7 +20,6 @@ const items = [
 ];
 
 beforeEach(() => {
-  // jsdom has no layout: neither API exists there.
   Element.prototype.scrollTo = vi.fn();
   window.matchMedia = vi.fn().mockReturnValue({ matches: false });
 });
@@ -44,7 +42,6 @@ describe("QuestionNav", () => {
   });
 
   describe("on a click", () => {
-    /** The page left behind holds the same id, first in the document, as it can after a language switch. */
     const renderWithSections = () => {
       render(
         <>

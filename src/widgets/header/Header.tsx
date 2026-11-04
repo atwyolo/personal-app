@@ -9,10 +9,6 @@ import { Link } from "@/shared/lib/i18n/navigation";
 import { siteNav } from "@/shared/lib/site-nav";
 import { NavLink } from "@/shared/ui/NavLink";
 
-/**
- * Sticky site header (Server Component): name linking home, desktop navigation from lg, locale and theme menus.
- * Below lg (mobile and the undesigned tablet range) the navigation moves to the mobile menu.
- */
 export const Header: FC = async () => {
   const locale = await getLocale();
   const [profile, t] = await Promise.all([getProfile(locale), getTranslations("Pages.Common.Header")]);
@@ -32,10 +28,8 @@ export const Header: FC = async () => {
               {t(`nav.${item.key}`)}
             </NavLink>
           ))}
-          {/* Slides under the current item, CSS only: see `.nav-indicator` in globals.css. */}
           <span aria-hidden className="nav-indicator" />
         </nav>
-        {/* Client leaves; the header itself stays a Server Component. */}
         <div className="flex gap-2">
           <LocaleMenu />
           <ThemeMenu />

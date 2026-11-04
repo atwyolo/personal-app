@@ -5,7 +5,6 @@ const edges = async (locator: { boundingBox: () => Promise<{ x: number; width: n
   return { left: box?.x, right: (box?.x ?? 0) + (box?.width ?? 0) };
 };
 
-// From lg the content has no maximum width: 20px on the left, 60px on the right, which leaves room for a scrollbar.
 test.describe("desktop width", () => {
   test.skip(({ isMobile }) => isMobile, "the full-width layout starts at lg");
 

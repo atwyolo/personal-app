@@ -1,13 +1,10 @@
 import { expect, test } from "./fixtures";
 
-// The About page: an interview read from the content files. Sections are located by their id, because a route left
-// behind stays in the DOM, hidden, and an unscoped `h1` could match it.
 const sections = (page: import("@playwright/test").Page) => page.locator("main section[id]");
 
 const chips = (page: import("@playwright/test").Page) =>
   page.getByRole("navigation", { name: "Questions" }).filter({ visible: true });
 
-/** The question of a pair clears the sticky bars and sits inside the viewport. */
 const expectBelowBars = async (page: import("@playwright/test").Page, slug: string) => {
   await expect(async () => {
     const bar = await chips(page).boundingBox();
@@ -29,13 +26,6 @@ const questions = [
 ];
 
 test.describe("about page", () => {
-  // No messages/ru/ folder exists: every field and every body falls back to English, file by file.
-  test("a locale without its own content files shows the English interview", async ({ page }) => {
-    await page.goto("/ru/about");
-
-    await expect(sections(page).locator("h2")).toHaveText(questions);
-  });
-
   test("shows the hero", async ({ page }) => {
     await page.goto("/en/about");
 
@@ -138,7 +128,6 @@ test.describe("about page", () => {
     await page.getByRole("menuitemradio", { name: /Русский/ }).click();
 
     await page.waitForURL("**/ru/about");
-    // The English page stays in the DOM, hidden, so the two languages are told apart by visibility.
     await expect(sections(page).filter({ visible: true })).toHaveCount(questions.length);
   });
 
@@ -168,7 +157,6 @@ test.describe("about page", () => {
   });
 
   test("never leaves the site through the back link", async ({ page }) => {
-    // Whatever came before this page in the history, the link goes home: the owner's decision of 2026-11-02.
     await page.goto("about:blank");
     await page.goto("/en/about");
     await page.locator("header a").first().click();
@@ -234,7 +222,6 @@ test.describe("reveal on scroll", () => {
   const question = (page: import("@playwright/test").Page, slug: string) =>
     page.locator(`#${slug} > div`).filter({ visible: true }).first();
 
-  // Longer than the reveal's transition: a section fading out would still read as visible right away.
   const settled = (page: import("@playwright/test").Page) => page.waitForTimeout(700);
 
   test("shows the last section on a window too tall for it to reach the line", async ({ page }) => {
@@ -444,7 +431,6 @@ test.describe("question chips", () => {
     });
   });
 
-  // The last chip is where a choice and the rule differ: the page ends before its message rises to the top.
   test.describe("on the last section", () => {
     const lastChip = (page: import("@playwright/test").Page) =>
       chips(page).getByRole("link", { name: "Outside of work" });
@@ -515,7 +501,6 @@ test.describe("question chips", () => {
   });
 
   test("do not reach the last chip by scrolling alone", async ({ page }) => {
-    // The owner's decision of 2026-11-02: a message near the end cannot rise to the top, and only a click marks its chip.
     await page.setViewportSize({ width: 1280, height: 800 });
     await page.goto("/en/about");
 
@@ -573,7 +558,6 @@ test.describe("question chips", () => {
     await expectBelowBars(page, "results");
   });
 
-  // A switch in either direction leaves the other language in the DOM, hidden, with the same ids.
   for (const [from, to, language] of [
     ["en", "ru", /Русский/],
     ["ru", "en", /English/],

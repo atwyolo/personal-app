@@ -1,6 +1,5 @@
 import { expect, test } from "./fixtures";
 
-// Header frame: name linking home, desktop navigation with the current page marked, sticky on scroll.
 test("the name links to the home page of the current locale", async ({ page }) => {
   await page.goto("/ru");
 
@@ -57,7 +56,6 @@ test.describe("mobile", () => {
     await expect(panel.getByRole("link", { name: "Home" })).toHaveAttribute("href", "/ru");
     await expect(panel.getByRole("link", { name: "Home" })).toHaveAttribute("aria-current", "page");
 
-    // Tab through more stops than the panel has: focus never leaves it.
     for (let i = 0; i < 8; i++) {
       await page.keyboard.press("Tab");
       await expect(panel.locator(":focus")).toHaveCount(1);

@@ -12,10 +12,6 @@ interface ExperienceColumnProps {
   jobs: ExperienceJob[];
 }
 
-/**
- * The pinned left column. Never `display: none`, because the `h1` must exist on phones, where this column is only the
- * row of the Back link. A `<div>`, not an `<aside>`: a page heading does not belong in a complementary landmark.
- */
 export const ExperienceColumn: FC<ExperienceColumnProps> = (props) => {
   const { title, jobs } = props;
   const t = useTranslations("Pages.Experience");
@@ -33,11 +29,6 @@ export const ExperienceColumn: FC<ExperienceColumnProps> = (props) => {
 
       {jobs.length > 0 && (
         <>
-          {/*
-            The articles say all of this; here it is decoration. One grid cell keeps the height of the tallest block.
-            Clipped, because in a short window the blocks must not cover the rows. The row is limited to the free height,
-            so there the image shrinks first and the name stays whole. Below 640 px it would be a sliver, so it goes.
-          */}
           <div
             data-experience-stage
             aria-hidden

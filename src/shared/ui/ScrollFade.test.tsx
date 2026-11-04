@@ -3,7 +3,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { ScrollFade } from "./ScrollFade";
 
-/** jsdom has no layout: the scroller's sizes are set by hand, then a scroll event makes it measure them. */
 const renderScroller = (sizes: { clientWidth: number; scrollWidth: number; scrollLeft: number }) => {
   render(
     <ScrollFade>
@@ -17,7 +16,6 @@ const renderScroller = (sizes: { clientWidth: number; scrollWidth: number; scrol
   return scroller;
 };
 
-// jsdom has no ResizeObserver; as in Carousel.test.tsx, a stub that never reports keeps the scroll event in charge.
 class FakeResizeObserver {
   observe = vi.fn();
   disconnect = vi.fn();

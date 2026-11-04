@@ -10,25 +10,16 @@ const tones = {
 
 interface ContactLinkProps {
   href: string;
-  /** Accessible name; it must contain the visible label. */
   label: string;
-  /** Tooltip with the full address. */
   title?: string;
   tone: keyof typeof tones;
-  /** Opens in a new tab: the visitor keeps the site open. */
   external?: boolean;
-  /** Left mark: an icon, centered in a 36px box. */
   mark: ReactNode;
-  /** Right side, an arrow by default. */
   trailing?: ReactNode;
   className?: string;
   children: ReactNode;
 }
 
-/**
- * Button of the contacts block: 56px tall, 16px radius, a card for a channel and a filled button for the CV.
- * Separate from shared/ui/Button: that one is a 44px pill, this one exists only in this widget.
- */
 export const ContactLink: FC<ContactLinkProps> = (props) => {
   const { href, label, title, tone, external, mark, className, children } = props;
   const { trailing = <ArrowUpRightIcon aria-hidden className="size-[18px] shrink-0 text-brand" /> } = props;

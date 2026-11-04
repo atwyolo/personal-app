@@ -10,19 +10,15 @@ import { contentRoot, listSlugs } from "./read";
 import { experienceSchema } from "./schemas";
 import { readSkillsFile } from "./skills";
 
-/** A job as the Home cards and the Experience page show it. */
 export type ExperienceEntry = {
   slug: string;
   company: string;
   role: string | null;
-  /** "YYYY-MM-DD"; formatting and duration happen in the UI with next-intl. */
   startDate: string;
   endDate: string | null;
-  /** "YYYY-MM-DD" when this result was cached: closes a running job; refreshed by the 30-day revalidation and by a deploy. */
   today: string;
   imageUrl: string | null;
   descriptionShort: string;
-  /** Markdown under the short description on the Experience page; `null` when the file has no body. */
   descriptionFull: string | null;
   skills: string[];
 };
@@ -55,11 +51,9 @@ export const readExperience = (root: string, locale: Locale, today: string): Exp
     }));
 };
 
-/** Cached as the other reads, see `skills.ts`. */
 export async function getExperience(locale: Locale): Promise<ExperienceEntry[]> {
   "use cache";
   cacheLife("max");
 
-  // A static render must not read the clock; inside "use cache" the value is simply part of the cached result.
   return readExperience(contentRoot, locale, new Date().toISOString().slice(0, 10));
 }
