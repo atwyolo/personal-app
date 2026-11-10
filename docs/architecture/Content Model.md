@@ -18,7 +18,7 @@ All content lives in `messages/` since 2026-11-04 ([[ADR-0015 Content in Files]]
 
 ## `messages/<locale>.json`
 
-Interface strings only: one root, `Pages` (`Common` with `Header`, `LocaleMenu`, `ThemeMenu`, `Contacts`, `Carousel`, `SkillRow`, `back`, `newTab`, then the interface texts of `Home`, `About`, `Skills`, `Experience`). These are next-intl messages, and only they reach the browser (`NextIntlClientProvider` in the root layout). Content, metadata included, lives in Markdown since 2026-11-10 ([[ADR-0016 Metadata in Markdown]]).
+Interface strings only: one root, `Pages` (`Common` with `Header`, `LocaleMenu`, `ThemeMenu`, `Contacts`, `Carousel`, `SkillRow`, `back`, `newTab`, then the interface texts of `Home`, `About`, `Skills`, `Experience`, and `NotFound` for the 404 page). Every locale translates them ([[Localization]]). These are next-intl messages, and only they reach the browser (`NextIntlClientProvider` in the root layout). Content, metadata included, lives in Markdown since 2026-11-10 ([[ADR-0016 Metadata in Markdown]]).
 
 ## Markdown files: `messages/<locale>/`
 

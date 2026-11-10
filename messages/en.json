@@ -50,7 +50,9 @@
         "previous": "Previous",
         "next": "Next",
         "position": "{current} / {total}",
-        "slide": "{current} of {total}"
+        "slide": "{current} of {total}",
+        "roleCarousel": "carousel",
+        "roleSlide": "slide"
       },
       "SkillRow": {
         "levelAria": "{name}: level {level} of 10",
@@ -96,6 +98,9 @@
       "skills": "Skills",
       "duration": "{years, plural, one {# year} other {# years}}",
       "present": "present"
+    },
+    "NotFound": {
+      "message": "This page does not exist."
     }
   }
 }

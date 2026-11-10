@@ -1,6 +1,7 @@
 import type { Page } from "@playwright/test";
 
 import { expect, test } from "./fixtures";
+import { messagesFor } from "./messages";
 
 const rows = (page: Page) => page.getByRole("main").getByRole("meter").filter({ visible: true });
 const field = (page: Page) => page.getByRole("searchbox", { name: "Search skills" }).filter({ visible: true });
@@ -89,11 +90,13 @@ test.describe("content", () => {
   });
 
   test("falls back to English in a locale without translations", async ({ page }) => {
+    const t = messagesFor("ru");
     await page.goto("/ru/skills");
 
     await expect(page.locator("html")).toHaveAttribute("lang", "ru");
-    await expect(page.getByRole("heading", { level: 1, name: "Skills" })).toBeVisible();
-    await expect(chips(page).first()).toHaveText(/^All \d+$/);
+    await expect(page.getByRole("heading", { level: 1, name: t("Pages.Skills.title") })).toBeVisible();
+    const allChip = page.getByRole("group", { name: t("Pages.Skills.domain") }).filter({ visible: true }).getByRole("button").first();
+    await expect(allChip).toHaveText(new RegExp(`^${t("Pages.Skills.all")} \\d+$`));
   });
 
   test.describe("without JavaScript", () => {

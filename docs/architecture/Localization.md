@@ -18,13 +18,17 @@ Chosen for job-market relevance: markets where the local language matters in hir
 
 ## Rules
 
-- Adding a locale = one config entry + one messages file. Content may stay untranslated: without a `messages/<locale>/` folder every page shows the English content.
+- Adding a locale = one config entry + one messages file with the whole interface translated. Content may stay untranslated: without a `messages/<locale>/` folder every page shows the English content.
 - URL prefix for every locale, including the default (`/en/...`), to keep routing uniform and caching simple.
 - `lang` attribute and `hreflang` alternates come from the locale segment.
 - Dates/numbers formatted with `Intl` through `next-intl` helpers, never by hand.
 - A path without a locale (`/`, `/about`) is redirected by `src/proxy.ts`: `NEXT_LOCALE` cookie first, then `Accept-Language`, then `en` (owner's decision, 2026-10-29). An unknown locale (`/xx`) is treated as a path and ends in a 404 under `/en/xx`.
 - `NEXT_LOCALE` is set only when the visitor picks a locale other than their browser language, and lives one year (owner's decision; see the privacy item in [[Open Questions]]).
-- `messages/en.json` is the only complete messages file. Other locales contain only translated keys; `src/shared/lib/i18n/load-messages.ts` deep-merges them over English: empty strings and `null` count as missing. The same holds per field for the Markdown files' frontmatter, where nested objects merge field by field and `false` and numbers override; a non-empty body replaces the English body.
+- Every locale translates the whole interface since 2026-11-10 ([[2026-11-10-ui-translations-design]]); content (the Markdown) may stay English. Each `messages/<locale>.json` holds every key of `en.json` except the inherited ones, which are the same in every language: `LocaleMenu.names.*` (endonyms), `Contacts.whatsapp`, `Contacts.linkedin`, `Contacts.pdf`, `Carousel.position`, `SkillRow.level`. They come from English; `src/shared/lib/i18n/load-messages.ts` deep-merges them over English: empty strings and `null` count as missing. The same holds per field for the Markdown files' frontmatter, where nested objects merge field by field and `false` and numbers override; a non-empty body replaces the English body.
+- **Translation conventions** (owner, 2026-11-10): a neutral, standard interface. `pt` is Brazilian Portuguese, `es` neutral Spanish. Actions are infinitives (`ru`, `de`, `fr`, `es`, `pt`), imperatives in `pl`, the dictionary form in `ja` (sentences in です/ます). The CV is "CV" everywhere except `ru` («резюме»): only an English and a Russian file exist. Quotation marks and French no-break spaces follow each language. A counted noun gets a `plural` wherever the language inflects it, even when English does not.
+- **`src/shared/lib/i18n/translations.test.ts`** checks every locale: no keys English lacks, every key but the inherited ones with a non-empty message, valid ICU (parsed with `@formatjs/icu-messageformat-parser`), the same argument names and `select` branches as English, every plural category `Intl.PluralRules` selects for 0 to 100 in steps of 0.1 (`getDurationYears` rounds to tenths), and a clean format with sample values. A new English string fails it until all seven locales translate it.
+- e2e tests take interface strings for any locale from the messages files through `e2e/messages.ts` (`messagesFor(locale)(key, values)`), never from literals.
+- The 404 page (`src/app/[locale]/not-found.tsx`) reads `Pages.NotFound`; the locale comes from `next/root-params`, so `/de/xx` speaks German.
 - Only `Pages` reaches the browser: the root layout gives `NextIntlClientProvider` `{ Pages }`. Metadata is content (`meta.md`) and stays on the server.
 - The locale is read from the root `[locale]` segment through `next/root-params` (next-intl's recommended setup with Cache Components), so every locale is prerendered.
 - A language switch is client navigation with `router.replace`, not a full load: the root layout remounts, module state survives, attributes set on `<html>` by hand are cleared, and the old locale leaves no history entry (measured 2026-11-01).
@@ -34,4 +38,4 @@ Chosen for job-market relevance: markets where the local language matters in hir
 - Geist / Geist Mono cover latin, latin-ext and cyrillic: every locale except `ja`. Preloaded: the Latin file of Geist only; Geist Mono is not preloaded, and cyrillic and the rest load on demand through `unicode-range`.
 - `ja` uses the platform's Japanese UI font through a system stack (`--font-ja-system` in `src/app/globals.css`): Hiragino on Apple, Yu Gothic / Meiryo on Windows, Noto Sans CJK on Android. Chosen over Noto Sans JP via `next/font` to avoid a heavy CJK webfont (owner's decision, 2026-10-29).
 
-Related: [[ADR-0015 Content in Files]], [[ADR-0016 Metadata in Markdown]], [[ADR-0003 Content Localization]] (superseded)
+Related: [[2026-11-10-ui-translations-design]], [[ADR-0015 Content in Files]], [[ADR-0016 Metadata in Markdown]], [[ADR-0003 Content Localization]] (superseded)

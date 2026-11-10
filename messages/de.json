@@ -1,1 +1,91 @@
-{}
+{
+  "Pages": {
+    "Common": {
+      "back": "Zurück",
+      "newTab": "(öffnet in neuem Tab)",
+      "Header": {
+        "navLabel": "Hauptnavigation",
+        "nav": {
+          "home": "Startseite",
+          "about": "Über mich",
+          "experience": "Erfahrung",
+          "skills": "Kenntnisse"
+        },
+        "openMenu": "Menü öffnen",
+        "closeMenu": "Menü schließen"
+      },
+      "LocaleMenu": {
+        "label": "Sprache",
+        "triggerAria": "Sprache: {code}"
+      },
+      "ThemeMenu": {
+        "label": "Design",
+        "dark": "Dunkel",
+        "light": "Hell",
+        "system": "System",
+        "systemNow": "aktuell {theme, select, dark {dunkel} other {hell}}"
+      },
+      "Contacts": {
+        "label": "Kontakt",
+        "whatsappAria": "WhatsApp: {phone}",
+        "mailAria": "E-Mail: {email}",
+        "linkedinAria": "LinkedIn-Profil",
+        "downloadCv": "CV herunterladen",
+        "downloadCvAria": "CV als PDF herunterladen"
+      },
+      "Carousel": {
+        "previous": "Vorheriger Eintrag",
+        "next": "Nächster Eintrag",
+        "slide": "{current} von {total}",
+        "roleCarousel": "Karussell",
+        "roleSlide": "Folie"
+      },
+      "SkillRow": {
+        "levelAria": "{name}: Stufe {level} von 10"
+      }
+    },
+    "Home": {
+      "about": {
+        "label": "Über mich",
+        "readMore": "Weiterlesen"
+      },
+      "experience": {
+        "label": "Erfahrung",
+        "duration": "{years, plural, one {# Jahr} other {# Jahre}}",
+        "present": "heute",
+        "learnMore": "Mehr erfahren",
+        "all": "Gesamter Werdegang"
+      },
+      "skills": {
+        "label": "Wichtigste Kenntnisse",
+        "showAll": "Alle {total} Kenntnisse anzeigen"
+      }
+    },
+    "About": {
+      "title": "Über mich",
+      "intro": "Ein kurzes Interview mit mir selbst: die Fragen, die Recruiter am häufigsten stellen, ausführlich beantwortet.",
+      "questionsNav": "Fragen"
+    },
+    "Skills": {
+      "title": "Kenntnisse",
+      "intro": "Alles, womit ich arbeite, bewertet von 1 bis 10. Durchsuchbar und nach Bereich filterbar.",
+      "countAll": "{total} Kenntnisse",
+      "countFiltered": "{shown} von {total}",
+      "search": "Kenntnisse suchen",
+      "domain": "Bereich",
+      "all": "Alle",
+      "noMatch": "Keine Kenntnisse für „{query}“ gefunden."
+    },
+    "Experience": {
+      "labelWithoutYears": "Projekte",
+      "label": "Projekte · {from} — {to}",
+      "navLabel": "Arbeitgeber",
+      "skills": "Kenntnisse",
+      "duration": "{years, plural, one {# Jahr} other {# Jahre}}",
+      "present": "heute"
+    },
+    "NotFound": {
+      "message": "Diese Seite existiert nicht."
+    }
+  }
+}

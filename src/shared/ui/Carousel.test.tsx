@@ -3,6 +3,8 @@ import userEvent from "@testing-library/user-event";
 import { NextIntlClientProvider } from "next-intl";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import messages from "../../../messages/en.json";
+import ru from "../../../messages/ru.json";
+import { mergeMessages } from "@/shared/lib/i18n/merge-messages";
 import { Carousel } from "./Carousel";
 
 const slideWidth = 358;
@@ -57,6 +59,20 @@ describe("Carousel", () => {
     renderCarousel();
 
     expect(screen.getByRole("group", { name: "Experience" })).toHaveAttribute("aria-roledescription", "carousel");
+  });
+
+  it("describes the carousel and its slides in the page's language", () => {
+    render(
+      <NextIntlClientProvider locale="ru" messages={mergeMessages(messages, ru)}>
+        <Carousel label="Опыт">
+          <article>Card 1</article>
+          <article>Card 2</article>
+        </Carousel>
+      </NextIntlClientProvider>,
+    );
+
+    expect(screen.getByRole("group", { name: "Опыт" })).toHaveAttribute("aria-roledescription", "карусель");
+    expect(screen.getByRole("group", { name: "1 из 2" })).toHaveAttribute("aria-roledescription", "слайд");
   });
 
   it("puts every child on a numbered slide", () => {

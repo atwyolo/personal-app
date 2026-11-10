@@ -76,7 +76,7 @@ export const Carousel: FC<CarouselProps> = (props) => {
   };
 
   return (
-    <div role="group" aria-roledescription="carousel" aria-label={label} className="flex flex-col gap-3">
+    <div role="group" aria-roledescription={t("roleCarousel")} aria-label={label} className="flex flex-col gap-3">
       {total > 1 && (
         <div className="flex items-center justify-between px-0.5 lg:hidden">
           <span aria-live="polite" className="font-mono text-[11px] font-semibold tracking-[0.08em] text-brand">
@@ -115,7 +115,7 @@ export const Carousel: FC<CarouselProps> = (props) => {
           <div
             key={slideIndex}
             role="group"
-            aria-roledescription="slide"
+            aria-roledescription={t("roleSlide")}
             aria-label={t("slide", { current: slideIndex + 1, total })}
             className="grid shrink-0 basis-full grid-cols-1 snap-start"
           >

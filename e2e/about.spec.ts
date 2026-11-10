@@ -1,13 +1,16 @@
 import { expect, test } from "./fixtures";
+import { messagesFor } from "./messages";
+
+import type { Locale } from "@/shared/lib/locales";
 
 const sections = (page: import("@playwright/test").Page) => page.locator("main section[id]");
 
-const chips = (page: import("@playwright/test").Page) =>
-  page.getByRole("navigation", { name: "Questions" }).filter({ visible: true });
+const chips = (page: import("@playwright/test").Page, locale: Locale = "en") =>
+  page.getByRole("navigation", { name: messagesFor(locale)("Pages.About.questionsNav") }).filter({ visible: true });
 
-const expectBelowBars = async (page: import("@playwright/test").Page, slug: string) => {
+const expectBelowBars = async (page: import("@playwright/test").Page, slug: string, locale: Locale = "en") => {
   await expect(async () => {
-    const bar = await chips(page).boundingBox();
+    const bar = await chips(page, locale).boundingBox();
     const heading = await page.locator(`#${slug} h2`).filter({ visible: true }).boundingBox();
     const viewport = page.viewportSize();
 
@@ -177,7 +180,7 @@ test.describe("about page", () => {
     await page.getByRole("menuitemradio", { name: /Русский/ }).click();
     await page.waitForURL("**/ru/about");
 
-    await page.getByRole("link", { name: "Back" }).filter({ visible: true }).click();
+    await page.getByRole("link", { name: messagesFor("ru")("Pages.Common.back") }).filter({ visible: true }).click();
 
     await page.waitForURL("**/ru");
   });
@@ -570,11 +573,11 @@ test.describe("question chips", () => {
       await expect(page.locator(`html[lang=${to}]`)).toBeAttached();
       await expect(page.locator('[id="scale"]')).toHaveCount(2);
 
-      await chips(page).getByRole("link", { name: "Teams and scale" }).click();
+      await chips(page, to).getByRole("link", { name: "Teams and scale" }).click();
 
       await page.waitForURL(`**/${to}/about#scale`);
-      await expectBelowBars(page, "scale");
-      await expect(chips(page).getByRole("link", { name: "Teams and scale" })).toHaveAttribute("aria-current", "true");
+      await expectBelowBars(page, "scale", to);
+      await expect(chips(page, to).getByRole("link", { name: "Teams and scale" })).toHaveAttribute("aria-current", "true");
     });
   }
 

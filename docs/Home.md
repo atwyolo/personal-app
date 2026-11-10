@@ -45,6 +45,7 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[2026-11-04-post-page-design]] — Post page: static, the lead text and the body, cards open it in a new tab, dropped 2026-11-04
 - [[2026-11-04-content-in-files-design]] — no database: content in `messages/` (JSON + Markdown), blog, contact and admin removed, done 2026-11-04
 - [[2026-11-10-meta-in-markdown-design]] — metadata in `meta.md`, recursive per-field merge, done 2026-11-10
+- [[2026-11-10-ui-translations-design]] — interface translated into all seven locales, 404 included, guarded by a translation test, done 2026-11-10
 
 ## Plans
 - [[2026-10-30-home-experience]] — Experience block, done; deferred items listed there
@@ -59,6 +60,7 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[2026-11-04-post-page]] — Post page, dropped 2026-11-04
 - [[2026-11-04-content-in-files]] — content in files, done; Neon deleted 2026-11-04
 - [[2026-11-10-meta-in-markdown]] — metadata in Markdown, done
+- [[2026-11-10-ui-translations]] — UI translations, done
 
 ## Journal
 - [[2026-10-26]] — kickoff: decisions, scaffold
@@ -70,7 +72,7 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[2026-11-02]] — home page closed: iOS check, sliding navigation, selected menu item, contact buttons; version tracking; About page started
 - [[2026-11-03]] — About page closed: chips, Back link, reveal, JSON-LD; Projects page closed; Stage 3 done; metadata tables; Skills page; Blog decisions before the spec
 - [[2026-11-04]] — Blog list and Post page built; then the foundation changed: content in files, blog removed, Projects → Experience
-- [[2026-11-10]] — metadata moved to Markdown
+- [[2026-11-10]] — metadata moved to Markdown; the interface translated into seven languages
 
 ## Templates
 - [[ADR Template]] · [[Journal Template]]

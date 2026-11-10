@@ -1,4 +1,5 @@
 import { expect, test } from "./fixtures";
+import { messagesFor } from "./messages";
 
 test("shows the lead, the results list and the read more link", async ({ page }) => {
   await page.goto("/en");
@@ -14,7 +15,8 @@ test("shows the lead, the results list and the read more link", async ({ page })
 test("keeps the current locale in the read more link", async ({ page }) => {
   await page.goto("/de");
 
-  await expect(page.getByRole("region", { name: "About" }).getByRole("link")).toHaveAttribute("href", "/de/about");
+  const region = page.getByRole("region", { name: messagesFor("de")("Pages.Home.about.label") });
+  await expect(region.getByRole("link")).toHaveAttribute("href", "/de/about");
 });
 
 test("styles read more as the design's text link, not a button", async ({ page }) => {

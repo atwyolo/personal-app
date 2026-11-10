@@ -1,4 +1,5 @@
 import { expect, test } from "./fixtures";
+import { messagesFor } from "./messages";
 
 test("the name links to the home page of the current locale", async ({ page }) => {
   await page.goto("/ru");
@@ -26,14 +27,15 @@ test.describe("desktop", () => {
   });
 
   test("shows every section in the current locale and marks the current page", async ({ page }) => {
+    const t = messagesFor("de");
     await page.goto("/de");
 
-    const nav = page.getByRole("navigation", { name: "Main navigation" });
+    const nav = page.getByRole("navigation", { name: t("Pages.Common.Header.navLabel") });
     const links = nav.getByRole("link");
-    await expect(links).toHaveText(["Home", "About", "Experience", "Skills"]);
+    await expect(links).toHaveText(["home", "about", "experience", "skills"].map((key) => t(`Pages.Common.Header.nav.${key}`)));
     const hrefs = await links.evaluateAll((anchors) => anchors.map((a) => a.getAttribute("href")));
     expect(hrefs).toEqual(["/de", "/de/about", "/de/experience", "/de/skills"]);
-    await expect(nav.getByRole("link", { name: "Home" })).toHaveAttribute("aria-current", "page");
+    await expect(nav.getByRole("link", { name: t("Pages.Common.Header.nav.home") })).toHaveAttribute("aria-current", "page");
   });
 });
 
@@ -47,14 +49,16 @@ test.describe("mobile", () => {
   });
 
   test("the menu panel lists every section, traps focus and closes with Escape", async ({ page }) => {
+    const t = messagesFor("ru");
     await page.goto("/ru");
 
-    const trigger = page.getByRole("button", { name: "Open menu" });
+    const trigger = page.getByRole("button", { name: t("Pages.Common.Header.openMenu") });
     await trigger.click();
-    const panel = page.getByRole("dialog", { name: "Main navigation" });
-    await expect(panel.getByRole("link")).toHaveText(["Home", "About", "Experience", "Skills"]);
-    await expect(panel.getByRole("link", { name: "Home" })).toHaveAttribute("href", "/ru");
-    await expect(panel.getByRole("link", { name: "Home" })).toHaveAttribute("aria-current", "page");
+    const panel = page.getByRole("dialog", { name: t("Pages.Common.Header.navLabel") });
+    const home = panel.getByRole("link", { name: t("Pages.Common.Header.nav.home") });
+    await expect(panel.getByRole("link")).toHaveText(["home", "about", "experience", "skills"].map((key) => t(`Pages.Common.Header.nav.${key}`)));
+    await expect(home).toHaveAttribute("href", "/ru");
+    await expect(home).toHaveAttribute("aria-current", "page");
 
     for (let i = 0; i < 8; i++) {
       await page.keyboard.press("Tab");
