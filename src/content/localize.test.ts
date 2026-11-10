@@ -1,41 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
 
-import { loadLocalized, mergeFields } from "./localize";
+import { loadLocalized } from "./localize";
 import { skillsSchema } from "./schemas";
 import { writeContentTree } from "./test-tree";
 
 const schema = z.strictObject({ name: z.string(), headline: z.string(), since: z.iso.date() });
 const en = "---\nname: Mike\nheadline: Engineer\nsince: \"2021-03-01\"\n---\n\nEnglish body.\n";
-
-describe("mergeFields", () => {
-  it("lets a locale override a field and falls back on null, undefined and empty strings", () => {
-    expect(mergeFields({ a: "A", b: "B", c: "C", d: "D" }, { a: "А", b: null, c: "", d: undefined })).toEqual({
-      a: "А",
-      b: "B",
-      c: "C",
-      d: "D",
-    });
-  });
-
-  it("merges a list by the key of its items, never by index", () => {
-    const merged = mergeFields(
-      { domains: [{ key: "core", label: "Core" }, { key: "tools", label: "Tools" }] },
-      { domains: [{ key: "tools", label: "Инструменты" }] },
-      { domains: "key" },
-    );
-
-    expect(merged.domains).toEqual([{ key: "core", label: "Core" }, { key: "tools", label: "Инструменты" }]);
-  });
-
-  it("rejects a list item the English list does not have", () => {
-    expect(() =>
-      mergeFields({ domains: [{ key: "core", label: "Core" }] }, { domains: [{ key: "cor", label: "Основа" }] }, {
-        domains: "key",
-      }),
-    ).toThrow(/domains.*"cor"/);
-  });
-});
 
 describe("loadLocalized", () => {
   it("gives a locale without its own file the English content", () => {

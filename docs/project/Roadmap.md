@@ -1,6 +1,6 @@
 ---
 tags: [project, roadmap]
-updated: 2026-11-04
+updated: 2026-11-10
 ---
 
 # Roadmap
@@ -15,7 +15,7 @@ Each stage ends with a working build.
 
 **Projects page** ([[2026-11-03-projects-page-design]]): done 2026-11-03, see [[2026-11-03-projects-page]]; renamed Experience on 2026-11-04. Static, on the `experience` tables until the move to files. Three jobs for now: Omega-R left the database (owner's decision). The roles and the full descriptions are demo content.
 
-**Metadata tables** ([[2026-11-03-meta-tables-design]]): done 2026-11-03, moved to `Meta` in the messages on 2026-11-04; see [[2026-11-03-meta-tables]] and [[ADR-0014 Metadata in the Database]]. Titles, descriptions, preview images, icons, the site name and `hidden_from_search` live in four `meta_` tables. The site is hidden from search engines until Stage 8. No icons are uploaded yet.
+**Metadata tables** ([[2026-11-03-meta-tables-design]]): done 2026-11-03, moved to `Meta` in the messages on 2026-11-04 and to `meta.md` on 2026-11-10 ([[ADR-0016 Metadata in Markdown]]); see [[2026-11-03-meta-tables]] and [[ADR-0014 Metadata in the Database]]. Titles, descriptions, preview images, icons, the site name and `hidden_from_search` live in four `meta_` tables. The site is hidden from search engines until Stage 8. No icons are uploaded yet.
 
 **Skills page** ([[2026-11-03-skills-page-design]]): done 2026-11-03, see [[2026-11-03-skills-page]]. Static, on the `skills` tables; every skill in the HTML, filtered on the client by a search that waits 300 ms and by domain chips. Metadata from `meta_pages`. Most levels are still the seed's placeholder 6.
 
@@ -42,6 +42,6 @@ Each stage ends with a working build.
 - ~~**Stage 6 — Admin**~~: dropped (owner, 2026-11-04). Content changes with a deploy.
 - ~~**Rich text**~~: dropped (2026-11-04). Markdown bodies render links, italic and numbered lists through `react-markdown`; underline does not exist in Markdown.
 - [ ] **Stage 7 — Deploy**: Vercel project, Vercel Blob for files. The Neon database and its env vars were removed on 2026-11-04 (Task 10 of [[2026-11-04-content-in-files]]). *In progress:* the public Blob store holds the photo and CV, uploaded by hand (2026-10-30); builds show their version, and pull requests into `develop` must raise it ([[ADR-0013 Version Tracking]], 2026-11-02).
-- [ ] **Stage 8 — Polish**: sitemap/robots, OG images, loading/error boundaries, Suspense streaming, Lighthouse pass, `theme-color` following the chosen theme. `robots.txt` must allow everything while `hiddenFromSearch` is true: a crawler that may not load a page never sees its `noindex`. **Last step:** set `Meta.Common.hiddenFromSearch` to `false` in `messages/en.json` once the domain is connected, deploy, then request indexing in Search Console.
+- [ ] **Stage 8 — Polish**: sitemap/robots, OG images, loading/error boundaries, Suspense streaming, Lighthouse pass, `theme-color` following the chosen theme. `robots.txt` must allow everything while `hiddenFromSearch` is true: a crawler that may not load a page never sees its `noindex`. **Last step:** set `Common.hiddenFromSearch` to `false` in `messages/en/meta.md` once the domain is connected, deploy, then request indexing in Search Console.
 
 Later / optional: translations of the content (`messages/<locale>/`), a Markdown CV in a separate repository built from the same files, analytics.

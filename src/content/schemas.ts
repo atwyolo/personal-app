@@ -54,3 +54,24 @@ export const aboutPairSchema = z.strictObject({
   questionMessage: text,
   answerTitle: text,
 });
+
+export const siteMetaSchema = z.strictObject({
+  siteName: text,
+  defaultTitle: text,
+  iconIcoUrl: httpsUrl.nullable(),
+  iconSvgUrl: httpsUrl.nullable(),
+  iconPngUrl: httpsUrl.nullable(),
+  appleTouchIconUrl: httpsUrl.nullable(),
+  ogPlaceholderUrl: httpsUrl.nullable(),
+  hiddenFromSearch: z.boolean(),
+});
+
+export const pageMetaSchema = z.strictObject({ title: text, description: text, ogImageUrl: httpsUrl.nullable() });
+
+export const metaSchema = z.strictObject({
+  Common: siteMetaSchema,
+  Home: pageMetaSchema,
+  About: pageMetaSchema,
+  Skills: pageMetaSchema,
+  Experience: pageMetaSchema,
+});

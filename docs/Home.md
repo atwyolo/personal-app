@@ -1,6 +1,6 @@
 ---
 tags: [moc]
-updated: 2026-11-04
+updated: 2026-11-10
 ---
 
 # Home
@@ -32,7 +32,8 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[ADR-0012 Nav Indicator]]
 - [[ADR-0013 Version Tracking]]
 - [[ADR-0014 Metadata in the Database]] — superseded by ADR-0015
-- [[ADR-0015 Content in Files]] — no database: content in `messages/` (JSON + Markdown)
+- [[ADR-0015 Content in Files]] — no database: content in `messages/` (JSON + Markdown); amended by ADR-0016
+- [[ADR-0016 Metadata in Markdown]] — `Meta` moved to `meta.md`, JSON holds interface strings only
 
 ## Specs
 - [[2026-10-29-home-page-design]] — home page architecture, done 2026-11-02
@@ -43,6 +44,7 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[2026-11-03-blog-list-design]] — Blog list: deep links, server-side filters and pagination, dropped 2026-11-04
 - [[2026-11-04-post-page-design]] — Post page: static, the lead text and the body, cards open it in a new tab, dropped 2026-11-04
 - [[2026-11-04-content-in-files-design]] — no database: content in `messages/` (JSON + Markdown), blog, contact and admin removed, done 2026-11-04
+- [[2026-11-10-meta-in-markdown-design]] — metadata in `meta.md`, recursive per-field merge, done 2026-11-10
 
 ## Plans
 - [[2026-10-30-home-experience]] — Experience block, done; deferred items listed there
@@ -56,6 +58,7 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[2026-11-03-blog-list]] — Blog list, dropped 2026-11-04
 - [[2026-11-04-post-page]] — Post page, dropped 2026-11-04
 - [[2026-11-04-content-in-files]] — content in files, done; Neon deleted 2026-11-04
+- [[2026-11-10-meta-in-markdown]] — metadata in Markdown, done
 
 ## Journal
 - [[2026-10-26]] — kickoff: decisions, scaffold
@@ -67,6 +70,7 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[2026-11-02]] — home page closed: iOS check, sliding navigation, selected menu item, contact buttons; version tracking; About page started
 - [[2026-11-03]] — About page closed: chips, Back link, reveal, JSON-LD; Projects page closed; Stage 3 done; metadata tables; Skills page; Blog decisions before the spec
 - [[2026-11-04]] — Blog list and Post page built; then the foundation changed: content in files, blog removed, Projects → Experience
+- [[2026-11-10]] — metadata moved to Markdown
 
 ## Templates
 - [[ADR Template]] · [[Journal Template]]

@@ -6,6 +6,8 @@ date: 2026-11-04
 
 # ADR-0015 Content in Files
 
+Amended by [[ADR-0016 Metadata in Markdown]] (2026-11-10): `Meta` moved to `messages/<locale>/meta.md`, the JSON keeps only `Pages`.
+
 Supersedes [[ADR-0002 Database and ORM]], [[ADR-0003 Content Localization]], [[ADR-0004 Hand-written Admin]] and [[ADR-0014 Metadata in the Database]].
 
 ## Context

@@ -1,4 +1,4 @@
-export type MessageLeaf = string | number | boolean | null;
+export type MessageLeaf = string | null;
 
 export interface MessagesTree {
   [key: string]: MessageLeaf | MessagesTree;
