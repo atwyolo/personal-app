@@ -25,7 +25,7 @@ describe("GET /favicon.ico", () => {
 
   it("serves the bytes of iconIcoUrl", async () => {
     getSiteMeta.mockResolvedValue({ iconIcoUrl: iconUrl });
-    fetchMock.mockResolvedValue(new Response(bytes, { status: 200 }));
+    fetchMock.mockResolvedValue(new Response(bytes, { status: 200, headers: { "content-type": "image/vnd.microsoft.icon" } }));
 
     const response = await GET();
 
@@ -42,6 +42,20 @@ describe("GET /favicon.ico", () => {
 
     expect(response.status).toBe(404);
     expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("throws when the icon is empty", async () => {
+    getSiteMeta.mockResolvedValue({ iconIcoUrl: iconUrl });
+    fetchMock.mockResolvedValue(new Response(new Uint8Array(), { status: 200, headers: { "content-type": "image/x-icon" } }));
+
+    await expect(GET()).rejects.toThrow(iconUrl);
+  });
+
+  it("throws when the response is not an image", async () => {
+    getSiteMeta.mockResolvedValue({ iconIcoUrl: iconUrl });
+    fetchMock.mockResolvedValue(new Response("<html></html>", { status: 200, headers: { "content-type": "text/html" } }));
+
+    await expect(GET()).rejects.toThrow(iconUrl);
   });
 
   it("throws when the icon cannot be fetched", async () => {

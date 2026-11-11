@@ -103,6 +103,15 @@
       "title": "This page took a wrong turn",
       "text": "The link may be broken, or the page has moved. Everything else is right where you left it.",
       "home": "Back to home"
+    },
+    "Error": {
+      "metaTitle": "Something went wrong — Mikhail Aleksandrov",
+      "label": "Error 500 · Something went wrong",
+      "title": "Something broke on my side",
+      "text": "It’s not you. Reload the page, and if it keeps happening, try again in a few minutes.",
+      "errorId": "Error ID:",
+      "reload": "Reload page",
+      "reloading": "Reloading…"
     }
   }
 }

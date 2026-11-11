@@ -88,6 +88,15 @@
       "title": "Esta página tomó un camino equivocado",
       "text": "Es posible que el enlace esté roto o que la página se haya movido. Todo lo demás sigue donde lo dejó.",
       "home": "Volver al inicio"
+    },
+    "Error": {
+      "metaTitle": "Algo salió mal — Mikhail Aleksandrov",
+      "label": "Error 500 · Algo salió mal",
+      "title": "Algo falló de mi lado",
+      "text": "El problema no es suyo. Recargue la página y, si sigue ocurriendo, vuelva a intentarlo en unos minutos.",
+      "errorId": "ID del error:",
+      "reload": "Recargar la página",
+      "reloading": "Recargando…"
     }
   }
 }

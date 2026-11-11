@@ -14,7 +14,7 @@ export const Header: FC = async () => {
   const [profile, t] = await Promise.all([getProfile(locale), getTranslations("Pages.Common.Header")]);
 
   return (
-    <header className="reveal reveal-left sticky top-0 z-10 border-b border-card-border bg-card">
+    <header data-site-header className="reveal reveal-left sticky top-0 z-10 border-b border-card-border bg-card">
       <div className="mx-auto flex h-16 max-w-[720px] items-center gap-2 pr-3 pl-4 lg:h-[72px] lg:max-w-none lg:gap-8 lg:pr-15 lg:pl-5">
         <Link
           href="/"

@@ -88,6 +88,15 @@
       "title": "Cette page s’est égarée",
       "text": "Le lien est peut-être rompu, ou la page a été déplacée. Tout le reste est là où vous l’avez laissé.",
       "home": "Retour à l’accueil"
+    },
+    "Error": {
+      "metaTitle": "Une erreur est survenue — Mikhail Aleksandrov",
+      "label": "Erreur 500 · Une erreur est survenue",
+      "title": "Quelque chose a cassé de mon côté",
+      "text": "Ce n’est pas de votre faute. Rechargez la page et, si le problème persiste, réessayez dans quelques minutes.",
+      "errorId": "ID de l’erreur :",
+      "reload": "Recharger la page",
+      "reloading": "Rechargement…"
     }
   }
 }

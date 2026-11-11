@@ -1,0 +1,11 @@
+{
+  "Error": {
+    "metaTitle": "Something went wrong — Mikhail Aleksandrov",
+    "label": "Error 500 · Something went wrong",
+    "title": "Something broke on my side",
+    "text": "It’s not you. Reload the page, and if it keeps happening, try again in a few minutes.",
+    "errorId": "Error ID:",
+    "reload": "Reload page",
+    "reloading": "Reloading…"
+  }
+}

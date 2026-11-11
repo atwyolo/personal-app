@@ -29,6 +29,8 @@ Metadata comes from `messages/<locale>/meta.md` through `"use cache"` getters (`
 
 Until 2026-11-04 the blog list was a Partial Prerender and the post page used `ensureStatic = "navigation"`; both left with the blog ([[2026-11-04-content-in-files-design]]).
 
-Notes to expand: `loading.tsx` / `error.tsx` per segment.
+**Error boundaries** (2026-11-12, [[2026-11-12-error-page-design]]). `src/app/[locale]/error.tsx` catches an exception in a page and renders the Error page inside the root layout, whose header a `:has()` rule in `globals.css` hides while `[data-error-page]` is in the DOM. An exception in the root layout itself (the header and its menus, `ThemeColorSync`) goes to `src/app/global-error.tsx`, which renders its own document: `error.tsx` never wraps the layout of its own segment. Every route is prerendered, so a server render error fails the build and a failing background revalidation keeps the old page: in practice both boundaries show for client exceptions, after a 200, without a `digest`. `global-error.tsx` ships in the initial JavaScript of every page, which is why it imports a small dictionary and not the messages files.
+
+No `loading.tsx` and no Suspense streaming: every page is static, there is nothing to wait for.
 
 Related: [[ADR-0001 Framework and Rendering]], [[Content Model]]

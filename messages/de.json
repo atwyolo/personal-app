@@ -88,6 +88,15 @@
       "title": "Diese Seite hat sich verlaufen",
       "text": "Der Link ist vielleicht fehlerhaft, oder die Seite wurde verschoben. Alles andere ist noch da, wo Sie es zuletzt gesehen haben.",
       "home": "Zur Startseite"
+    },
+    "Error": {
+      "metaTitle": "Etwas ist schiefgelaufen — Mikhail Aleksandrov",
+      "label": "Fehler 500 · Etwas ist schiefgelaufen",
+      "title": "Bei mir ist etwas kaputtgegangen",
+      "text": "Es liegt nicht an Ihnen. Laden Sie die Seite neu, und wenn es wieder passiert, versuchen Sie es in ein paar Minuten noch einmal.",
+      "errorId": "Fehler-ID:",
+      "reload": "Seite neu laden",
+      "reloading": "Wird neu geladen…"
     }
   }
 }

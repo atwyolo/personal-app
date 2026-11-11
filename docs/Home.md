@@ -55,6 +55,7 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[2026-11-11-content-translations-design]] — tests on frozen fixtures, content translated into seven locales, done 2026-11-11
 - [[2026-11-11-not-found-page-design]] — the 404 page: static design, server-rendered, localized, done 2026-11-11
 - [[2026-11-11-launch-polish-design]] — Stage 8 before launch: the owner's nine decisions, well-known URLs, headers, the Lighthouse pass, done 2026-11-12
+- [[2026-11-12-error-page-design]] — the Error page: static, localized, without the header, for both error boundaries, done 2026-11-12
 
 ## Plans
 - [[2026-10-30-home-experience]] — Experience block, done; deferred items listed there
@@ -73,6 +74,7 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[2026-11-11-content-translations]] — content translations and test fixtures, done
 - [[2026-11-11-not-found-page]] — the 404 page, done
 - [[2026-11-11-launch-polish]] — launch polish, done
+- [[2026-11-12-error-page]] — the Error page and the favicon guard, done
 
 ## Journal
 - [[2026-10-26]] — kickoff: decisions, scaffold
@@ -86,7 +88,7 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[2026-11-04]] — Blog list and Post page built; then the foundation changed: content in files, blog removed, Projects → Experience
 - [[2026-11-10]] — metadata moved to Markdown; the interface translated into seven languages
 - [[2026-11-11]] — e2e tests on frozen fixtures; the content translated into seven languages; the 404 page
-- [[2026-11-12]] — launch polish: well-known URLs, security headers, JSON-LD, session cookie, theme-color, Lighthouse pass
+- [[2026-11-12]] — launch polish: well-known URLs, security headers, JSON-LD, session cookie, theme-color, Lighthouse pass; the Error page
 
 ## Templates
 - [[ADR Template]] · [[Journal Template]]

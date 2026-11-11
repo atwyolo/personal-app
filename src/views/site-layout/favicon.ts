@@ -10,7 +10,13 @@ const loadIcon = async (url: string): Promise<ArrayBuffer> => {
 
   if (!icon.ok) throw new Error(`Cannot fetch ${url}: ${icon.status}`);
 
-  return icon.arrayBuffer();
+  const type = icon.headers.get("content-type") ?? "";
+  if (!type.startsWith("image/")) throw new Error(`${url} is not an image: ${type || "no content-type"}`);
+
+  const bytes = await icon.arrayBuffer();
+  if (bytes.byteLength === 0) throw new Error(`${url} is empty`);
+
+  return bytes;
 };
 
 export const GET = async (): Promise<Response> => {
