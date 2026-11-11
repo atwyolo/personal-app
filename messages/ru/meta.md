@@ -19,4 +19,6 @@ Experience:
   title: Опыт — Михаил Александров
   description: "Подробно о каждом месте, где я работал frontend-разработчиком: продукты, результаты и навыки, которые за ними стоят."
   ogImageUrl: https://5iyco5bcxydlbyja.public.blob.vercel-storage.com/OG/ru/og-experience.png
+NotFound:
+  title: Страница не найдена — Михаил Александров
 ---

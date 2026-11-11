@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   experimental: {
     inlineCss: true,
+    globalNotFound: true,
   },
   partialPrefetching: true,
   outputFileTracingIncludes: {

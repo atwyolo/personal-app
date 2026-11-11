@@ -24,4 +24,6 @@ Experience:
   title: Experience — Mikhail Aleksandrov
   description: "The full story of every place I have worked as a frontend engineer: the products, the results and the skills behind them."
   ogImageUrl: https://5iyco5bcxydlbyja.public.blob.vercel-storage.com/OG/en/og-experience.png
+NotFound:
+  title: Page not found — Mikhail Aleksandrov
 ---

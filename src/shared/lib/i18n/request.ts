@@ -11,8 +11,14 @@ export default getRequestConfig(async (params) => {
 
   if (!locale) {
     const segment = await rootParams.locale();
-    if (!hasLocale(routing.locales, segment)) notFound();
-    locale = segment;
+
+    if (segment !== undefined) {
+      if (!hasLocale(routing.locales, segment)) notFound();
+      locale = segment;
+    } else {
+      const requested = await params.requestLocale;
+      locale = hasLocale(routing.locales, requested) ? requested : routing.defaultLocale;
+    }
   }
 
   const messages = await loadMergedMessages(locale);

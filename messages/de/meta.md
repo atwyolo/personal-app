@@ -17,4 +17,6 @@ Experience:
   title: Erfahrung — Mikhail Aleksandrov
   description: "Jede Station meiner Laufbahn als Frontend-Entwickler im Detail: die Produkte, die Ergebnisse und die Kenntnisse dahinter."
   ogImageUrl: https://5iyco5bcxydlbyja.public.blob.vercel-storage.com/OG/de/og-experience.png
+NotFound:
+  title: Seite nicht gefunden — Mikhail Aleksandrov
 ---

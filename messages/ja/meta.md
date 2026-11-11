@@ -17,4 +17,6 @@ Experience:
   title: 経歴 — Mikhail Aleksandrov
   description: フロントエンドエンジニアとして働いてきたすべての職場について、プロダクト、成果、それを支えたスキルを詳しく紹介します。
   ogImageUrl: https://5iyco5bcxydlbyja.public.blob.vercel-storage.com/OG/ja/og-experience.png
+NotFound:
+  title: ページが見つかりません — Mikhail Aleksandrov
 ---
