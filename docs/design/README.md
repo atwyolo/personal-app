@@ -20,6 +20,7 @@ These are the approved designs of the site's four pages. The Blog, Post, Contact
 | 2 | Experience (work history) | `/[locale]/experience` | [[Experience Page Handoff]] | static, from the content files |
 | 3 | About | `/[locale]/about` | [[About Page Handoff]] | static, from the content files |
 | 4 | Skills | `/[locale]/skills` | [[Skills Page Handoff]] | static, from the content files |
+| 5 | Not found (404) | any unknown URL | [[Not Found Page Handoff]] | rendered per request through `global-not-found.tsx` ([[ADR-0018 Global Not Found]]) |
 
 All four pages are built. Content shapes and rendering follow [[Content Model]] and [[Rendering Strategy]], not the handoffs' admin-oriented notes below.
 

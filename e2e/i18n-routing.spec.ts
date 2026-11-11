@@ -48,24 +48,6 @@ test.describe("localized pages", () => {
 
 });
 
-test.describe("unknown paths", () => {
-  test.use({ allowedConsoleErrors: [/status of 404/] });
-
-  test("an unknown path inside a locale is a 404", async ({ page }) => {
-    const response = await page.goto("/en/does-not-exist");
-
-    expect(response?.status()).toBe(404);
-    await expect(page.locator("html")).toHaveAttribute("lang", "en");
-  });
-
-  test("an unknown locale is redirected under a real one and ends in a 404", async ({ page }) => {
-    const response = await page.goto("/xx");
-
-    await expect(page).toHaveURL(/\/en\/xx$/);
-    expect(response?.status()).toBe(404);
-  });
-});
-
 test.describe("locale menu", () => {
   test.use({ locale: "en-US" });
 

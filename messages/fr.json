@@ -85,7 +85,10 @@
       "present": "aujourd’hui"
     },
     "NotFound": {
-      "message": "Cette page n’existe pas."
+      "label": "Erreur 404 · Page introuvable",
+      "title": "Cette page s’est égarée",
+      "text": "Le lien est peut-être rompu, ou la page a été déplacée. Tout le reste est là où vous l’avez laissé.",
+      "home": "Retour à l’accueil"
     }
   }
 }

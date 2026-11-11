@@ -66,6 +66,8 @@ export const metaMd = [
   "  title: Experience — Mike",
   "  description: Experience.",
   "  ogImageUrl: null",
+  "NotFound:",
+  "  title: Not found — Mike",
   "---",
   "",
 ].join("\n");

@@ -17,4 +17,6 @@ Experience:
   title: Doświadczenie — Mikhail Aleksandrov
   description: "Pełna historia każdego miejsca, w którym pracowałem jako frontend developer: produkty, wyniki i umiejętności, które za nimi stoją."
   ogImageUrl: https://5iyco5bcxydlbyja.public.blob.vercel-storage.com/OG/pl/og-experience.png
+NotFound:
+  title: Nie znaleziono strony — Mikhail Aleksandrov
 ---

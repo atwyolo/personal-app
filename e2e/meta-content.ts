@@ -54,3 +54,10 @@ export const readPageMeta = async (key: PageKey, locale: Locale = "en"): Promise
 
   return page as PageMetaRow;
 };
+
+export const readNotFoundMeta = async (locale: Locale = "en"): Promise<{ title: string }> => {
+  const notFound = meta(locale).NotFound;
+  if (!notFound) throw new Error("NotFound is missing in meta.md.");
+
+  return notFound as { title: string };
+};

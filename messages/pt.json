@@ -85,7 +85,10 @@
       "present": "o momento"
     },
     "NotFound": {
-      "message": "Esta página não existe."
+      "label": "Erro 404 · Página não encontrada",
+      "title": "Esta página pegou o caminho errado",
+      "text": "O link pode estar quebrado, ou a página mudou de lugar. Todo o resto continua onde você deixou.",
+      "home": "Voltar ao início"
     }
   }
 }

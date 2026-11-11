@@ -68,10 +68,13 @@ export const siteMetaSchema = z.strictObject({
 
 export const pageMetaSchema = z.strictObject({ title: text, description: text, ogImageUrl: httpsUrl.nullable() });
 
+export const notFoundMetaSchema = z.strictObject({ title: text });
+
 export const metaSchema = z.strictObject({
   Common: siteMetaSchema,
   Home: pageMetaSchema,
   About: pageMetaSchema,
   Skills: pageMetaSchema,
   Experience: pageMetaSchema,
+  NotFound: notFoundMetaSchema,
 });

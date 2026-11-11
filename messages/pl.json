@@ -85,7 +85,10 @@
       "present": "obecnie"
     },
     "NotFound": {
-      "message": "Ta strona nie istnieje."
+      "label": "Błąd 404 · Nie znaleziono strony",
+      "title": "Ta strona zabłądziła",
+      "text": "Link może być nieaktualny albo strona została przeniesiona. Cała reszta jest tam, gdzie była.",
+      "home": "Wróć na stronę główną"
     }
   }
 }

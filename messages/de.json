@@ -85,7 +85,10 @@
       "present": "heute"
     },
     "NotFound": {
-      "message": "Diese Seite existiert nicht."
+      "label": "Fehler 404 · Seite nicht gefunden",
+      "title": "Diese Seite hat sich verlaufen",
+      "text": "Der Link ist vielleicht fehlerhaft, oder die Seite wurde verschoben. Alles andere ist noch da, wo Sie es zuletzt gesehen haben.",
+      "home": "Zur Startseite"
     }
   }
 }

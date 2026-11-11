@@ -100,7 +100,10 @@
       "present": "present"
     },
     "NotFound": {
-      "message": "This page does not exist."
+      "label": "Error 404 · Page not found",
+      "title": "This page took a wrong turn",
+      "text": "The link may be broken, or the page has moved. Everything else is right where you left it.",
+      "home": "Back to home"
     }
   }
 }

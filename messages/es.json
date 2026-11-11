@@ -85,7 +85,10 @@
       "present": "actualidad"
     },
     "NotFound": {
-      "message": "Esta página no existe."
+      "label": "Error 404 · Página no encontrada",
+      "title": "Esta página tomó un camino equivocado",
+      "text": "Es posible que el enlace esté roto o que la página se haya movido. Todo lo demás sigue donde lo dejó.",
+      "home": "Volver al inicio"
     }
   }
 }
