@@ -11,6 +11,7 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[Overview]] — goals, scope, constraints
 - [[Roadmap]] — stages and their status
 - [[Open Questions]] — things not decided yet
+- [[Launch Plan]] — sections 1 and 2 done 2026-11-12; section 3, the launch itself, is next
 
 ## Architecture
 - [[Rendering Strategy]] — which route uses static / ISR / dynamic and why
@@ -36,6 +37,9 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[ADR-0016 Metadata in Markdown]] — `Meta` moved to `meta.md`, JSON holds interface strings only
 - [[ADR-0017 Test Content Fixtures]] — e2e tests build from frozen content in `e2e/content/`; no test reads `messages/`
 - [[ADR-0018 Global Not Found]] — one server-rendered, localized 404 through `global-not-found.tsx`
+- [[ADR-0019 Security Headers]] — CSP without nonces and five basic headers; the pages stay static
+- [[ADR-0020 Session Locale Cookie]] — `NEXT_LOCALE` lives one browser session; no notice needed
+- [[ADR-0021 Real User Monitoring]] — Vercel Speed Insights deferred
 
 ## Specs
 - [[2026-10-29-home-page-design]] — home page architecture, done 2026-11-02
@@ -50,6 +54,8 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[2026-11-10-ui-translations-design]] — interface translated into all seven locales, 404 included, guarded by a translation test, done 2026-11-10
 - [[2026-11-11-content-translations-design]] — tests on frozen fixtures, content translated into seven locales, done 2026-11-11
 - [[2026-11-11-not-found-page-design]] — the 404 page: static design, server-rendered, localized, done 2026-11-11
+- [[2026-11-11-launch-polish-design]] — Stage 8 before launch: the owner's nine decisions, well-known URLs, headers, the Lighthouse pass, done 2026-11-12
+- [[2026-11-12-error-page-design]] — the Error page: static, localized, without the header, for both error boundaries, done 2026-11-12
 
 ## Plans
 - [[2026-10-30-home-experience]] — Experience block, done; deferred items listed there
@@ -67,6 +73,8 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[2026-11-10-ui-translations]] — UI translations, done
 - [[2026-11-11-content-translations]] — content translations and test fixtures, done
 - [[2026-11-11-not-found-page]] — the 404 page, done
+- [[2026-11-11-launch-polish]] — launch polish, done
+- [[2026-11-12-error-page]] — the Error page and the favicon guard, done
 
 ## Journal
 - [[2026-10-26]] — kickoff: decisions, scaffold
@@ -80,6 +88,7 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[2026-11-04]] — Blog list and Post page built; then the foundation changed: content in files, blog removed, Projects → Experience
 - [[2026-11-10]] — metadata moved to Markdown; the interface translated into seven languages
 - [[2026-11-11]] — e2e tests on frozen fixtures; the content translated into seven languages; the 404 page
+- [[2026-11-12]] — launch polish: well-known URLs, security headers, JSON-LD, session cookie, theme-color, Lighthouse pass; the Error page
 
 ## Templates
 - [[ADR Template]] · [[Journal Template]]

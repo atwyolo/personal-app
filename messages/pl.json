@@ -30,8 +30,7 @@
         "whatsappAria": "WhatsApp: {phone}",
         "mailAria": "E-mail: {email}",
         "linkedinAria": "Profil na LinkedInie",
-        "downloadCv": "Pobierz CV",
-        "downloadCvAria": "Pobierz CV w formacie PDF"
+        "downloadCv": "Pobierz CV"
       },
       "Carousel": {
         "previous": "Poprzedni",
@@ -89,6 +88,15 @@
       "title": "Ta strona zabłądziła",
       "text": "Link może być nieaktualny albo strona została przeniesiona. Cała reszta jest tam, gdzie była.",
       "home": "Wróć na stronę główną"
+    },
+    "Error": {
+      "metaTitle": "Coś poszło nie tak — Mikhail Aleksandrov",
+      "label": "Błąd 500 · Coś poszło nie tak",
+      "title": "Coś zepsuło się po mojej stronie",
+      "text": "Przyczyna nie leży po Państwa stronie. Proszę odświeżyć stronę, a jeśli błąd się powtórzy, spróbować ponownie za kilka minut.",
+      "errorId": "ID błędu:",
+      "reload": "Odśwież stronę",
+      "reloading": "Odświeżanie…"
     }
   }
 }

@@ -33,8 +33,8 @@ export const Experience: FC = async () => {
       <ExperienceColumn title={title} jobs={jobs} />
       <div className="min-w-0">
         <ExperienceBar jobs={jobs} />
-        {jobs.map((job) => (
-          <ExperienceSection key={job.slug} job={job} />
+        {jobs.map((job, index) => (
+          <ExperienceSection key={job.slug} job={job} priority={index === 0} />
         ))}
       </div>
     </ReadingProgress>

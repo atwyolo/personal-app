@@ -157,3 +157,14 @@ test.describe("look", () => {
     });
   });
 });
+
+test("shows the header at once, without the wipe", async ({ page, request }) => {
+  const html = await (await request.get("/en/does-not-exist")).text();
+  expect(html).toMatch(/<html[^>]*\sdata-revealed=""/);
+
+  await page.goto("/en/does-not-exist");
+  const wipes = await page.evaluate(() =>
+    document.getAnimations().filter((animation) => (animation as CSSAnimation).animationName === "wipe").length,
+  );
+  expect(wipes).toBe(0);
+});

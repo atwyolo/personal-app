@@ -10,7 +10,7 @@ import { fontVariables } from "../fonts";
 
 import "../globals.css";
 
-export { generateMetadata } from "@/views/site-layout/metadata";
+export { generateMetadata, viewport } from "@/views/site-layout/metadata";
 
 export const generateStaticParams = () => locales.map((locale) => ({ locale }));
 

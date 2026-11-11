@@ -30,8 +30,7 @@
         "whatsappAria": "WhatsApp: {phone}",
         "mailAria": "E-mail: {email}",
         "linkedinAria": "Perfil no LinkedIn",
-        "downloadCv": "Baixar CV",
-        "downloadCvAria": "Baixar CV em PDF"
+        "downloadCv": "Baixar CV"
       },
       "Carousel": {
         "previous": "Anterior",
@@ -89,6 +88,15 @@
       "title": "Esta página pegou o caminho errado",
       "text": "O link pode estar quebrado, ou a página mudou de lugar. Todo o resto continua onde você deixou.",
       "home": "Voltar ao início"
+    },
+    "Error": {
+      "metaTitle": "Algo deu errado — Mikhail Aleksandrov",
+      "label": "Erro 500 · Algo deu errado",
+      "title": "Algo quebrou do meu lado",
+      "text": "O problema não é com você. Recarregue a página e, se continuar acontecendo, tente de novo em alguns minutos.",
+      "errorId": "ID do erro:",
+      "reload": "Recarregar página",
+      "reloading": "Recarregando…"
     }
   }
 }

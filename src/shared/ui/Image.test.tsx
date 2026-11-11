@@ -11,6 +11,20 @@ describe("Image", () => {
     expect(screen.getByRole("img", { name: "Photo" }).tagName).toBe("IMG");
   });
 
+  it("loads a priority image at once with a high fetch priority", () => {
+    render(<Image src="https://blob.example/a.jpg" alt="A" sizes="100vw" priority />);
+
+    const image = screen.getByRole("img", { name: "A" });
+    expect(image).toHaveAttribute("fetchpriority", "high");
+    expect(image).toHaveAttribute("loading", "eager");
+  });
+
+  it("loads an ordinary image lazily", () => {
+    render(<Image src="https://blob.example/b.jpg" alt="B" sizes="100vw" />);
+
+    expect(screen.getByRole("img", { name: "B" })).toHaveAttribute("loading", "lazy");
+  });
+
   it("shows a labelled placeholder when there is no source", () => {
     render(<Image src={null} alt="Photo" sizes="100vw" />);
 

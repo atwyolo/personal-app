@@ -10,13 +10,13 @@ import { fontVariables } from "./fonts";
 
 import "./globals.css";
 
-export { generateMetadata } from "@/views/not-found/metadata";
+export { generateMetadata, viewport } from "@/views/not-found/metadata";
 
 const NotFoundDocument: FC = async () => {
   const [locale, messages] = await Promise.all([getLocale(), getMessages()]);
 
   return (
-    <html lang={locale} className={`${fontVariables} h-full antialiased`} suppressHydrationWarning>
+    <html lang={locale} className={`${fontVariables} h-full antialiased`} data-revealed="" suppressHydrationWarning>
       <body className="min-h-full flex flex-col">
         <NextIntlClientProvider locale={locale} messages={{ Pages: messages.Pages }}>
           <ThemeProvider>

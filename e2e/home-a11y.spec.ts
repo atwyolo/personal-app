@@ -1,6 +1,9 @@
 import type { Page } from "@playwright/test";
 
 import { expect, test } from "./fixtures";
+import { messagesFor } from "./messages";
+
+import { locales } from "@/shared/lib/locales";
 
 const RING = { light: "rgb(35, 71, 232)", dark: "rgb(198, 244, 50)" };
 
@@ -97,20 +100,31 @@ test("keeps the text of every contact button at 4.5:1 or more", async ({ page })
   expect(buttons.filter((button) => button.ratio < 4.5)).toEqual([]);
 });
 
-test("keeps the visible text inside the accessible name of every control", async ({ page }) => {
-  await page.goto("/en");
+for (const locale of locales) {
+  test(`/${locale} keeps the visible text inside the accessible name of every control`, async ({ page }) => {
+    await page.goto(`/${locale}`);
 
-  const controls = await page.evaluate(() =>
-    Array.from(document.querySelectorAll<HTMLElement>("a[aria-label], button[aria-label]"))
-      .filter((control) => control.getClientRects().length > 0)
-      .map((control) => ({
-        label: control.getAttribute("aria-label") ?? "",
-        visible: (control.textContent ?? "").replace(/\s+/g, " ").trim(),
-      })),
-  );
+    const controls = await page.evaluate(() =>
+      Array.from(document.querySelectorAll<HTMLElement>("a[aria-label], button[aria-label]"))
+        .filter((control) => control.getClientRects().length > 0)
+        .map((control) => ({
+          label: control.getAttribute("aria-label") ?? "",
+          visible: (control.textContent ?? "").replace(/\s+/g, " ").trim(),
+        })),
+    );
 
-  const withText = controls.filter((control) => control.visible);
+    const withText = controls.filter((control) => control.visible);
 
-  expect(withText.length).toBeGreaterThan(0);
-  expect(withText.filter(({ label, visible }) => !label.toLowerCase().includes(visible.toLowerCase()))).toEqual([]);
-});
+    expect(withText.length).toBeGreaterThan(0);
+    expect(withText.filter(({ label, visible }) => !label.toLowerCase().includes(visible.toLowerCase()))).toEqual([]);
+  });
+
+  test(`/${locale} names the CV link by its visible text`, async ({ page }) => {
+    const t = messagesFor(locale);
+    await page.goto(`/${locale}`);
+
+    await expect(
+      page.getByRole("link", { name: `${t("Pages.Common.Contacts.downloadCv")} ${t("Pages.Common.Contacts.pdf")}`, exact: true }),
+    ).toBeVisible();
+  });
+}

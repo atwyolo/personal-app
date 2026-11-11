@@ -131,6 +131,10 @@
 }
 
 @layer components {
+  :root:has([data-error-page]) [data-site-header] {
+    display: none;
+  }
+
   @media screen and (prefers-reduced-motion: no-preference) {
     [data-reveal] section:not([data-revealed]) > * {
       opacity: 0;

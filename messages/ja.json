@@ -30,8 +30,7 @@
         "whatsappAria": "WhatsApp：{phone}",
         "mailAria": "メール：{email}",
         "linkedinAria": "LinkedInプロフィール",
-        "downloadCv": "CVをダウンロード",
-        "downloadCvAria": "CV（PDF）をダウンロード"
+        "downloadCv": "CVをダウンロード"
       },
       "Carousel": {
         "previous": "前へ",
@@ -89,6 +88,15 @@
       "title": "このページは道に迷ってしまったようです",
       "text": "リンクが壊れているか、ページが移動した可能性があります。そのほかのページは、これまでどおりご覧いただけます。",
       "home": "ホームに戻る"
+    },
+    "Error": {
+      "metaTitle": "エラーが発生しました — Mikhail Aleksandrov",
+      "label": "エラー 500 · 問題が発生しました",
+      "title": "こちら側で問題が起きました",
+      "text": "お客様の操作に問題はありません。ページを再読み込みしてください。解決しない場合は、数分後にもう一度お試しください。",
+      "errorId": "エラー ID:",
+      "reload": "ページを再読み込み",
+      "reloading": "再読み込み中…"
     }
   }
 }

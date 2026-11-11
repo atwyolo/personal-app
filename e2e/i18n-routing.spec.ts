@@ -24,6 +24,18 @@ test.describe("locale detection on /", () => {
     await context.close();
   });
 
+  test("sets a session cookie on a link to another language, not only on a pick", async ({ browser }) => {
+    const context = await browser.newContext({ locale: "en-US" });
+    const page = await context.newPage();
+
+    await page.goto("/ru");
+
+    const cookie = (await context.cookies()).find((c) => c.name === "NEXT_LOCALE");
+    expect(cookie?.value).toBe("ru");
+    expect(cookie?.expires).toBe(-1);
+    await context.close();
+  });
+
   test("prefers the locale cookie over the browser language", async ({ browser, baseURL }) => {
     const context = await browser.newContext({ locale: "ru-RU" });
     await context.addCookies([{ name: "NEXT_LOCALE", value: "de", url: baseURL! }]);
@@ -63,7 +75,7 @@ test.describe("locale menu", () => {
 
     await expect.poll(async () => (await context.cookies()).find((c) => c.name === "NEXT_LOCALE")?.value).toBe("de");
     const cookie = (await context.cookies()).find((c) => c.name === "NEXT_LOCALE");
-    expect(cookie!.expires * 1000 - Date.now()).toBeGreaterThan(360 * 24 * 60 * 60 * 1000);
+    expect(cookie!.expires).toBe(-1);
 
     await page.goto("/");
     await expect(page).toHaveURL(/\/de$/);

@@ -2,6 +2,8 @@ import type { Page } from "@playwright/test";
 
 import { expect, test } from "./fixtures";
 
+import { getReadingState } from "@/features/reading-progress/reading-state";
+
 const ROLE = "Senior Frontend Software Engineer";
 
 const article = (page: Page, slug: string) => page.locator(`main article#${slug}`);
@@ -26,14 +28,19 @@ const getProgress = (page: Page) =>
     .locator(page.viewportSize()!.width >= 1024 ? "nav a[data-job]" : "[data-segment]")
     .evaluateAll((items) => items.map((item) => Number((item as HTMLElement).style.getPropertyValue("--progress"))));
 
-const getExpectedProgress = (page: Page) =>
-  page.evaluate(() =>
-    [...document.querySelectorAll("main article")].map((item) => {
+const getExpectedProgress = async (page: Page) => {
+  const geometry = await page.evaluate(() => ({
+    sections: [...document.querySelectorAll("main article")].map((item) => {
       const { top, height } = item.getBoundingClientRect();
 
-      return Math.min(Math.max((0.4 * window.innerHeight - top) / height, 0), 1);
+      return { top, height };
     }),
-  );
+    viewportHeight: window.innerHeight,
+    atPageEnd: window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 1,
+  }));
+
+  return getReadingState(geometry).progress;
+};
 
 const expectProgressToMatchPage = async (page: Page) => {
   await expect
@@ -615,6 +622,7 @@ test.describe("reading progress on phones", () => {
 
     await expect(bar(page).locator("[data-active]").first()).toContainText("EPAM");
     await expect.poll(() => getProgress(page)).toEqual([1, 1, 1]);
+    await expectProgressToMatchPage(page);
   });
 
   test("recomputes the bars when the phone turns", async ({ page }) => {
@@ -683,5 +691,29 @@ test.describe("old address", () => {
     const response = await page.goto("/en/projects");
 
     expect(response?.status()).toBe(404);
+  });
+});
+
+test.describe("covers", () => {
+  test("loads the first job's cover at once in both layouts, the others lazily", async ({ page }) => {
+    await page.goto("/en/experience");
+
+    const firstSlug = await page.locator("main article").first().getAttribute("id");
+    const covers = await page.locator("main img").evaluateAll((images) =>
+      images.map((image) => ({
+        article: image.closest("article")?.id ?? null,
+        stage: image.closest("[data-experience-stage]") !== null,
+        loading: image.getAttribute("loading"),
+        fetchPriority: image.getAttribute("fetchpriority"),
+      })),
+    );
+    const firstStageIndex = covers.findIndex((cover) => cover.stage);
+
+    const first = covers.filter((cover, index) => cover.article === firstSlug || index === firstStageIndex);
+    const rest = covers.filter((cover, index) => cover.article !== firstSlug && index !== firstStageIndex);
+
+    expect(first).toHaveLength(2);
+    for (const cover of first) expect(cover).toMatchObject({ loading: "eager", fetchPriority: "high" });
+    for (const cover of rest) expect(cover.loading).toBe("lazy");
   });
 });

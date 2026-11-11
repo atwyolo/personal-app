@@ -89,10 +89,34 @@ test("/favicon.ico follows the content files", async ({ request }) => {
   const response = await request.get("/favicon.ico", { maxRedirects: 0 });
 
   if (site.iconIcoUrl) {
-    expect(response.status()).toBe(307);
-    expect(response.headers().location).toBe(site.iconIcoUrl);
+    expect(response.status()).toBe(200);
+    expect(response.headers()["content-type"]).toBe("image/x-icon");
+    expect((await response.body()).length).toBeGreaterThan(0);
   } else {
     expect(response.status()).toBe(404);
     expect(await response.body()).toHaveLength(0);
   }
+});
+
+test("robots.txt allows every crawler and names the sitemap", async ({ request, baseURL }) => {
+  const response = await request.get("/robots.txt");
+  const body = await response.text();
+
+  expect(response.status()).toBe(200);
+  expect(body).toMatch(/^User-Agent: \*$/m);
+  expect(body).toMatch(/^Allow: \/$/m);
+  expect(body).not.toMatch(/^Disallow:/m);
+  expect(body).toContain(`Sitemap: ${baseURL}/sitemap.xml`);
+});
+
+test("sitemap.xml lists every page of every locale with its alternates", async ({ request, baseURL }) => {
+  const response = await request.get("/sitemap.xml");
+  const body = await response.text();
+  const urls = [...body.matchAll(/<loc>([^<]+)<\/loc>/g)].map(([, url]) => url);
+
+  expect(response.status()).toBe(200);
+  expect(urls).toHaveLength(locales.length * 4);
+  expect(urls).toContain(`${baseURL}/ru/experience`);
+  expect(body).toContain(`hreflang="x-default" href="${baseURL}/skills"`);
+  expect(body).not.toContain("does-not-exist");
 });

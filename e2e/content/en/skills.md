@@ -3,7 +3,7 @@ domains:
   - {key: core, label: Core}
   - {key: frameworks, label: Frameworks}
   - {key: frontend, label: Frontend}
-  - {key: tools, label: Tools}
+  - {key: tools, label: "Tools, Build Systems and Developer Experience"}
 skills:
   - {name: React, level: 9, domain: frameworks, main: true, top: true, sort: 0}
   - {name: Next.js, level: 9, domain: frameworks, main: true, top: true, sort: 2}

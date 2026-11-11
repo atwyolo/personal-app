@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 
 import type { LocaleAlternates } from "./i18n/alternates";
 import { type Locale, locales } from "./locales";
+import { themeColors } from "./theme-colors";
 
 export interface PageMetadataInput {
   title: string;
@@ -67,3 +68,10 @@ export const buildSiteMetadata = (params: BuildSiteMetadataParams): Metadata => 
     ...(hiddenFromSearch ? { robots: { index: false, follow: false } } : {}),
   };
 };
+
+export const buildSiteViewport = (): Viewport => ({
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: themeColors.light },
+    { media: "(prefers-color-scheme: dark)", color: themeColors.dark },
+  ],
+});

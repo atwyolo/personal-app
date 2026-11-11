@@ -3,7 +3,7 @@ import { getLocale } from "next-intl/server";
 
 import { getSiteMeta } from "@/content/meta";
 import { appVersion } from "@/shared/lib/app-version";
-import { buildSiteMetadata } from "@/shared/lib/metadata";
+import { buildSiteMetadata, buildSiteViewport } from "@/shared/lib/metadata";
 import { siteUrl } from "@/shared/lib/site-url";
 
 export const generateMetadata = async (): Promise<Metadata> => {
@@ -15,3 +15,5 @@ export const generateMetadata = async (): Promise<Metadata> => {
     other: { "app-version": appVersion },
   };
 };
+
+export const viewport = buildSiteViewport();

@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { getLocaleAlternates } from "./i18n/alternates";
 import { locales } from "./locales";
-import { buildPageMetadata, buildSiteMetadata } from "./metadata";
+import { buildPageMetadata, buildSiteMetadata, buildSiteViewport } from "./metadata";
 
 const alternates = getLocaleAlternates("ru", "/projects");
 const page = { title: "Projects — M. A.", description: "D", ogImageUrl: null };
@@ -139,6 +139,17 @@ describe("buildSiteMetadata", () => {
         { url: svg, type: "image/svg+xml" },
       ],
       apple: [{ url: apple, sizes: "180x180" }],
+    });
+  });
+});
+
+describe("buildSiteViewport", () => {
+  it("emits theme-color for both schemes in the header's colours", () => {
+    expect(buildSiteViewport()).toEqual({
+      themeColor: [
+        { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+        { media: "(prefers-color-scheme: dark)", color: "#181e3b" },
+      ],
     });
   });
 });
