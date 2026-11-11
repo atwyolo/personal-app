@@ -16,5 +16,5 @@ Skills:
 Experience:
   title: Expérience — Mikhail Aleksandrov
   description: "Le parcours complet de chaque poste que j’ai occupé en tant que développeur frontend : les produits, les résultats et les compétences qui les ont rendus possibles."
-ogImageUrl: https://5iyco5bcxydlbyja.public.blob.vercel-storage.com/OG/fr/og-experience.png
+  ogImageUrl: https://5iyco5bcxydlbyja.public.blob.vercel-storage.com/OG/fr/og-experience.png
 ---
