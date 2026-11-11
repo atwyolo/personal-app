@@ -41,7 +41,14 @@ export const ExperienceColumn: FC<ExperienceColumnProps> = (props) => {
                 className="col-start-1 row-start-1 flex min-h-0 translate-y-6 flex-col justify-center gap-3.5 opacity-0 [transition:opacity_.45s_ease,translate_.55s_cubic-bezier(.2,.7,.2,1)] data-active:translate-y-0 data-active:opacity-100 motion-reduce:transition-none"
               >
                 <div className="relative h-[200px] min-h-0 overflow-hidden rounded-2xl [@media(max-height:639px)]:hidden">
-                  <Image src={job.imageUrl} alt={job.company} sizes="calc(45vw - 89px)" className="object-cover" framed />
+                  <Image
+                    src={job.imageUrl}
+                    alt={job.company}
+                    sizes="calc(45vw - 89px)"
+                    priority={index === 0}
+                    className="object-cover"
+                    framed
+                  />
                 </div>
                 <span className="shrink-0 text-[54px] leading-[.95] font-bold tracking-[-0.04em]">{job.company}</span>
                 <span className="shrink-0 font-mono text-[13px] tracking-[0.04em] text-muted-foreground">

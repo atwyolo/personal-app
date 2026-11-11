@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
+import { blobOrigin } from "./src/shared/lib/blob-origin";
+import { buildSecurityHeaders } from "./src/shared/lib/security-headers";
+
 const withNextIntl = createNextIntlPlugin("./src/shared/lib/i18n/request.ts");
 
 const nextConfig: NextConfig = {
@@ -17,8 +20,14 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
     qualities: [85],
-    remotePatterns: [new URL("https://5iyco5bcxydlbyja.public.blob.vercel-storage.com/**")],
+    remotePatterns: [new URL(`${blobOrigin}/**`)],
   },
+  headers: async () => [
+    {
+      source: "/:path*",
+      headers: buildSecurityHeaders({ development: process.env.NODE_ENV === "development" }),
+    },
+  ],
   turbopack: {
     rules: {
       "*.css": {

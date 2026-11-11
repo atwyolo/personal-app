@@ -110,8 +110,11 @@ test.describe("about page", () => {
       "@type": "ProfilePage",
       mainEntity: {
         "@type": "Person",
+        "@id": "http://localhost:3100/#person",
         name: "Mikhail Aleksandrov",
         jobTitle: "Senior Frontend Software Engineer",
+        url: "http://localhost:3100/",
+        image: "https://5iyco5bcxydlbyja.public.blob.vercel-storage.com/e2e/photo.jpg",
         sameAs: ["https://www.linkedin.com/in/mikhail-aleksandrov-job"],
       },
     });

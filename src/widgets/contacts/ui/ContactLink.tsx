@@ -10,7 +10,7 @@ const tones = {
 
 interface ContactLinkProps {
   href: string;
-  label: string;
+  label?: string;
   title?: string;
   tone: keyof typeof tones;
   external?: boolean;

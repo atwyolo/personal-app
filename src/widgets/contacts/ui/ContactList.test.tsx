@@ -18,7 +18,10 @@ const renderList = (props: Partial<Parameters<typeof ContactList>[0]> = {}) =>
     </NextIntlClientProvider>,
   );
 
-const buttons = () => screen.queryAllByRole("link").map((link) => link.getAttribute("aria-label"));
+const buttons = () =>
+  screen
+    .queryAllByRole("link")
+    .map((link) => link.getAttribute("aria-label") ?? link.textContent?.replace(/\s+/g, " ").trim());
 
 describe("ContactList", () => {
   it("renders a button per contact, the CV last", () => {
@@ -43,6 +46,13 @@ describe("ContactList", () => {
     renderList({ contacts: { ...contacts, linkedin: null } });
 
     expect(buttons()).toEqual(["WhatsApp: +1", "Mail: a.b@c.d", "Download CV PDF"]);
+  });
+
+  it("names the CV button by its visible text, without an aria-label", () => {
+    renderList();
+
+    const cv = screen.getByRole("link", { name: "Download CV PDF" });
+    expect(cv).not.toHaveAttribute("aria-label");
   });
 
   it("skips the CV button without a file", () => {

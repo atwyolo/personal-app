@@ -30,8 +30,7 @@
         "whatsappAria": "WhatsApp：{phone}",
         "mailAria": "メール：{email}",
         "linkedinAria": "LinkedInプロフィール",
-        "downloadCv": "CVをダウンロード",
-        "downloadCvAria": "CV（PDF）をダウンロード"
+        "downloadCv": "CVをダウンロード"
       },
       "Carousel": {
         "previous": "前へ",

@@ -9,10 +9,11 @@ import type { ExperienceJob } from "../experience-job";
 
 interface ExperienceSectionProps {
   job: ExperienceJob;
+  priority?: boolean;
 }
 
 export const ExperienceSection: FC<ExperienceSectionProps> = (props) => {
-  const { job } = props;
+  const { job, priority } = props;
   const { slug, company, role, period, duration, imageUrl, descriptionShort, descriptionFull, skills } = job;
   const t = useTranslations("Pages.Experience");
 
@@ -32,6 +33,7 @@ export const ExperienceSection: FC<ExperienceSectionProps> = (props) => {
           src={imageUrl}
           alt={company}
           sizes="calc(100vw - 36px)"
+          priority={priority}
           className="object-cover"
           framed
         />

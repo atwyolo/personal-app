@@ -2,22 +2,25 @@ import { getLocale } from "next-intl/server";
 import type { FC } from "react";
 
 import { getProfile } from "@/content/profile";
-import { serializeJsonLd } from "@/shared/lib/json-ld";
+import { buildPersonJsonLd, serializeJsonLd } from "@/shared/lib/json-ld";
+import { siteUrl } from "@/shared/lib/site-url";
 import { AboutHero } from "@/widgets/about-hero/AboutHero";
 import { Interview } from "@/widgets/interview/Interview";
 
 export const AboutPage: FC = async () => {
-  const profile = await getProfile(await getLocale());
+  const [profile, englishProfile] = await Promise.all([getProfile(await getLocale()), getProfile("en")]);
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
-    mainEntity: {
-      "@type": "Person",
+    mainEntity: buildPersonJsonLd({
+      base: siteUrl,
       name: profile.name,
+      englishName: englishProfile.name,
       jobTitle: profile.jobTitle,
-      sameAs: [profile.contacts.linkedin.href],
-    },
+      photoUrl: profile.photoUrl,
+      linkedinUrl: profile.contacts.linkedin.href,
+    }),
   };
 
   return (

@@ -91,7 +91,6 @@ export const ContactList: FC<ContactListProps> = (props) => {
         <li>
           <ContactLink
             href={cvUrl}
-            label={t("downloadCvAria")}
             tone="cv"
             className="reveal reveal-left"
             mark={<DownloadIcon aria-hidden className="size-6" />}

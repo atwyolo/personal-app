@@ -30,8 +30,7 @@
         "whatsappAria": "WhatsApp: {phone}",
         "mailAria": "E-mail: {email}",
         "linkedinAria": "Profil na LinkedInie",
-        "downloadCv": "Pobierz CV",
-        "downloadCvAria": "Pobierz CV w formacie PDF"
+        "downloadCv": "Pobierz CV"
       },
       "Carousel": {
         "previous": "Poprzedni",

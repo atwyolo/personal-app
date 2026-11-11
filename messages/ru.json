@@ -30,8 +30,7 @@
         "whatsappAria": "WhatsApp: {phone}",
         "mailAria": "Почта: {email}",
         "linkedinAria": "Профиль в LinkedIn",
-        "downloadCv": "Скачать резюме",
-        "downloadCvAria": "Скачать резюме в PDF"
+        "downloadCv": "Скачать резюме"
       },
       "Carousel": {
         "previous": "Предыдущий",

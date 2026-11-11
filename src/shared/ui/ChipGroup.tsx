@@ -37,7 +37,7 @@ export const ChipGroup: FC<ChipGroupProps> = (props) => {
         <ToggleGroupItem
           key={item.value}
           value={item.value}
-          className="h-9 min-h-9 rounded-full border border-border px-3.5 font-mono text-xs font-normal text-foreground-soft outline-hidden hover:bg-muted focus-visible:ring-ring aria-pressed:border-selected aria-pressed:bg-selected aria-pressed:text-selected-foreground aria-pressed:hover:bg-selected"
+          className="h-9 min-h-9 rounded-full border border-border px-3.5 font-mono lg:inline-block lg:h-auto lg:max-w-full lg:shrink lg:py-[9px] lg:text-left lg:whitespace-normal lg:wrap-break-word text-xs font-normal text-foreground-soft outline-hidden hover:bg-muted focus-visible:ring-ring aria-pressed:border-selected aria-pressed:bg-selected aria-pressed:text-selected-foreground aria-pressed:hover:bg-selected"
         >
           {item.label}{" "}
           <span className="text-muted-foreground in-aria-pressed:text-selected-foreground in-aria-pressed:opacity-70">

@@ -350,3 +350,27 @@ test.describe("desktop layout", () => {
     await expect.poll(async () => Math.round((await search.boundingBox())!.y)).toBe(93);
   });
 });
+
+test.describe("long domain labels", () => {
+  test("keep every chip inside the filter column on desktop", async ({ page, isMobile }) => {
+    test.skip(isMobile, "the desktop filter column");
+    await page.setViewportSize({ width: 1024, height: 800 });
+    await openHydrated(page);
+
+    const column = await page.getByRole("group", { name: "Domain" }).filter({ visible: true }).boundingBox();
+    for (const chip of await chips(page).all()) {
+      const box = await chip.boundingBox();
+      expect(box!.x + box!.width, (await chip.textContent()) ?? "").toBeLessThanOrEqual(column!.x + column!.width + 0.5);
+    }
+    expect((await chips(page).first().boundingBox())!.height).toBe(36);
+  });
+
+  test("stay on one scrolling line on a phone", async ({ page, isMobile }) => {
+    test.skip(!isMobile, "the mobile chip row");
+    await openHydrated(page);
+
+    const tops = await chips(page).evaluateAll((buttons) => buttons.map((button) => button.getBoundingClientRect().top));
+    expect(new Set(tops).size).toBe(1);
+    expect(await chipRow(page).evaluate((row) => row.scrollWidth > row.clientWidth)).toBe(true);
+  });
+});
