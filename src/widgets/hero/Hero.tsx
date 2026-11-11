@@ -1,20 +1,15 @@
 import { getLocale } from "next-intl/server";
 import type { FC } from "react";
 
-import { getProfile } from "@/db/queries/home";
+import { getProfile } from "@/content/profile";
 import { cn } from "@/shared/lib/utils";
 import { Chip } from "@/shared/ui/Chip";
 import { Tile } from "@/shared/ui/Tile";
 
 interface HeroProps {
-  /** Grid placement from the page. */
   className?: string;
 }
 
-/**
- * First tile of the home page: name (the page's only h1), headline and the hero skills.
- * Reads the profile itself: getProfile is a "use cache" function, so the header, hero and contacts share one result.
- */
 export const Hero: FC<HeroProps> = async (props) => {
   const { className } = props;
   const locale = await getLocale();

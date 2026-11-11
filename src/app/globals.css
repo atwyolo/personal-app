@@ -4,26 +4,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/*
- * Design tokens: docs/design/shared/tokens.css (approved handoff, docs/design/Home Page Handoff.md).
- * shadcn variable names keep their shadcn meaning, so generated components pick up the palette.
- * Extra tokens (card-border, foreground-soft, brand, deco, shutter, selected, placeholder, contact brands)
- * cover what the design needs beyond shadcn's set.
- *
- * `inline` makes each utility reference the CSS variable directly (bg-card -> var(--card)),
- * so switching the .dark class repaints the page at runtime.
- */
 @theme inline {
-  /*
-   * layout.tsx defines --font-geist-sans / --font-geist-mono via next/font (a generated class on <html>), so the IDE
-   * cannot see them in any stylesheet: the JetBrains inspection is suppressed on these lines only.
-   * Japanese falls back to system fonts.
-   */
-  /*noinspection CssUnresolvedCustomProperty*/
   --font-sans: var(--font-geist-sans), var(--font-ja-system), system-ui, sans-serif;
-  /*noinspection CssUnresolvedCustomProperty*/
   --font-mono: var(--font-geist-mono), ui-monospace, var(--font-ja-system), monospace;
-  /*noinspection CssUnresolvedCustomProperty*/
   --font-heading: var(--font-geist-sans), var(--font-ja-system), system-ui, sans-serif;
 
   --color-background: var(--background);
@@ -54,14 +37,6 @@
   --color-selected-foreground: var(--selected-foreground);
   --color-placeholder: var(--placeholder);
 
-  /* Contact brand colors are the same in both themes. */
-  --color-whatsapp: #188842; /* The brand's hue, darkened for 4.5:1 with white; the official #25d366 gives 1.98:1. */
-  --color-whatsapp-foreground: #ffffff;
-  --color-gmail: #d93025;
-  --color-gmail-foreground: #ffffff;
-  --color-linkedin: #0a66c2;
-  --color-linkedin-foreground: #ffffff;
-
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -69,21 +44,11 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
-  /* Tiles: 20px on mobile, 24px from lg. */
   --radius-tile: 1.25rem;
   --radius-tile-lg: 1.5rem;
 }
 
-/*
- * Contrast (WCAG 2.x, text on its usual surface):
- *   light: brand #2347E8 on #FFFFFF ≈ 6.7:1, muted-foreground #5B6280 on #F3F5F9 ≈ 5.5:1
- *   dark:  brand #C6F432 on #181E3B ≈ 12.7:1, muted-foreground #8E96B5 on #181E3B ≈ 5.6:1
- *   Yellow #FFD23F is decoration only in light theme (1.4:1 on white): underlines, bullets, the wipe.
- */
-
-/* Light theme: light grey + blue, yellow as decoration. */
 :root {
-  /* Geist has no Japanese glyphs: use the platform's Japanese UI font (macOS/iOS, Windows, Android/Linux). */
   --font-ja-system: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Yu Gothic", Meiryo,
     "Noto Sans CJK JP", "Noto Sans JP";
 
@@ -101,23 +66,16 @@
   --secondary-foreground: #10142a;
   --muted: #e1e5ee;
   --muted-foreground: #5b6280;
-  --accent: #eef1f8; /* shadcn meaning: hover/active surface */
-  --accent-foreground: #10142a;
+  --accent: #eef1f8;  --accent-foreground: #10142a;
   --destructive: oklch(0.577 0.245 27.325);
   --border: #e1e5ee;
   --input: #bfcbf4;
   --ring: #2347e8;
   --radius: 0.625rem;
 
-  --brand: #2347e8; /* accent text, active nav, skill bars, chip text */
-  --deco: #ffd23f; /* underlines, bullets */
-  --shutter: #ffd23f; /* reveal wipe */
-  --selected: #10142a; /* active filter chip */
-  --selected-foreground: #ffffff;
-  --placeholder: #e1e5ee; /* striped image placeholders, empty skill segments */
-}
+  --brand: #2347e8;  --deco: #ffd23f;  --shutter: #ffd23f;  --selected: #10142a;  --selected-foreground: #ffffff;
+  --placeholder: #e1e5ee;}
 
-/* Dark theme: navy + lime. */
 .dark {
   --background: #10142a;
   --foreground: #edeff7;
@@ -158,21 +116,11 @@
   html {
     @apply font-sans;
   }
-  /*
-   * The handoff's focus ring. Buttons, including ButtonLink, get the same one as a box shadow from shadcn:
-   * their `outline-` utility sits in a later layer and wins over this rule, so they never show two rings.
-   */
   a:focus-visible {
     @apply outline-3 outline-offset-2 outline-ring;
   }
 }
 
-/*
- * Accent wipe: the shutter covers a block when the page loads and slides off, on every block at the same time.
- * `RevealOnce` sets `data-revealed` on <html> when it has ended, so client navigation never plays it again.
- * `.reveal` slides off to the right, `.reveal-left` to the left. Without the motion preference blocks are simply visible.
- * `overflow: clip`, not `hidden` as in tokens.css: `hidden` turns a block into a scroll container for nothing.
- */
 @keyframes wipe {
   from {
     transform: scaleX(1);
@@ -183,12 +131,30 @@
 }
 
 @layer components {
+  :root:has([data-error-page]) [data-site-header] {
+    display: none;
+  }
+
+  @media screen and (prefers-reduced-motion: no-preference) {
+    [data-reveal] section:not([data-revealed]) > * {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    [data-reveal] section[data-revealed] > * {
+      transition:
+        opacity 0.45s ease,
+        transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+    [data-reveal] section[data-revealed] > :last-child {
+      transition-delay: 0.35s;
+    }
+  }
+
   @media (prefers-reduced-motion: no-preference) {
     .reveal {
       position: relative;
       overflow: clip;
     }
-    /* `:where` adds no specificity, so `.reveal-left` still wins. */
     :where(:root:not([data-revealed])) .reveal::after {
       content: "";
       position: absolute;
@@ -202,6 +168,51 @@
     }
     .reveal-left::after {
       transform-origin: 0 50%;
+    }
+  }
+
+  .nav-indicator {
+    display: none;
+  }
+}
+
+@layer utilities {
+  @supports (anchor-name: --nav-current) and (left: anchor(left)) {
+    .site-nav a {
+      text-align: center;
+    }
+    .site-nav a::after {
+      content: attr(data-label);
+      display: block;
+      height: 0;
+      overflow: hidden;
+      visibility: hidden;
+      font-weight: var(--font-weight-semibold);
+    }
+    .site-nav a[aria-current="page"] {
+      anchor-name: --nav-current;
+      text-decoration-line: none;
+    }
+    .nav-indicator {
+      display: block;
+      position: absolute;
+      position-anchor: --nav-current;
+      top: calc(anchor(bottom) + 2px);
+      left: anchor(left);
+      right: anchor(right);
+      z-index: -1;
+      pointer-events: none;
+      border-top: 3px solid var(--deco);
+    }
+    .site-nav:not(:has([aria-current="page"])) .nav-indicator {
+      opacity: 0;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .nav-indicator {
+        transition:
+          left 0.3s cubic-bezier(0.75, 0, 0.2, 1),
+          right 0.3s cubic-bezier(0.75, 0, 0.2, 1);
+      }
     }
   }
 }

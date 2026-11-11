@@ -9,7 +9,7 @@ updated: 2026-11-01
 
 Replace the temporary Skills dump with "My top skills", the block from the design of 2026-10-31: a static list of the skills marked `top`, and a link to the future `/skills` page. This replaces the earlier `SkillsExplorer` plan: search, domain chips and the "Top N of M" counter move to `/skills`, which is designed separately.
 
-Related: [[2026-10-29-home-page-design]], [[Home Page Handoff]], [[Data Model]]. Previous: [[2026-10-30-home-experience]]. Next: [[2026-10-30-home-blog]].
+Related: [[2026-10-29-home-page-design]], [[Home Page Handoff]], [[Content Model]]. Previous: [[2026-10-30-home-experience]]. Next: [[2026-10-30-home-blog]].
 
 ## Decisions
 
@@ -50,7 +50,7 @@ Verify: `MobileNav.test.tsx` and `e2e/header.spec.ts`, updated first. Depends on
 
 ### Task 3: The `top` column (S)
 
-`src/db/schema/skills.ts`, `src/db/seed/data.ts`, [[Data Model]].
+`src/db/schema/skills.ts`, `src/db/seed/data.ts`, [[Content Model]].
 
 - [x] The schema and the seed mark the eight skills.
 - [x] **Production database, confirmed by the owner first:** the column, then the eight rows, in one transaction (2026-11-01). There is one database, and the seed never runs on it again.

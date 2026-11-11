@@ -1,26 +1,35 @@
-// Static per locale: every block reads its own cached data, which the admin refreshes by tag.
+import { getLocale } from "next-intl/server";
 import type { FC } from "react";
 
+import { getSiteMeta } from "@/content/meta";
+import { getProfile } from "@/content/profile";
+import { buildHomeJsonLd, buildPersonJsonLd, serializeJsonLd } from "@/shared/lib/json-ld";
+import { siteUrl } from "@/shared/lib/site-url";
+
 import { About } from "@/widgets/about/About";
-import { Blog } from "@/widgets/blog/Blog";
 import { Contacts } from "@/widgets/contacts/Contacts";
-import { Experience } from "@/widgets/experience/Experience";
+import { ExperienceCards } from "@/widgets/experience-cards/ExperienceCards";
 import { Hero } from "@/widgets/hero/Hero";
 import { ProfilePhoto } from "@/widgets/profile-photo/ProfilePhoto";
 import { TopSkills } from "@/widgets/top-skills/TopSkills";
 
-export const HomePage: FC = () => {
+export const HomePage: FC = async () => {
+  const locale = await getLocale();
+  const [profile, englishProfile, site] = await Promise.all([getProfile(locale), getProfile("en"), getSiteMeta(locale)]);
+
+  const person = buildPersonJsonLd({
+    base: siteUrl,
+    name: profile.name,
+    englishName: englishProfile.name,
+    jobTitle: profile.jobTitle,
+    photoUrl: profile.photoUrl,
+    linkedinUrl: profile.contacts.linkedin.href,
+  });
+  const jsonLd = buildHomeJsonLd({ person, siteName: site.siteName, locale, base: siteUrl });
+
   return (
     <main className="mx-auto flex w-full max-w-[720px] flex-col gap-3 px-4 pt-4 pb-8 lg:max-w-none lg:gap-4 lg:pr-15 lg:pl-5 lg:pt-6 lg:pb-12">
-      {/*
-        First screen: one DOM order (the mobile one: hero, photo, contacts, About), placed by named grid areas.
-        Mobile, 2 columns:      Desktop (lg), 4 columns:
-          hero     hero           photo     hero  hero  hero
-          photo    photo          photo     about about about
-          contacts contacts       contacts  about about about
-          about    about
-        The photo stretches over two rows, so both desktop columns end at the same line.
-      */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }} />
       <div className="grid grid-cols-2 gap-3 [grid-template-areas:'hero_hero'_'photo_photo'_'contacts_contacts'_'about_about'] lg:grid-cols-4 lg:gap-4 lg:[grid-template-areas:'photo_hero_hero_hero'_'photo_about_about_about'_'contacts_about_about_about']">
         <Hero className="reveal [grid-area:hero]" />
         <ProfilePhoto className="reveal reveal-left [grid-area:photo]" />
@@ -28,11 +37,9 @@ export const HomePage: FC = () => {
         <About className="reveal [grid-area:about]" />
       </div>
 
-      <Experience />
+      <ExperienceCards />
 
       <TopSkills />
-
-      <Blog />
     </main>
   );
 };

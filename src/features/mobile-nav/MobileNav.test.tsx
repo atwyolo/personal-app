@@ -6,7 +6,6 @@ import { describe, expect, it, vi } from "vitest";
 import messages from "../../../messages/en.json";
 import { MobileNav } from "./MobileNav";
 
-// next-intl navigation needs the Next router; links render as plain anchors, the current page is "/".
 vi.mock("@/shared/lib/i18n/navigation", () => ({
   usePathname: () => "/",
   Link: ({ href, ...props }: AnchorHTMLAttributes<HTMLAnchorElement>) => (
@@ -34,7 +33,7 @@ describe("MobileNav", () => {
     const dialog = await open(user);
 
     const links = Array.from(dialog.querySelectorAll("a"));
-    expect(links.map((link) => link.textContent)).toEqual(["Home", "About", "Projects", "Skills", "Blog", "Contact"]);
+    expect(links.map((link) => link.textContent)).toEqual(["Home", "About", "Experience", "Skills"]);
     expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute("aria-current", "page");
   });
 
@@ -53,7 +52,7 @@ describe("MobileNav", () => {
     renderNav();
     await open(user);
 
-    await user.click(screen.getByRole("link", { name: "Blog" }));
+    await user.click(screen.getByRole("link", { name: "Skills" }));
 
     await vi.waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
   });

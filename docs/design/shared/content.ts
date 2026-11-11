@@ -1,5 +1,6 @@
 /**
- * Site content as shown in the approved prototypes (Home, Projects, About, Skills, Blog).
+ * Site content as shown in the approved prototypes (Home, Projects, About, Skills, Blog, Post, Contact).
+ * Field shapes follow the admin design (docs/design/admin): what the admin edits is what the site reads.
  * Suggested home: src/content/site.ts — a static stand-in until Stage 3 (DB).
  * Shapes mirror docs/architecture/Data Model.md so the move to Drizzle is a swap of the source,
  * not of the components. Localized text lives here in English only; other locales fall back to en.
@@ -7,7 +8,18 @@
  * TODO(owner): values marked TODO are placeholders from the design, not facts.
  */
 
+/** Rich text from the admin editor (Tiptap), stored as sanitized HTML. Allowed: p, strong, em, u, a, ul, ol, li (+ h2–h4, blockquote, pre/code, img in posts). */
+export type RichText = string;
+
 export type SkillCategory = "core" | "frameworks" | "frontend" | "tools";
+
+/** Skill domains are editable in the admin (rename, add, delete). Names are localized; English here. */
+export const skillDomains: { id: SkillCategory; name: string }[] = [
+  { id: "core", name: "Core" },
+  { id: "frameworks", name: "Frameworks" },
+  { id: "frontend", name: "Frontend" },
+  { id: "tools", name: "Tools" },
+];
 
 export type Skill = {
   name: string;
@@ -16,8 +28,10 @@ export type Skill = {
   level: number;
   /** lower = shown first among equal levels */
   sort: number;
-  /** shown in "My top skills" on the home page (1–20 skills are marked) */
+  /** "Top" in the admin: shown in "My top skills" on the home page. No upper limit. */
   featured: boolean;
+  /** "Main" in the admin. TODO(owner): confirm what it drives (proposed: the hero chips on Home, replacing profile.heroTags). */
+  main: boolean;
 };
 
 export type Experience = {
@@ -29,29 +43,25 @@ export type Experience = {
   /** ISO month, e.g. "2024-11" */
   start: string;
   end: string | null;
-  /** home card: up to 3 sentences */
+  /** "Short description": up to 3 sentences, shown on the Home card and at the top of the job on /projects */
   description: string;
-  /** Projects page: one-sentence lead */
-  lead: string;
-  /** Projects page: 2–3 sentences of context */
-  context: string;
-  /** Projects page: "What I did" bullets */
-  achievements: string[];
-  /** Projects page: exactly two highlight numbers */
-  stats: [Stat, Stat];
-  /** 3–5 names, each must exist in `skills` */
+  /** "Full description": rich text, shown on /projects under the short description */
+  body: RichText;
+  /** "Skills": picked from `skills`; 3–5 are shown as tags */
   tags: string[];
   /** /public path; null renders the striped placeholder */
   image: string | null;
   href: string;
 };
 
-export type Stat = { value: string; label: string };
-
 export type PostTopic = "technical" | "software" | "hobby";
 
-/** Blog topics in display order; labels come from messages (Blog.topics.*) */
-export const postTopics: PostTopic[] = ["technical", "software", "hobby"];
+/** Blog topics in display order. Editable in the admin (rename, add, delete); names are localized. */
+export const postTopics: { id: PostTopic; name: string }[] = [
+  { id: "technical", name: "Technical" },
+  { id: "software", name: "Software" },
+  { id: "hobby", name: "Hobby" },
+];
 
 export type PostPreview = {
   slug: string;
@@ -68,6 +78,7 @@ export type PostPreview = {
 export const profile = {
   name: "Mikhail Aleksandrov",
   headline: "Senior Frontend Software Engineer, 8+ years",
+  /** TODO(owner): the admin no longer edits hero tags; they will come from Skills (see Skill.main). */
   heroTags: ["React.js", "Redux", "Next.js", "NestJS", "TypeScript", "Express"],
   photo: "/images/mikhail-aleksandrov.jpg", // TODO(owner): add the photo to /public/images
   cv: "/cv/Mikhail_Aleksandrov_CV.pdf", // TODO(owner): add the PDF to /public/cv
@@ -76,17 +87,14 @@ export const profile = {
     email: { href: "mailto:mikhail.aleksandrov.job@gmail.com", display: "mikhail.aleksandrov.job@gmail.com" },
     linkedin: { href: "https://www.linkedin.com/in/mikhail-aleksandrov-job", display: "linkedin.com/in/mikhail-aleksandrov-job" },
   },
-  about: {
-    lead: "I'm a Senior Frontend Engineer with 8+ years of commercial experience in React and Next.js, most recently at Glovo, Sony PlayStation and EPAM.",
-    resultsTitle: "A few results I'm proud of:",
-    results: [
-      "At EPAM, I helped migrate an e-commerce store from PHP to Next.js, which raised conversion by 12.4% and made pages load 37% faster.",
-      "At Glovo, I introduced unit testing that cut production defects by 23%, and shipped an offline mode that increased average session time by 17%.",
-      "At Sony PlayStation, I helped build an in-game notification system from scratch, hired and onboarded 3 developers, and brought test coverage to 95%.",
-    ],
-    /** desktop only; mobile shows lead + results + "Read more" */
-    more: "Beyond writing code, I have 2 years of team leadership experience, managing the full development cycle: from gathering requirements with the product owner to setting up a fully automated release process with high test coverage, detailed analytics and CI/CD. I've worked in small teams of 2–10 people and on large products with 1M+ users and teams of up to 60 engineers, so I'm comfortable with both startup speed and enterprise process.",
-  },
+  /** Home "About" block: one rich-text field in the admin (the desktop-only "more" paragraph was dropped). */
+  about: `<p>I'm a Senior Frontend Engineer with 8+ years of commercial experience in React and Next.js, most recently at Glovo, Sony PlayStation and EPAM.</p>
+<p><strong>A few results I'm proud of:</strong></p>
+<ul>
+<li>At EPAM, I helped migrate an e-commerce store from PHP to Next.js, which raised conversion by 12.4% and made pages load 37% faster.</li>
+<li>At Glovo, I introduced unit testing that cut production defects by 23%, and shipped an offline mode that increased average session time by 17%.</li>
+<li>At Sony PlayStation, I helped build an in-game notification system from scratch, hired and onboarded 3 developers, and brought test coverage to 95%.</li>
+</ul>` as RichText,
 };
 
 export const experience: Experience[] = [
@@ -101,15 +109,7 @@ export const experience: Experience[] = [
     tags: ["Next.js", "TypeScript", "Mantine", "React Hook Form", "Jest"], // TODO(owner): confirm
     image: null,
     href: "/projects#glovo",
-    lead: "Frontend for Glovo's customer web app: support, reliability and ordering on a weak connection.",
-    context: "TODO(owner): 2–3 sentences of context: the product area, the team, your role and who you worked with day to day.",
-    achievements: [
-      "Built an AI-powered chat for user support.",
-      "Introduced unit testing across the team, cutting production defects by 23%.",
-      "Set up frontend monitoring and alerting.",
-      "Shipped an offline mode that increased average session time by 17%.",
-    ],
-    stats: [{ value: "−23%", label: "production defects" }, { value: "+17%", label: "average session time" }],
+    body: "<ul><li>Built an AI-powered chat for user support.</li><li>Introduced unit testing across the team, cutting production defects by 23%.</li><li>Set up frontend monitoring and alerting.</li><li>Shipped an offline mode that increased average session time by 17%.</li></ul>",
   },
   {
     id: "sony",
@@ -122,14 +122,7 @@ export const experience: Experience[] = [
     tags: ["React", "TypeScript", "Redux Toolkit", "WebSocket", "Jest"], // TODO(owner): confirm
     image: null,
     href: "/projects#sony",
-    lead: "Part of the team behind PlayStation's in-game notification system, built from scratch.",
-    context: "TODO(owner): 2–3 sentences: what the notification system does, scale, team setup and your area of ownership.",
-    achievements: [
-      "Helped design and build the in-game notification system from the ground up.",
-      "Hired and onboarded 3 developers to the team.",
-      "Brought test coverage to 95%.",
-    ],
-    stats: [{ value: "95%", label: "test coverage" }, { value: "3", label: "developers hired" }],
+    body: "<ul><li>Helped design and build the in-game notification system from the ground up.</li><li>Hired and onboarded 3 developers to the team.</li><li>Brought test coverage to 95%.</li></ul>",
   },
   {
     id: "epam",
@@ -142,14 +135,7 @@ export const experience: Experience[] = [
     tags: ["Next.js", "React", "Redux", "GraphQL"], // TODO(owner): confirm
     image: null,
     href: "/projects#epam",
-    lead: "Moved a large e-commerce store from PHP to Next.js without losing search traffic.",
-    context: "TODO(owner): 2–3 sentences: the client, the size of the store, the team and how the migration was planned.",
-    achievements: [
-      "Migrated the storefront from PHP to Next.js page by page.",
-      "Kept URLs, metadata and sitemaps intact, so search rankings held.",
-      "Raised conversion by 12.4% and made pages load 37% faster.",
-    ],
-    stats: [{ value: "+12.4%", label: "conversion" }, { value: "37%", label: "faster pages" }],
+    body: "<ul><li>Migrated the storefront from PHP to Next.js page by page.</li><li>Kept URLs, metadata and sitemaps intact, so search rankings held.</li><li>Raised conversion by 12.4% and made pages load 37% faster.</li></ul>",
   },
   {
     id: "omega-r",
@@ -161,14 +147,7 @@ export const experience: Experience[] = [
     tags: ["React", "React Native", "Redux", "Material UI"], // TODO(owner): confirm
     image: null,
     href: "/projects#omega-r",
-    lead: "TODO(owner): one sentence: the product and what you did there.",
-    context: "TODO(owner): 2–3 sentences: clients and projects, the team, your role and what you learned.",
-    achievements: [
-      "TODO(owner): achievement with a number",
-      "TODO(owner): achievement",
-      "TODO(owner): achievement",
-    ],
-    stats: [{ value: "TODO", label: "metric" }, { value: "TODO", label: "metric" }],
+    body: "<ul><li>TODO(owner): achievement with a number</li><li>TODO(owner): achievement</li><li>TODO(owner): achievement</li></ul>",
   },
 ];
 
@@ -230,7 +209,10 @@ const levels: Record<string, number> = {
 };
 const pinned = Object.keys(levels);
 
-/** Marked for the home page. TODO(owner): pick your own set (1–20). */
+/** Marked "Main" in the admin. TODO(owner): confirm the meaning and pick your own set. */
+const main = ["React", "Next.js", "TypeScript", "Redux Toolkit", "Nest.js"];
+
+/** Marked "Top" for the home page. TODO(owner): pick your own set (no limit). */
 const featured = ["React", "Next.js", "TypeScript", "Redux Toolkit", "Nest.js", "GraphQL", "Jest", "Tailwind"];
 
 export const skills: Skill[] = (Object.keys(byCategory) as SkillCategory[]).flatMap((category) =>
@@ -240,6 +222,7 @@ export const skills: Skill[] = (Object.keys(byCategory) as SkillCategory[]).flat
     level: levels[name] ?? 6,
     sort: pinned.includes(name) ? pinned.indexOf(name) : 100,
     featured: featured.includes(name),
+    main: main.includes(name),
   })),
 );
 // 41 skills: core 5 · frameworks 4 · frontend 19 · tools 13
@@ -248,33 +231,49 @@ export const topSkills = skills
   .filter((s) => s.featured)
   .sort((a, b) => b.level - a.level || a.sort - b.sort || a.name.localeCompare(b.name));
 
-/** About page: interview-style sections. `question` is the visible h2, `title` the short label and chip text. */
+/**
+ * About page: an interview. The admin manages any number of pairs (add, delete, reorder);
+ * each pair is fully editable. `title` is the chip label, `question` the interviewer's message (the visible h2),
+ * `answerTitle` the first line shown larger, `answerBody` the rest as rich text.
+ */
 export type AboutSection = {
   id: string;
   title: string;
   question: string;
-  /** one-sentence answer, shown larger */
-  statement: string;
-  /** plain paragraphs; "results" renders profile.about.results as a list instead, "next" adds the contact buttons */
-  body: string[];
+  answerTitle: string;
+  answerBody: RichText;
+  /** TODO(owner): the admin has no switch for this yet; the prototype shows contact buttons under "What I'm looking for". */
+  showContacts?: boolean;
 };
 
 export const aboutSections: AboutSection[] = [
   { id: "who", title: "Who I am", question: "Who are you, in two sentences?",
-    statement: "I'm a Senior Frontend Engineer with 8+ years of commercial experience in React and Next.js.",
-    body: ["Most recently at Glovo, Sony PlayStation and EPAM. TODO(owner): where you are based, how you got into frontend and what kind of products you enjoy building."] },
+    answerTitle: "I'm a Senior Frontend Engineer with 8+ years of commercial experience in React and Next.js.",
+    answerBody: "<p>Most recently at Glovo, Sony PlayStation and EPAM. TODO(owner): where you are based, how you got into frontend and what kind of products you enjoy building.</p>" },
   { id: "how", title: "How I work", question: "How do you like to work?",
-    statement: "I own the whole cycle, from the first talk with the product owner to an automated release.",
-    body: ["Beyond writing code, I have 2 years of team leadership experience, managing the full development cycle: from gathering requirements with the product owner to setting up a fully automated release process with high test coverage, detailed analytics and CI/CD."] },
+    answerTitle: "I own the whole cycle, from the first talk with the product owner to an automated release.",
+    answerBody: "<p>Beyond writing code, I have 2 years of team leadership experience, managing the full development cycle: from gathering requirements with the product owner to setting up a fully automated release process with high test coverage, detailed analytics and CI/CD.</p>" },
   { id: "results", title: "Results I'm proud of", question: "What results are you proud of?",
-    statement: "I measure frontend work in numbers the business cares about.", body: [] },
+    answerTitle: "I measure frontend work in numbers the business cares about.",
+    answerBody: "<ul><li>At EPAM, I helped migrate an e-commerce store from PHP to Next.js, which raised conversion by 12.4% and made pages load 37% faster.</li><li>At Glovo, I introduced unit testing that cut production defects by 23%, and shipped an offline mode that increased average session time by 17%.</li><li>At Sony PlayStation, I helped build an in-game notification system from scratch, hired and onboarded 3 developers, and brought test coverage to 95%.</li></ul>" },
   { id: "scale", title: "Teams and scale", question: "What kind of teams have you worked in?",
-    statement: "Comfortable with both startup speed and enterprise process.",
-    body: ["I've worked in small teams of 2–10 people and on large products with 1M+ users and teams of up to 60 engineers."] },
+    answerTitle: "Comfortable with both startup speed and enterprise process.",
+    answerBody: "<p>I've worked in small teams of 2–10 people and on large products with 1M+ users and teams of up to 60 engineers.</p>" },
   { id: "next", title: "What I'm looking for", question: "What are you looking for next?",
-    statement: "TODO(owner): one sentence: the role, team and product you want next.",
-    body: ["TODO(owner): 2–3 sentences: role, format (remote or relocation), domains that interest you."] },
+    answerTitle: "TODO(owner): one sentence: the role, team and product you want next.",
+    answerBody: "<p>TODO(owner): 2–3 sentences: role, format (remote or relocation), domains that interest you.</p>", showContacts: true },
   { id: "life", title: "Outside of work", question: "And outside of work?",
-    statement: "TODO(owner): a human detail people remember.",
-    body: ["TODO(owner): 2–3 sentences: hobbies, languages you speak, where you live."] },
+    answerTitle: "TODO(owner): a human detail people remember.",
+    answerBody: "<p>TODO(owner): 2–3 sentences: hobbies, languages you speak, where you live.</p>" },
 ];
+
+/** Contact page form. All fields are required. Reply channels in display order. */
+export const replyChannels = ["email", "phone", "whatsapp", "telegram", "linkedin"] as const;
+export type ReplyChannel = (typeof replyChannels)[number];
+export type ContactRequest = {
+  name: string;
+  message: string;
+  replyVia: ReplyChannel;
+  contact: string;
+  consent: true;
+};

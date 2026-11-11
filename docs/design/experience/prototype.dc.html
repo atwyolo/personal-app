@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>C v2 · Липкая колонка + текст: даты на телефоне, без нижнего блока</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}
+.bar{display:flex;align-items:center;gap:16px;height:56px;padding:0 24px;box-sizing:border-box;background:#FFFFFF;border-bottom:1px solid #DADDE6;font-family:'Geist',system-ui,sans-serif;color:#1E2230}
+.grp{display:inline-flex;padding:4px;border-radius:12px;background:#EEF0F5;gap:4px}
+.sb{min-height:32px;padding:0 12px;border:0;border-radius:9px;background:transparent;color:#454B66;font:500 13px/1 'Geist',sans-serif;cursor:pointer}
+.sb.on{background:#FFFFFF;color:#10142A;box-shadow:0 1px 2px rgba(16,20,42,.12)}
+.stage{display:flex;gap:24px;padding:20px 24px;align-items:flex-start}
+.cap{font:500 12px/1 'Geist Mono',monospace;letter-spacing:.06em;text-transform:uppercase;color:#5B6280;margin:0 0 8px 4px}
+.frame{position:relative;overflow:hidden;border:1px solid #C9CEDB;border-radius:14px;background:var(--bg);color:var(--ink);font-family:'Geist',system-ui,sans-serif;box-sizing:border-box}
+.frame.ph{border-radius:32px}
+.hd{position:absolute;left:0;right:0;top:0;z-index:20;display:flex;align-items:center;gap:24px;height:56px;padding:0 28px;box-sizing:border-box;background:var(--tile);border-bottom:1px solid var(--tile-line);font-size:15px}
+.hd b{flex-grow:1;font-weight:600;letter-spacing:-.02em;font-size:17px}
+.hd nav{display:flex;gap:22px;font-size:14px;color:var(--ink2)}
+.hd nav .on{color:var(--accent);font-weight:600;text-decoration:underline;text-decoration-color:var(--deco);text-decoration-thickness:3px;text-underline-offset:7px}
+.ph .hd{height:52px;padding:0 16px}
+.scr{position:absolute;left:0;right:0;bottom:0;top:56px;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin}
+.ph .scr{top:52px}
+.lbl{font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.meta{font-family:'Geist Mono',monospace;font-size:13px;letter-spacing:.04em;color:var(--mute)}
+.lead{margin:0;font-size:20px;line-height:1.45}
+.ctx{margin:0;font-size:15px;line-height:1.6;color:var(--ink2)}
+.did{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px}
+.did li{display:flex;gap:10px;font-size:15px;line-height:1.5;color:var(--ink2)}
+.did li::before{content:'';flex:0 0 8px;height:8px;margin-top:8px;border-radius:2px;background:var(--deco)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-family:'Geist Mono',monospace;font-size:12px;line-height:1;padding:7px 10px;border:1px solid var(--tile-line);border-radius:999px;color:var(--accent);font-weight:500}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stat{display:flex;flex-direction:column;gap:6px;padding:16px;border:1px solid var(--tile-line);border-radius:16px;background:var(--tile)}
+.stat b{font-size:34px;line-height:1;letter-spacing:-.03em;color:var(--accent)}
+.stat span{font-size:13px;color:var(--mute)}
+.img{background:repeating-linear-gradient(135deg,var(--line) 0 1px,transparent 1px 10px);border:1px dashed var(--line);border-radius:16px;display:flex;align-items:center;justify-content:center;font-family:'Geist Mono',monospace;font-size:11px;color:var(--mute)}
+.co{margin:0;font-weight:700;letter-spacing:-.04em;line-height:.95}
+.yr{font-weight:800;letter-spacing:-.05em;line-height:.8;color:transparent;-webkit-text-stroke:1.5px var(--line);white-space:nowrap;pointer-events:none;user-select:none}
+.ph .lead{font-size:16px}
+.ph .did li{font-size:14px}
+.ph .stat{padding:12px}.ph .stat b{font-size:24px}
+.more{font-size:15px;font-weight:600;color:var(--accent);text-decoration:underline;text-decoration-color:var(--deco);text-decoration-thickness:2px;text-underline-offset:5px}
+.nextsec{padding:48px;display:flex;flex-direction:column;gap:12px;border-top:1px solid var(--tile-line)}
+.ph .nextsec{padding:28px 20px}
+
+.split{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}
+.aside{position:sticky;top:0;height:var(--H,644px);box-sizing:border-box;padding:40px 40px 32px 48px;display:flex;flex-direction:column;gap:20px;border-right:1px solid var(--tile-line);background:var(--tile);overflow:hidden}
+.st{position:relative;flex-grow:1}
+.st > div{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:14px;opacity:0;transform:translateY(24px);transition:opacity .45s ease,transform .55s cubic-bezier(.2,.7,.2,1)}
+.st > div[data-on="true"]{opacity:1;transform:none}
+.st .yr{font-size:118px;margin-bottom:6px}
+.rows{display:flex;flex-direction:column;gap:2px}
+.row{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:10px 0;color:var(--mute);font-size:14px;text-decoration:none}
+.row .n{font:500 12px/1 'Geist Mono',monospace}
+.row .p{font:500 12px/1 'Geist Mono',monospace}
+.row .bar2{grid-column:1 / -1;height:3px;border-radius:2px;background:var(--line);overflow:hidden}
+.row .bar2 i{display:block;height:100%;width:calc(var(--f,0) * 100%);background:var(--accent)}
+.row[data-on="true"]{color:var(--ink)}
+.row[data-on="true"] .n{color:var(--accent)}
+.main{display:flex;flex-direction:column}
+.sec2{padding:56px 56px 64px;display:flex;flex-direction:column;gap:16px;border-bottom:1px solid var(--tile-line);min-height:calc(var(--H,644px) * .95);box-sizing:border-box}
+.sec2 h2{margin:0;font-size:34px;letter-spacing:-.03em}
+.sec2 h3{margin:8px 0 0;font-size:13px;font-family:'Geist Mono',monospace;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+/* phone */
+.pbar{position:sticky;top:0;z-index:5;height:58px;background:var(--tile);border-bottom:1px solid var(--tile-line);padding:0 16px;box-sizing:border-box}
+.pbar .nm{position:absolute;left:16px;right:16px;top:12px;display:flex;justify-content:space-between;align-items:baseline;opacity:0;transform:translateY(8px);transition:opacity .3s,transform .35s}
+.pbar .nm[data-on="true"]{opacity:1;transform:none}
+.pbar .nm b{font-size:17px;letter-spacing:-.02em}
+.segs{position:absolute;left:16px;right:16px;bottom:10px;display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.segs span{height:3px;border-radius:2px;background:var(--line);overflow:hidden}
+.segs span i{display:block;height:100%;width:calc(var(--f,0) * 100%);background:var(--accent)}
+.ph .sec2{padding:28px 18px 36px;min-height:0;gap:12px}
+.ph .sec2 h2{font-size:30px}
+
+.pbar{height:auto;padding:10px 16px 12px;display:flex;flex-direction:column;gap:8px}
+.pbar .nms{display:grid}
+.pbar .nm{position:static;grid-area:1 / 1;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;column-gap:12px;row-gap:2px}
+.pbar .nm .meta{font-size:12px;white-space:nowrap}
+.segs{position:static}
+
+.back{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;min-height:32px;margin-bottom:6px;color:var(--accent);font:600 15px/1 'Geist',sans-serif;text-decoration:underline;text-decoration-color:var(--deco);text-decoration-thickness:2px;text-underline-offset:5px;cursor:pointer}
+.back:hover{opacity:.85}
+.back svg{transition:transform .2s}
+.back:hover svg{transform:translateX(-3px)}
+.backrow{padding:12px 18px 6px}
+</style>
+</helmet>
+<div style="width: 1552px; height: 816px; box-sizing: border-box; background: #E3E6EE; font-family: 'Geist', system-ui, sans-serif; --bg: {{t.bg}}; --tile: {{t.tile}}; --line: {{t.line}}; --tile-line: {{t.tileLine}}; --ink: {{t.ink}}; --ink2: {{t.ink2}}; --mute: {{t.mute}}; --accent: {{t.accent}}; --deco: {{t.deco}}; --on-accent: {{t.onAccent}}">
+<div class="bar"><strong style="font-size: 15px">C v2 · Липкая колонка + текст: даты на телефоне, без нижнего блока</strong>
+<div class="grp" role="group" aria-label="Theme"><button class="{{darkCls}}" onClick="{{toDark}}">Тёмная</button><button class="{{lightCls}}" onClick="{{toLight}}">Светлая</button></div>
+<span style="margin-left: auto; font-size: 13px; color: #5B6280">Нажмите Play и крутите колесо внутри экранов</span></div>
+<div class="stage">
+<div><p class="cap">Desktop</p><div class="frame" style="width: 1120px; height: 700px"><div class="hd"><b>Mikhail Aleksandrov</b><nav><span>Home</span><span>About</span><span class="on">Projects</span><span>Blog</span><span>Contact</span></nav></div><div class="scr" data-fx="split"><div class="split"><aside class="aside"><a class="back" href="/" data-back aria-label="Back to the previous page"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>Back</a><span class="lbl">Experience · 2019 — 2026</span><div class="st"><div data-i="0" data-stage><span class="yr" aria-hidden="true">2024–26</span><span class="co" style="font-size: 54px">Glovo</span><span class="meta">[Role] · 2 years</span></div><div data-i="1" data-stage><span class="yr" aria-hidden="true">2023–24</span><span class="co" style="font-size: 54px">Sony PlayStation</span><span class="meta">[Role] · 1.3 years</span></div><div data-i="2" data-stage><span class="yr" aria-hidden="true">2021–23</span><span class="co" style="font-size: 54px">EPAM</span><span class="meta">[Role] · 2.2 years</span></div><div data-i="3" data-stage><span class="yr" aria-hidden="true">2019–21</span><span class="co" style="font-size: 54px">Omega-R</span><span class="meta">[Role] · 2.1 years</span></div></div><nav class="rows" aria-label="Places of work"><a class="row" href="#glovo" data-i="0" data-row data-go="0"><span class="n">01</span><span>Glovo</span><span class="p">11/2024 – 10/2026</span><span class="bar2"><i></i></span></a><a class="row" href="#sony" data-i="1" data-row data-go="1"><span class="n">02</span><span>Sony PlayStation</span><span class="p">08/2023 – 11/2024</span><span class="bar2"><i></i></span></a><a class="row" href="#epam" data-i="2" data-row data-go="2"><span class="n">03</span><span>EPAM</span><span class="p">07/2021 – 08/2023</span><span class="bar2"><i></i></span></a><a class="row" href="#omega-r" data-i="3" data-row data-go="3"><span class="n">04</span><span>Omega-R</span><span class="p">05/2019 – 06/2021</span><span class="bar2"><i></i></span></a></nav></aside><div class="main"><article class="sec2" id="glovo"><span class="lbl">2024–26</span><h2>Glovo</h2><span class="meta">[Role] · 11/2024 – 10/2026 · 2 years</span><p class="lead">Frontend for Glovo's customer web app: support, reliability and ordering on a weak connection.</p><p class="ctx">[Context, 2–3 sentences: the product area, the team, your role in it and who you worked with day to day.]</p><div class="stats"><div class="stat"><b>−23%</b><span>production defects</span></div><div class="stat"><b>+17%</b><span>average session time</span></div></div><h3>What I did</h3><ul class="did"><li>Built an AI-powered chat for user support.</li><li>Introduced unit testing across the team, cutting production defects by 23%.</li><li>Set up frontend monitoring and alerting.</li><li>Shipped an offline mode that increased average session time by 17%.</li></ul><h3>Stack</h3><div class="chips"><span class="chip">Next.js</span><span class="chip">TypeScript</span><span class="chip">Mantine</span><span class="chip">React Hook Form</span><span class="chip">Jest</span></div><div class="img" style="height: 200px">COMPANY IMAGE</div></article><article class="sec2" id="sony"><span class="lbl">2023–24</span><h2>Sony PlayStation</h2><span class="meta">[Role] · 08/2023 – 11/2024 · 1.3 years</span><p class="lead">Part of the team behind PlayStation's in-game notification system, built from scratch.</p><p class="ctx">[Context, 2–3 sentences: what the notification system does, scale, team setup and your area of ownership.]</p><div class="stats"><div class="stat"><b>95%</b><span>test coverage</span></div><div class="stat"><b>3</b><span>developers hired</span></div></div><h3>What I did</h3><ul class="did"><li>Helped design and build the in-game notification system from the ground up.</li><li>Hired and onboarded 3 developers to the team.</li><li>Brought test coverage to 95%.</li></ul><h3>Stack</h3><div class="chips"><span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">Redux Toolkit</span><span class="chip">WebSocket</span><span class="chip">Jest</span></div><div class="img" style="height: 200px">COMPANY IMAGE</div></article><article class="sec2" id="epam"><span class="lbl">2021–23</span><h2>EPAM</h2><span class="meta">[Role] · 07/2021 – 08/2023 · 2.2 years</span><p class="lead">Moved a large e-commerce store from PHP to Next.js without losing search traffic.</p><p class="ctx">[Context, 2–3 sentences: the client, the size of the store, the team and how the migration was planned.]</p><div class="stats"><div class="stat"><b>+12.4%</b><span>conversion</span></div><div class="stat"><b>37%</b><span>faster pages</span></div></div><h3>What I did</h3><ul class="did"><li>Migrated the storefront from PHP to Next.js page by page.</li><li>Kept URLs, metadata and sitemaps intact, so search rankings held.</li><li>Raised conversion by 12.4% and made pages load 37% faster.</li></ul><h3>Stack</h3><div class="chips"><span class="chip">Next.js</span><span class="chip">React</span><span class="chip">Redux</span><span class="chip">GraphQL</span></div><div class="img" style="height: 200px">COMPANY IMAGE</div></article><article class="sec2" id="omega-r"><span class="lbl">2019–21</span><h2>Omega-R</h2><span class="meta">[Role] · 05/2019 – 06/2021 · 2.1 years</span><p class="lead">[One sentence: the product and what you did there.]</p><p class="ctx">[Context, 2–3 sentences: clients and projects, the team, your role and what you learned.]</p><div class="stats"><div class="stat"><b>[n]</b><span>[metric]</span></div><div class="stat"><b>[n]</b><span>[metric]</span></div></div><h3>What I did</h3><ul class="did"><li>[Achievement with a number]</li><li>[Achievement]</li><li>[Achievement]</li></ul><h3>Stack</h3><div class="chips"><span class="chip">React</span><span class="chip">React Native</span><span class="chip">Redux</span><span class="chip">Material UI</span></div><div class="img" style="height: 200px">COMPANY IMAGE</div></article></div></div></div></div></div>
+<div><p class="cap">Phone</p><div class="frame ph" style="width: 360px; height: 700px"><div class="hd"><b>Mikhail Aleksandrov</b><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></div><div class="scr" data-fx="split"><div class="backrow"><a class="back" href="/" data-back aria-label="Back to the previous page"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>Back</a></div><div class="pbar"><div class="nms"><div class="nm" data-i="0" data-stage><b>Glovo</b><span class="meta">11/2024 – 10/2026</span></div><div class="nm" data-i="1" data-stage><b>Sony PlayStation</b><span class="meta">08/2023 – 11/2024</span></div><div class="nm" data-i="2" data-stage><b>EPAM</b><span class="meta">07/2021 – 08/2023</span></div><div class="nm" data-i="3" data-stage><b>Omega-R</b><span class="meta">05/2019 – 06/2021</span></div></div><div class="segs"><span data-row data-i="0"><i></i></span><span data-row data-i="1"><i></i></span><span data-row data-i="2"><i></i></span><span data-row data-i="3"><i></i></span></div></div><div class="main"><article class="sec2" id="glovo"><span class="lbl">2024–26</span><h2>Glovo</h2><span class="meta">[Role] · 11/2024 – 10/2026 · 2 years</span><p class="lead">Frontend for Glovo's customer web app: support, reliability and ordering on a weak connection.</p><p class="ctx">[Context, 2–3 sentences: the product area, the team, your role in it and who you worked with day to day.]</p><div class="stats"><div class="stat"><b>−23%</b><span>production defects</span></div><div class="stat"><b>+17%</b><span>average session time</span></div></div><h3>What I did</h3><ul class="did"><li>Built an AI-powered chat for user support.</li><li>Introduced unit testing across the team, cutting production defects by 23%.</li><li>Set up frontend monitoring and alerting.</li><li>Shipped an offline mode that increased average session time by 17%.</li></ul><h3>Stack</h3><div class="chips"><span class="chip">Next.js</span><span class="chip">TypeScript</span><span class="chip">Mantine</span><span class="chip">React Hook Form</span><span class="chip">Jest</span></div><div class="img" style="height: 130px">COMPANY IMAGE</div></article><article class="sec2" id="sony"><span class="lbl">2023–24</span><h2>Sony PlayStation</h2><span class="meta">[Role] · 08/2023 – 11/2024 · 1.3 years</span><p class="lead">Part of the team behind PlayStation's in-game notification system, built from scratch.</p><p class="ctx">[Context, 2–3 sentences: what the notification system does, scale, team setup and your area of ownership.]</p><div class="stats"><div class="stat"><b>95%</b><span>test coverage</span></div><div class="stat"><b>3</b><span>developers hired</span></div></div><h3>What I did</h3><ul class="did"><li>Helped design and build the in-game notification system from the ground up.</li><li>Hired and onboarded 3 developers to the team.</li><li>Brought test coverage to 95%.</li></ul><h3>Stack</h3><div class="chips"><span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">Redux Toolkit</span><span class="chip">WebSocket</span><span class="chip">Jest</span></div><div class="img" style="height: 130px">COMPANY IMAGE</div></article><article class="sec2" id="epam"><span class="lbl">2021–23</span><h2>EPAM</h2><span class="meta">[Role] · 07/2021 – 08/2023 · 2.2 years</span><p class="lead">Moved a large e-commerce store from PHP to Next.js without losing search traffic.</p><p class="ctx">[Context, 2–3 sentences: the client, the size of the store, the team and how the migration was planned.]</p><div class="stats"><div class="stat"><b>+12.4%</b><span>conversion</span></div><div class="stat"><b>37%</b><span>faster pages</span></div></div><h3>What I did</h3><ul class="did"><li>Migrated the storefront from PHP to Next.js page by page.</li><li>Kept URLs, metadata and sitemaps intact, so search rankings held.</li><li>Raised conversion by 12.4% and made pages load 37% faster.</li></ul><h3>Stack</h3><div class="chips"><span class="chip">Next.js</span><span class="chip">React</span><span class="chip">Redux</span><span class="chip">GraphQL</span></div><div class="img" style="height: 130px">COMPANY IMAGE</div></article><article class="sec2" id="omega-r"><span class="lbl">2019–21</span><h2>Omega-R</h2><span class="meta">[Role] · 05/2019 – 06/2021 · 2.1 years</span><p class="lead">[One sentence: the product and what you did there.]</p><p class="ctx">[Context, 2–3 sentences: clients and projects, the team, your role and what you learned.]</p><div class="stats"><div class="stat"><b>[n]</b><span>[metric]</span></div><div class="stat"><b>[n]</b><span>[metric]</span></div></div><h3>What I did</h3><ul class="did"><li>[Achievement with a number]</li><li>[Achievement]</li><li>[Achievement]</li></ul><h3>Stack</h3><div class="chips"><span class="chip">React</span><span class="chip">React Native</span><span class="chip">Redux</span><span class="chip">Material UI</span></div><div class="img" style="height: 130px">COMPANY IMAGE</div></article></div></div></div></div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1552,"height":816}}'>
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { theme: 'dark' };
+    this.onResize = () => this.setup(true);
+  }
+  componentDidMount() { this.setup(); window.addEventListener('resize', this.onResize); setTimeout(() => this.setup(true), 400); }
+  componentWillUnmount() { window.removeEventListener('resize', this.onResize); }
+  componentDidUpdate() { this.setup(); }
+  setup(force) {
+    const all = document.querySelectorAll('[data-fx]');
+    Array.prototype.forEach.call(all, (el) => {
+      if (el.__fx && !force) return;
+      const fx = el.getAttribute('data-fx');
+      const fn = this[fx] ? this[fx].bind(this, el) : null;
+      if (!fn) return;
+      if (!el.__fx) {
+        el.__fx = fn;
+        el.addEventListener('scroll', () => { if (!el.__raf) el.__raf = requestAnimationFrame(() => { el.__raf = 0; el.__fx(); }); }, { passive: true });
+        if (this[fx + 'Init']) this[fx + 'Init'](el);
+      }
+      el.style.setProperty('--H', el.clientHeight + 'px');
+      if (this[fx + 'Size']) this[fx + 'Size'](el);
+      fn();
+    });
+  }
+  clamp(v) { return Math.max(0, Math.min(1, v)); }
+  // shared: highlight rail items / counters
+  mark(root, sel, i) {
+    Array.prototype.forEach.call(root.querySelectorAll(sel), (n) => n.setAttribute('data-on', String(+n.getAttribute('data-i') === i)));
+  }
+  count(root, i, n) {
+    Array.prototype.forEach.call(root.querySelectorAll('[data-count]'), (c) => { c.textContent = String(i + 1).padStart(2, '0') + ' / ' + String(n).padStart(2, '0'); });
+  }
+
+  splitInit(el) {
+    Array.prototype.forEach.call(el.querySelectorAll('a[data-go]'), (a) => a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const s = el.querySelectorAll('.sec2')[+a.getAttribute('data-go')];
+      if (s) el.scrollTo({ top: this.offset(s, el) - (el.querySelector('.pbar') ? el.querySelector('.pbar').offsetHeight : 0), behavior: 'smooth' });
+    }));
+  }
+  offset(node, el) { return node.getBoundingClientRect().top - el.getBoundingClientRect().top + el.scrollTop; }
+  split(el) {
+    const secs = el.querySelectorAll('.sec2');
+    const mid = el.scrollTop + el.clientHeight * 0.4;
+    let act = 0;
+    const fs = [];
+    Array.prototype.forEach.call(secs, (s, i) => {
+      const top = this.offset(s, el);
+      if (top <= mid) act = i;
+      fs.push(this.clamp((mid - top) / s.offsetHeight));
+    });
+    if (el.scrollTop + el.clientHeight >= el.scrollHeight - 2) { act = secs.length - 1; for (let k = 0; k < fs.length; k++) fs[k] = 1; }
+    Array.prototype.forEach.call(el.querySelectorAll('[data-row]'), (r) => {
+      const i = +r.getAttribute('data-i');
+      r.style.setProperty('--f', fs[i].toFixed(3));
+      r.setAttribute('data-on', String(i === act));
+    });
+    this.mark(el, '[data-stage]', act);
+  }
+
+  renderVals() {
+
+    const T = {
+      dark: { bg: '#10142A', tile: '#181E3B', line: '#2A3360', tileLine: '#2A3360', ink: '#EDEFF7', ink2: '#B4BAD2', mute: '#8E96B5', accent: '#C6F432', deco: '#C6F432', onAccent: '#10142A' },
+      light: { bg: '#F3F5F9', tile: '#FFFFFF', line: '#E1E5EE', tileLine: '#BFCBF4', ink: '#10142A', ink2: '#454B66', mute: '#5B6280', accent: '#2347E8', deco: '#FFD23F', onAccent: '#FFFFFF' }
+    };
+    const s = this.state;
+    return {
+      t: T[s.theme],
+      darkCls: s.theme === 'dark' ? 'sb on' : 'sb',
+      lightCls: s.theme === 'light' ? 'sb on' : 'sb',
+      toDark: () => this.setState({ theme: 'dark' }),
+      toLight: () => this.setState({ theme: 'light' })
+    };
+  }
+}
+
+</script>
+</body>
+</html>

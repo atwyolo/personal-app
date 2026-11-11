@@ -1,15 +1,14 @@
 import { getTranslations } from "next-intl/server";
 import type { FC } from "react";
 
-import { getTopSkills } from "@/db/queries/home";
+import { getTopSkills } from "@/content/skills";
 import { SkillRow } from "@/features/skill-row/SkillRow";
 import { ButtonLink } from "@/shared/ui/ButtonLink";
 import { SectionHeader } from "@/shared/ui/SectionHeader";
 import { Tile } from "@/shared/ui/Tile";
 
-/** My top skills: the skills marked `top`, then the way to the full list. No marked skill, no block. */
 export const TopSkills: FC = async () => {
-  const [{ skills, total }, t] = await Promise.all([getTopSkills(), getTranslations("Home.skills")]);
+  const [{ skills, total }, t] = await Promise.all([getTopSkills(), getTranslations("Pages.Home.skills")]);
 
   if (skills.length === 0) return null;
 

@@ -11,25 +11,17 @@ import {
 export interface MenuItem {
   value: string;
   label: ReactNode;
-  /** Secondary text at the end of the item, e.g. a locale code or "now dark". */
   hint?: ReactNode;
 }
 
 interface MenuProps {
-  /** Element that opens the menu, usually our Button with an aria-label. Receives the trigger props and ref. */
   trigger: ReactElement;
-  /** Accessible name of the menu. */
   label: string;
   items: MenuItem[];
   value: string;
   onValueChange: (value: string) => void;
 }
 
-/**
- * Single-choice dropdown menu (locale, theme) as data: items, value, onValueChange.
- * Adapter over shadcn DropdownMenu + RadioGroup (Base UI); their compound parts and `render` prop stay inside.
- * No "use client": the shadcn file is the client boundary, and consumers are client components anyway.
- */
 export const Menu: FC<MenuProps> = (props) => {
   const { trigger, label, items, value, onValueChange } = props;
 
@@ -48,7 +40,7 @@ export const Menu: FC<MenuProps> = (props) => {
               key={item.value}
               value={item.value}
               closeOnClick
-              className="min-h-10 gap-2.5 rounded-[10px] py-0 pr-9 pl-3 text-[15px] font-medium focus:bg-accent data-checked:text-brand focus:data-checked:text-brand [&_[data-slot=dropdown-menu-radio-item-indicator]]:right-3 [&_[data-slot=dropdown-menu-radio-item-indicator]]:text-brand"
+              className="min-h-10 gap-2.5 rounded-[10px] py-0 pr-9 pl-3 text-[15px] font-medium focus:bg-accent data-checked:text-brand data-checked:**:text-brand focus:data-checked:text-brand focus:data-checked:**:text-brand [&_[data-slot=dropdown-menu-radio-item-indicator]]:right-3"
             >
               <span className="grow">{item.label}</span>
               {item.hint ? (

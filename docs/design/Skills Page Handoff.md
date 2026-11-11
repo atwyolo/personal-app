@@ -1,14 +1,22 @@
 ---
 tags: [design, handoff, skills]
 status: approved
-updated: 2026-11-01
+updated: 2026-11-03
 ---
 
 # Skills Page Handoff
 
+> Built on 2026-11-03 with the owner's corrections: no "Skills" label above the title, no "All skills" label above the tile, no URL sync, chip counts that follow the query, filters that reset when the visitor leaves, 16 px search text on phones, chip counts colored `muted-foreground` instead of 70% opacity, and on phones a sticky panel that folds the search while scrolling down, with the chips in one swipeable row. See [[2026-11-03-skills-page-design]].
+
 `/[locale]/skills` shows the full skills list with search and domain filters. It is what "Show all N skills" on Home links to.
 
-See [[README]] for shared rules and files. Data: `skills` in `shared/content.ts`. Messages: the `SkillsPage` namespace.
+See [[README]] for shared rules and files. Data: `skills` and `skillDomains` in `shared/content.ts`. Messages: the `SkillsPage` namespace.
+
+## Changes since 2026-11-01
+
+- **"‹ Back" link** above the hero label (style in [[README]]).
+- **Domains are data.** The admin can rename, add and delete them. Build the filter chips and their counts from `skillDomains` plus the skills in each domain, not from a fixed list. Domain names are localized content, not messages.
+- **Skills have a `main` flag** besides `featured` ("Top"). It does not change this page yet; see Open questions in [[README]].
 
 ## Scope and order
 

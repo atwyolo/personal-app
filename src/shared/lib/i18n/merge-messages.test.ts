@@ -24,6 +24,10 @@ describe("mergeMessages", () => {
     expect(mergeMessages(en, { hero: { title: "" } }).hero).toEqual({ title: "Hello" });
   });
 
+  it("treats null in the locale as untranslated", () => {
+    expect(mergeMessages(en, { hero: { title: null } }).hero).toEqual({ title: "Hello" });
+  });
+
   it("does not mutate its arguments", () => {
     const ru = { nav: { home: "Главная" } };
     mergeMessages(en, ru);

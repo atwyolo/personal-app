@@ -9,15 +9,10 @@ import { Button } from "@/shared/ui/Button";
 import { Drawer } from "@/shared/ui/Drawer";
 import { NavLink } from "@/shared/ui/NavLink";
 
-/**
- * Mobile and tablet navigation (below lg): a hamburger opening a right-side panel with the same sections as the
- * desktop header. Not designed in the handoff; follows its proposed default. Closes when a link is followed.
- */
 export const MobileNav: FC = () => {
-  const t = useTranslations("Header");
+  const t = useTranslations("Pages.Common.Header");
   const [open, setOpen] = useState(false);
 
-  // One delegated handler instead of an onClick on every link.
   const closeOnLink = (event: MouseEvent<HTMLElement>) => {
     if ((event.target as Element).closest("a")) setOpen(false);
   };

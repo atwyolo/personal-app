@@ -1,13 +1,13 @@
 ---
 tags: [plan, home]
-status: active
+status: done
 date: 2026-10-30
-updated: 2026-11-01
+updated: 2026-11-02
 ---
 
 # Plan: Home motion and verification pass
 
-Run the accent wipe once on every block when the page opens, then run the checks the spec postponed. This closes the home page.
+Run the accent wipe once on every block when the page opens, then run the checks the spec postponed. This closed the home page on 2026-11-02.
 
 Related: [[2026-10-29-home-page-design]] ("Rendering, SEO and animation", "Verification to include in the plan"), [[Home Page Handoff]]. Previous: [[2026-10-30-home-blog]].
 
@@ -46,7 +46,7 @@ Verify: `e2e/home-motion.spec.ts`, screenshots in both themes. Depends on: nothi
 - [x] Message payload measured again; narrow it with `pick` only if it became a noticeable share of the page.
 - [x] Playwright mobile project fails on hydration errors (already true through `e2e/fixtures.ts`; confirm it covers the new client leaves).
 - [x] Handoff accessibility checklist: touch targets, focus ring, labels, contrast. Contrast runs after the wipe: `axe-core` counts an opaque `::after` over the text and ignores its `transform`.
-- [ ] iOS simulator: the wipe plays, swipes and rotation still work.
+- [x] iOS simulator: the wipe plays, swipes and rotation still work.
 
 Verify: numbers recorded in the spec and the journal. Depends on: Task 1.
 
@@ -65,7 +65,7 @@ Verify: numbers recorded in the spec and the journal. Depends on: Task 1.
 
 - **SEO:** a run on a port other than the build's reports 92, because the canonical URL carries the port. A build for that port gives 100, so this is a local artifact.
 - **LCP:** the mobile figure is Lighthouse's simulation. A hundred needs about 1850 ms there. With real throttling (`--throttling-method=devtools`) the page scored 99 with an LCP of 1636 ms, and Chromium on Slow 4G with a 4× slower CPU reports 760 ms. The local server speaks HTTP/1.1. Repeat Lighthouse on Vercel, where HTTP/2, the CDN and the image optimizer are real.
-- **`inlineCss` was tried and turned off (owner's decision, 2026-11-01):** FCP went from 904 to 788 ms in every run, but LCP stayed within the noise of the simulation: 2562, 2835 and 2987 ms against 2910 to 3136 ms without it. The HTML grew from 17.2 to 39.3 KB gzip, because the CSS is sent twice, in `<style>` and in the RSC payload.
+- **`inlineCss` locally:** FCP went from 904 to 788 ms in every run and LCP stayed within the noise of the simulation, while the HTML grew from 17.2 to 39.3 KB gzip, because the CSS is sent twice, in `<style>` and in the RSC payload. That looked like a bad trade and was turned off; Vercel showed otherwise, see below.
 - **Base UI out of the first load** was tried and rejected: 53 KB less JS, LCP 2910 ms, Performance 95, within the same noise.
 - **The photo is fully visible** at 890 ms, and at 1610 ms on Slow 4G with the slower CPU.
 - **Client JS on `/en`:** 225.6 KB gzip in 9 files: React DOM 70, Base UI with the icons about 87, the Next runtime about 45. The own code of every module in `shared/ui` is about 5 KB, 2.2% of it, so the adapters add no meaningful weight. Measured with esbuild instead of the interactive `next analyze`: an adapter's own code is exactly the difference, because the shadcn component under it ships either way.
@@ -91,15 +91,92 @@ Verify: numbers recorded in the spec and the journal. Depends on: Task 1.
 - With real throttling mobile is 99 with an LCP of 2143 ms. The photo waits behind the fonts: 18 KB take 1453 ms, because three preloaded fonts of 67 KB share the connection at the same High priority.
 - Without throttling Chromium reports an LCP of 264 to 332 ms. Lighthouse's own run records its first paint at 1316 ms, which is an artifact of that run: the file arrives at 285 ms.
 
-**After these numbers (owner's decision, 2026-11-01):** only the Latin file of Geist is preloaded. `subsets: ["latin"]` drops the Cyrillic file from the preloads, 15 KB, and `preload: false` drops Geist Mono, 23 KB, so the photo no longer shares the connection with them. Other glyphs still load on demand through `unicode-range`, and fonts use `font-display: swap`. `inlineCss` went off in the same step, so the next deployment measures both together.
+**After these numbers (owner's decision, 2026-11-01):** only the Latin file of Geist is preloaded. `subsets: ["latin"]` drops the Cyrillic file from the preloads, 15 KB, and `preload: false` drops Geist Mono, 23 KB, so the photo no longer shares the connection with them. Other glyphs still load on demand through `unicode-range`, and fonts use `font-display: swap`. `inlineCss` went off in the same step, but that change was lost in a merge, so the deployment below measures the fonts alone.
+
+**On Vercel after the font change (2026-11-01, `/en`, `inlineCss` still on, median of three):** mobile 98, 100, 100, 100; desktop 100 on all four. Against the deployment above:
+
+| Mobile | Before | After |
+|---|---|---|
+| Performance | 96 | 98 |
+| LCP, simulated | 2618 ms | 2444 ms |
+| LCP, real throttling | 2143 ms | 1978 ms |
+| Speed Index | 2792 ms | 1373 ms |
+| CLS | 0 | 0.0006 |
+
+`/ru` scattered between 96 and 100. The photo still takes 1247 ms under real throttling, next to the HTML of 31 KB and the one remaining preloaded font of 29 KB. A hundred on mobile needs a simulated LCP of about 1850 ms.
+
+**On Vercel with `inlineCss` off:** mobile 97, and with real throttling FCP doubled from 921 to 1862 ms, while LCP stayed at about 2070 ms and the document fell from 31 to 16 KB. `inlineCss` is back on (owner's decision, 2026-11-01), see [[ADR-0011 Inline CSS]].
+
+**Where this stops (owner's decision, 2026-11-01):** mobile 98, with an LCP of about 0.3 s without throttling. A hundred needs a simulated LCP of about 1850 ms. The last candidate, no preload for the Latin file of Geist, would swap the Hero title visibly on a slow connection, and the gap between 98 and 100 lives only in the simulation.
 
 **Fixed by this task:** one 3 px ring in the solid `ring` color on every link and button, where the site had three kinds, two of them weak; buttons keep an outline in forced colors mode, where the browser drops box shadows; the visible text is now part of the accessible name of the language button and the CV link; the photo is fetched with `fetchPriority="high"`. That raises its priority from Low to High and passes the Lighthouse check, but Lighthouse's LCP did not change (2985 and 3061 ms are noise).
 
+**iOS simulator (2026-11-02, iPhone 17, iOS 26.5, production build through a measuring proxy, nine runs, 0 errors):**
+
+| Check | Result |
+|---|---|
+| Wipe on load, `/en` three times, `/ru` dark | 16 of 16 animations start and end, about 700 ms, then `data-revealed` |
+| Swipes in portrait | stop exactly on 382, 764 and 1146, the counter follows |
+| Overscroll on the last slide | bounces to 1259, back on 1146, the counter stays `4 / 4` |
+| Rotation both ways, Experience and Blog | the slide survives, no horizontal overflow, the wipe does not restart |
+| Swipes in landscape | a step of 700, both ways; a swipe under half a slide snaps back |
+| A vertical swipe that starts on a carousel | the page scrolls by 248 px and back, the carousel does not move |
+
+Control run with a `ResizeObserver` that never fires: on the way back to portrait the carousel moved from slide 3 to slide 4. With the fix it stays on 3, so the check can fail. Links, the back button, a language switch and reduced motion on iOS were not run; `e2e/home-motion.spec.ts` covers them in Chromium. Timing in a simulator is not the timing of a phone.
+
+### Task 3: The sliding navigation indicator (S)
+
+The owner's request of 2026-11-02: the highlight of the desktop navigation slides from one item to the next instead of jumping, and a browser without the feature keeps today's underline. CSS Anchor Positioning, see [[ADR-0012 Nav Indicator]]. Firefox shows the bar without the slide (owner's decision, 2026-11-02).
+
+`src/app/globals.css`, `shared/ui/NavLink.tsx`, `widgets/header/Header.tsx`, `e2e/header-nav.spec.ts`.
+
+- [x] One server-rendered indicator in the desktop `nav`, anchored to the link with `aria-current="page"`.
+- [x] It slides and takes the width of the new item, and a click in the middle turns it around from where it is.
+- [x] Items keep their place: the width of the semibold label is reserved in each of them.
+- [x] With reduced motion it moves at once; without a current item it is hidden.
+- [x] Without anchor positioning nothing changes: the underline stays on the link. All the behavior is inside `@supports`; outside there is only the rule that hides the bar.
+- [x] The bar leaves the focus ring whole and stays visible in forced colors mode.
+- [x] The mobile menu keeps the underline.
+
+Verify: `e2e/header-nav.spec.ts`, Safari 26.5 on the iPad simulator. Depends on: nothing.
+
+### Task 4: The whole selected menu item in the accent color (S)
+
+The owner's request of 2026-11-02: the code of the selected locale keeps the muted color. The same rule breaks the selected item under the pointer or the keyboard focus, where shadcn's `focus:**:text-accent-foreground` repaints the label and the check.
+
+`shared/ui/Menu.tsx`, `e2e/header-menus.spec.ts`.
+
+- [x] The label, the hint and the check of the selected item use `text-brand`, focused or not.
+- [x] Other items keep the muted hint.
+- [x] The hint of the selected System item in the theme menu follows the same rule (Claude's call).
+- [x] The hint of the selected item stays at 4.5:1 or more under the pointer, in both themes.
+
+Verify: `e2e/header-menus.spec.ts`. Depends on: nothing.
+
+### Task 5: Contact buttons in theme colors (S)
+
+The design of 2026-11-02: WhatsApp, Mail and LinkedIn become identical cards with `brand` icons, Download CV stays filled. This replaces the brand colors, the logos and the `#188842` of 2026-11-01.
+
+`widgets/contacts`, `src/app/globals.css`, `e2e/home-contacts.spec.ts`, [[Home Page Handoff]].
+
+- [x] Cards in `bg-card` with a 1 px `card-border`, a 26 px outline icon in a 36 px box, an 18 px arrow.
+- [x] Hover: the `brand` border and nothing else. The design's lift, shadow and arrow nudge were built and removed (owner's decision, 2026-11-02).
+- [x] The site's one 3 px focus ring stays, not the design's 2 px outline (Claude's call).
+- [x] The design's glyphs replace the real logos of 2026-10-30, in `ContactIcons.tsx`, because the owner asked to follow the design; the brand tokens are gone.
+- [x] The address takes the prototype's 15 px from `lg`: one line in a 288 px column, wrapped at the dots below that.
+
+Verify: `e2e/home-contacts.spec.ts`, screenshots at 390, 1024, 1100, 1280 and 1440 px. Depends on: nothing.
+
 ## Checkpoint
 
-- [x] Definition of done from `CLAUDE.md` is green (2026-11-01: 124 unit, 237 e2e).
-- [ ] Lighthouse repeated on Vercel after the font change.
-- [ ] Spec status changes from draft, and [[Roadmap]] is updated.
+- [x] Definition of done from `CLAUDE.md` is green (2026-11-02: 125 unit, 288 e2e).
+- [x] Lighthouse repeated on Vercel after the font change.
+- [x] Spec status changes from draft, and [[Roadmap]] is updated.
+
+## Deferred (from Tasks 3 and 4)
+
+- How long the bar waits on a real network: it starts when the route commits, and only localhost was measured. Check it after a deployment.
+- The focus ring over the bar was measured in Chromium only: focus did not land in Playwright WebKit. Forced colors mode is Chromium only too.
 
 ## Deferred (from the review of Task 1)
 

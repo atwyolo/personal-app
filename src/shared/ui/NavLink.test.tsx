@@ -5,7 +5,6 @@ import { NavLink } from "./NavLink";
 
 const pathname = vi.hoisted(() => ({ current: "/" }));
 
-// next-intl navigation needs the Next router; the test only cares about the current path.
 vi.mock("@/shared/lib/i18n/navigation", () => ({
   usePathname: () => pathname.current,
   Link: (props: AnchorHTMLAttributes<HTMLAnchorElement>) => <a {...props} />,
@@ -24,6 +23,10 @@ describe("NavLink", () => {
 
   it("stays active on pages nested under its section", () => {
     expect(renderAt("/blog/hello", "/blog")).toHaveAttribute("aria-current", "page");
+  });
+
+  it("repeats the label for the width the desktop navigation reserves", () => {
+    expect(renderAt("/", "/")).toHaveAttribute("data-label", "Link");
   });
 
   it("does not mark other sections", () => {

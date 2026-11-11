@@ -1,11 +1,13 @@
 ---
 tags: [adr, database]
-status: accepted
+status: superseded
 date: 2026-10-26
-updated: 2026-10-28
+updated: 2026-11-04
 ---
 
 # ADR-0002 Database and ORM
+
+**Superseded by [[ADR-0015 Content in Files]] (2026-11-04).** The site has no database since 2026-11-04: content lives in files in the repository.
 
 ## Context
 Data should be dynamic and editable without redeploy. Vercel's filesystem is read-only at runtime, so file-based storage cannot be written. Must stay within free tiers.

@@ -1,17 +1,20 @@
 ---
 tags: [adr, i18n]
-status: accepted
+status: superseded
 date: 2026-10-26
+updated: 2026-11-04
 ---
 
 # ADR-0003 Content Localization
+
+**Superseded by [[ADR-0015 Content in Files]] (2026-11-04).** Content is localized per field in Markdown files under `messages/<locale>/`, with the same per-field fallback to English that the translation tables gave.
 
 ## Context
 Eight locales from day one, content edited in a custom admin, fallback to English required.
 
 ## Decision
 - UI strings: `next-intl` with `[locale]` route segment.
-- DB content: one translation table per entity, keyed by `(entity_id, locale)`. See [[Data Model]] and [[Localization]].
+- DB content: one translation table per entity, keyed by `(entity_id, locale)`. See [[Content Model]] and [[Localization]].
 
 ## Alternatives
 - `jsonb {locale: value}` columns: simplest, but explicitly rejected by the owner; weak constraints, awkward queries, no per-locale indexes.

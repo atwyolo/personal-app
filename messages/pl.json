@@ -1,1 +1,102 @@
-{}
+{
+  "Pages": {
+    "Common": {
+      "back": "Wstecz",
+      "newTab": "(otwiera się w nowej karcie)",
+      "Header": {
+        "navLabel": "Nawigacja główna",
+        "nav": {
+          "home": "Strona główna",
+          "about": "O mnie",
+          "experience": "Doświadczenie",
+          "skills": "Umiejętności"
+        },
+        "openMenu": "Otwórz menu",
+        "closeMenu": "Zamknij menu"
+      },
+      "LocaleMenu": {
+        "label": "Język",
+        "triggerAria": "Język: {code}"
+      },
+      "ThemeMenu": {
+        "label": "Motyw",
+        "dark": "Ciemny",
+        "light": "Jasny",
+        "system": "Systemowy",
+        "systemNow": "teraz {theme, select, dark {ciemny} other {jasny}}"
+      },
+      "Contacts": {
+        "label": "Kontakt",
+        "whatsappAria": "WhatsApp: {phone}",
+        "mailAria": "E-mail: {email}",
+        "linkedinAria": "Profil na LinkedInie",
+        "downloadCv": "Pobierz CV"
+      },
+      "Carousel": {
+        "previous": "Poprzedni",
+        "next": "Następny",
+        "slide": "{current} z {total}",
+        "roleCarousel": "karuzela",
+        "roleSlide": "slajd"
+      },
+      "SkillRow": {
+        "levelAria": "{name}: poziom {level} z 10"
+      }
+    },
+    "Home": {
+      "about": {
+        "label": "O mnie",
+        "readMore": "Czytaj dalej"
+      },
+      "experience": {
+        "label": "Doświadczenie",
+        "duration": "{years, plural, one {# rok} few {# lata} many {# lat} other {# roku}}",
+        "present": "obecnie",
+        "learnMore": "Dowiedz się więcej",
+        "all": "Całe doświadczenie"
+      },
+      "skills": {
+        "label": "Kluczowe umiejętności",
+        "showAll": "Pokaż wszystkie umiejętności ({total})"
+      }
+    },
+    "About": {
+      "title": "O mnie",
+      "intro": "Krótki wywiad z samym sobą: pytania, które rekruterzy zadają najczęściej, i wyczerpujące odpowiedzi.",
+      "questionsNav": "Pytania"
+    },
+    "Skills": {
+      "title": "Umiejętności",
+      "intro": "Wszystko, z czym pracuję, z oceną od 1 do 10. Wyszukiwanie i filtr według obszaru.",
+      "countAll": "{total, plural, one {# umiejętność} few {# umiejętności} many {# umiejętności} other {# umiejętności}}",
+      "countFiltered": "{shown} z {total}",
+      "search": "Szukaj umiejętności",
+      "domain": "Obszar",
+      "all": "Wszystkie",
+      "noMatch": "Brak umiejętności pasujących do „{query}”."
+    },
+    "Experience": {
+      "labelWithoutYears": "Projekty",
+      "label": "Projekty · {from} — {to}",
+      "navLabel": "Miejsca pracy",
+      "skills": "Umiejętności",
+      "duration": "{years, plural, one {# rok} few {# lata} many {# lat} other {# roku}}",
+      "present": "obecnie"
+    },
+    "NotFound": {
+      "label": "Błąd 404 · Nie znaleziono strony",
+      "title": "Ta strona zabłądziła",
+      "text": "Link może być nieaktualny albo strona została przeniesiona. Cała reszta jest tam, gdzie była.",
+      "home": "Wróć na stronę główną"
+    },
+    "Error": {
+      "metaTitle": "Coś poszło nie tak — Mikhail Aleksandrov",
+      "label": "Błąd 500 · Coś poszło nie tak",
+      "title": "Coś zepsuło się po mojej stronie",
+      "text": "Przyczyna nie leży po Państwa stronie. Proszę odświeżyć stronę, a jeśli błąd się powtórzy, spróbować ponownie za kilka minut.",
+      "errorId": "ID błędu:",
+      "reload": "Odśwież stronę",
+      "reloading": "Odświeżanie…"
+    }
+  }
+}

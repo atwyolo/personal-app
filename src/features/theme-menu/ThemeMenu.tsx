@@ -9,13 +9,8 @@ import { useMounted } from "@/shared/lib/useMounted";
 import { Button } from "@/shared/ui/Button";
 import { Menu, type MenuItem } from "@/shared/ui/Menu";
 
-/**
- * Theme switcher in the header: Dark / Light / System. The trigger shows the resolved theme (moon or sun).
- * The theme is unknown on the server, so the icon, the checked item and the "now dark" hint appear after mount;
- * until then the trigger keeps its size with an empty slot, and the server HTML matches the first client render.
- */
 export const ThemeMenu: FC = () => {
-  const t = useTranslations("ThemeMenu");
+  const t = useTranslations("Pages.Common.ThemeMenu");
   const { theme, resolvedTheme, systemTheme, setTheme } = useTheme();
   const mounted = useMounted();
 

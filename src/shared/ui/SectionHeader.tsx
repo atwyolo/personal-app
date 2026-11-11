@@ -1,12 +1,10 @@
 import type { FC, ReactNode } from "react";
 
 interface SectionHeaderProps {
-  /** Target of the section's `aria-labelledby`. */
   id: string;
   children: ReactNode;
 }
 
-/** The mono label above a home page block. The top padding is what separates the blocks. */
 export const SectionHeader: FC<SectionHeaderProps> = (props) => {
   const { id, children } = props;
 

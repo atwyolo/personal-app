@@ -1,16 +1,14 @@
 ---
 tags: [project]
-updated: 2026-11-01
+updated: 2026-11-11
 ---
 
 # Open Questions
 
-- Keep `experimental.inlineCss`? Locally it gives 116 ms of FCP and doubles the HTML to 39.3 KB gzip. Measure on Vercel; turn it off without a clear gain. See [[2026-10-30-home-motion]].
-- Blog authoring: everything through the admin editor, or allow importing Markdown? (Default: editor only.)
-- Media: the Blob store exists since 2026-10-30 (files uploaded by hand in the dashboard). Does the admin in Stage 6 need an upload form, or are pasted URLs enough at first?
-- Privacy notice (by Stage 5, contact form): mention the one-year `NEXT_LOCALE` cookie that remembers a language the visitor picked; a persistent preference cookie is commonly accepted under ePrivacy only when users are informed. The form itself collects name and email, which GDPR covers anyway.
-- Contact notifications: save-to-DB only at first; add Resend later?
-- Domain name for the Vercel project.
-- Should a second admin user ever exist? Affects whether we build user management or seed one account.
+- `hreflang` on the CV link: the link could say the file's language (`hreflang="en"` everywhere but `ru`, which has its own Russian CV since 2026-11-11). The loader would need to know it: a locale's own `cvUrl` in `messages/<locale>/profile.md` means the locale's language, otherwise English (found 2026-11-10).
+
+Closed on 2026-11-04 by [[ADR-0015 Content in Files]] (no admin, no database, no contact form): the admin's metadata section, drafts of About pairs, the separate `projects` list, an upload form, contact notifications, a second admin user.
+
+Closed on 2026-11-11/12 by [[2026-11-11-launch-polish]]: the privacy notice (a session cookie needs none, [[ADR-0020 Session Locale Cookie]]), the domain (`www.mikhail-aleksandrov.com` is connected), the empty `/favicon.ico` (it serves the icon's bytes now), the flaky "phone turns" test (its oracle ignored the page-end rule).
 
 Resolved questions move into an ADR in `decisions/`.

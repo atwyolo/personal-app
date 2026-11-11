@@ -1,6 +1,6 @@
 import { expect, test } from "./fixtures";
+import { messagesFor } from "./messages";
 
-// About tile: the profile's rich text with its structure kept, then a link to the About page, which comes later.
 test("shows the lead, the results list and the read more link", async ({ page }) => {
   await page.goto("/en");
 
@@ -15,7 +15,8 @@ test("shows the lead, the results list and the read more link", async ({ page })
 test("keeps the current locale in the read more link", async ({ page }) => {
   await page.goto("/de");
 
-  await expect(page.getByRole("region", { name: "About" }).getByRole("link")).toHaveAttribute("href", "/de/about");
+  const region = page.getByRole("region", { name: messagesFor("de")("Pages.Home.about.label") });
+  await expect(region.getByRole("link")).toHaveAttribute("href", "/de/about");
 });
 
 test("styles read more as the design's text link, not a button", async ({ page }) => {
@@ -54,7 +55,6 @@ test.describe("desktop", () => {
     await expect(about.locator("strong")).toHaveCSS("font-size", "16px");
   });
 
-  // Viewport 1280: 20px on the left, 60px on the right, columns (1200 - 3 * 16) / 4 = 288.
   test("sits in columns 2 to 4 and ends on the contacts' bottom line", async ({ page }) => {
     await page.goto("/en");
 

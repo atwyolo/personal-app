@@ -1,1 +1,102 @@
-{}
+{
+  "Pages": {
+    "Common": {
+      "back": "Volver",
+      "newTab": "(se abre en una pestaña nueva)",
+      "Header": {
+        "navLabel": "Navegación principal",
+        "nav": {
+          "home": "Inicio",
+          "about": "Sobre mí",
+          "experience": "Experiencia",
+          "skills": "Habilidades"
+        },
+        "openMenu": "Abrir menú",
+        "closeMenu": "Cerrar menú"
+      },
+      "LocaleMenu": {
+        "label": "Idioma",
+        "triggerAria": "Idioma: {code}"
+      },
+      "ThemeMenu": {
+        "label": "Tema",
+        "dark": "Oscuro",
+        "light": "Claro",
+        "system": "Sistema",
+        "systemNow": "ahora {theme, select, dark {oscuro} other {claro}}"
+      },
+      "Contacts": {
+        "label": "Contacto",
+        "whatsappAria": "WhatsApp: {phone}",
+        "mailAria": "Correo: {email}",
+        "linkedinAria": "Perfil de LinkedIn",
+        "downloadCv": "Descargar CV"
+      },
+      "Carousel": {
+        "previous": "Anterior",
+        "next": "Siguiente",
+        "slide": "{current} de {total}",
+        "roleCarousel": "carrusel",
+        "roleSlide": "diapositiva"
+      },
+      "SkillRow": {
+        "levelAria": "{name}: nivel {level} de 10"
+      }
+    },
+    "Home": {
+      "about": {
+        "label": "Sobre mí",
+        "readMore": "Leer más"
+      },
+      "experience": {
+        "label": "Experiencia",
+        "duration": "{years, plural, one {# año} other {# años}}",
+        "present": "actualidad",
+        "learnMore": "Más información",
+        "all": "Toda la experiencia"
+      },
+      "skills": {
+        "label": "Habilidades principales",
+        "showAll": "Ver todas las {total} habilidades"
+      }
+    },
+    "About": {
+      "title": "Sobre mí",
+      "intro": "Una breve entrevista conmigo mismo: las preguntas que más hacen los reclutadores, respondidas a fondo.",
+      "questionsNav": "Preguntas"
+    },
+    "Skills": {
+      "title": "Habilidades",
+      "intro": "Todo con lo que trabajo, valorado del 1 al 10. Búsqueda y filtro por área.",
+      "countAll": "{total, plural, one {# habilidad} other {# habilidades}}",
+      "countFiltered": "{shown} de {total}",
+      "search": "Buscar habilidades",
+      "domain": "Área",
+      "all": "Todas",
+      "noMatch": "Ninguna habilidad coincide con «{query}»."
+    },
+    "Experience": {
+      "labelWithoutYears": "Proyectos",
+      "label": "Proyectos · {from} — {to}",
+      "navLabel": "Lugares de trabajo",
+      "skills": "Habilidades",
+      "duration": "{years, plural, one {# año} other {# años}}",
+      "present": "actualidad"
+    },
+    "NotFound": {
+      "label": "Error 404 · Página no encontrada",
+      "title": "Esta página tomó un camino equivocado",
+      "text": "Es posible que el enlace esté roto o que la página se haya movido. Todo lo demás sigue donde lo dejó.",
+      "home": "Volver al inicio"
+    },
+    "Error": {
+      "metaTitle": "Algo salió mal — Mikhail Aleksandrov",
+      "label": "Error 500 · Algo salió mal",
+      "title": "Algo falló de mi lado",
+      "text": "El problema no es suyo. Recargue la página y, si sigue ocurriendo, vuelva a intentarlo en unos minutos.",
+      "errorId": "ID del error:",
+      "reload": "Recargar la página",
+      "reloading": "Recargando…"
+    }
+  }
+}

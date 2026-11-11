@@ -1,14 +1,26 @@
 ---
 tags: [design, handoff, home]
 status: approved
-updated: 2026-11-01
+updated: 2026-11-03
 ---
 
 # Home Page Handoff
 
 Approved design of the home page (`/[locale]`), ready to implement. Mobile-first, two themes, eight locales. The design was iterated in a Claude Design canvas; this note is the implementation contract.
 
-Part of the site handoff, see [[README]] in this folder. Related: [[Roadmap]], [[Rendering Strategy]], [[Localization]], [[Data Model]], [[ADR-0005 UI Library]].
+Part of the site handoff, see [[README]] in this folder. Related: [[Roadmap]], [[Rendering Strategy]], [[Localization]], [[Content Model]], [[ADR-0005 UI Library]].
+
+## Changes since 2026-11-01
+
+- **Contact buttons use theme colors.**
+  - WhatsApp, Mail and LinkedIn are identical card-style buttons with `brand` icons, with no brand colors.
+  - Download CV stays the filled primary button.
+  - See "Contacts and CV" below.
+- **About block:**
+  - it is one rich-text field, `profile.about`;
+  - the desktop-only extra paragraph was removed;
+  - desktop now shows the same "Read more" as mobile (in the build a text link, see About).
+- **Hero chips from skills marked `main`:** proposed by the design and not adopted, the current implementation stays (owner's decision, 2026-11-02).
 
 ## Changes since 2026-10-28
 
@@ -55,12 +67,12 @@ Rendering: home is **static** per locale (see [[Rendering Strategy]]). Everythin
 
 - Surface `bg-card`, bottom border `card-border`. Height 64 px mobile, 72 px desktop. `position: sticky; top: 0`.
 - Left: full name "Mikhail Aleksandrov", 600 weight, 17 px mobile / 20 px desktop, links to `/[locale]`.
-- Desktop: nav Home · About · Projects · Skills · Blog · Contact (15 px, gap 28 px). Active item: `text-brand`, 600, underline in `deco`, 3 px thick, offset 8 px.
+- Desktop: nav Home · About · Projects · Skills · Blog · Contact (15 px, gap 28 px). Active item: `text-brand`, 600, underline in `deco`, 3 px thick, offset 8 px. In the build the underline is one bar that slides between items, in the same place; a browser without anchor positioning keeps the plain underline (owner's decision, 2026-11-02, [[ADR-0012 Nav Indicator]]).
 - Right controls, all in `text-brand`:
   - **Locale menu.** Mobile: 44 px round icon button showing the code ("EN"). Desktop: pill button, code + chevron-down.
   - **Theme menu.** Mobile: 44 px round button. Desktop: pill, icon + chevron. The icon shows the *resolved* theme: moon for dark, sun for light.
   - Mobile only: hamburger (44 px round, `text-foreground`). **The open menu was not designed** — use a shadcn Sheet from the right with the same six nav items, active item styled as on desktop.
-- Menus (both): popover anchored bottom-right, 8 px gap, min-width 210 px, padding 6 px, radius 16 px, `bg-popover`, border `card-border`, soft shadow. Items 40 px tall, radius 10 px, hover `bg-accent`. Selected item: `text-brand` + check icon at the end.
+- Menus (both): popover anchored bottom-right, 8 px gap, min-width 210 px, padding 6 px, radius 16 px, `bg-popover`, border `card-border`, soft shadow. Items 40 px tall, radius 10 px, hover `bg-accent`. Selected item: `text-brand` on the whole item, the hint included, + check icon at the end (owner's decision, 2026-11-02; the design left the hint muted). Focus keeps it.
   - Theme items: Dark, Light, System. System shows a mono hint "now dark/light" (`text-muted-foreground`, 11 px).
   - Locale items: native names (English, Русский, Português, Español, Deutsch, Français, 日本語, Polski) with the code as a mono hint.
   - Build with the Base UI menu from shadcn (`DropdownMenu` + `DropdownMenuRadioGroup`). Base UI uses the `render` prop, not `asChild`.
@@ -71,7 +83,7 @@ Rendering: home is **static** per locale (see [[Rendering Strategy]]). Everythin
 
 **Mobile:** hero → photo → contacts → About → Experience (carousel) → My top skills → Blog (carousel).
 
-**Desktop:** a 4-column row with the photo and contacts in column 1 and the hero plus About in columns 2–4. Below it: Experience (4 cards), My top skills (full width), Blog (featured card spanning 2 columns plus 2 cards).
+**Desktop:** a 4-column row with the photo and contacts in column 1 and the hero plus About in columns 2–4. Below it: Experience (3 cards, since Omega-R left the database on 2026-11-03), My top skills (full width), Blog (featured card spanning 2 columns plus 2 cards).
 
 Section headers: a mono label (`Geist Mono`, 11 px mobile / 12 px desktop, uppercase, letter-spacing .08em, `text-muted-foreground`), with a count on the right where shown. Header padding is 12 px on top for mobile and 32 px for desktop.
 
@@ -91,23 +103,44 @@ Mobile: square (`aspect-ratio: 1`). Desktop: fills column 1 above the contacts, 
 
 ### Contacts and CV (stacked, full tile width, gap 12 px)
 
-Compact brand buttons, 56 px tall, radius 16 px, label 17 px / 700:
+All four buttons are 56 px tall, radius 16 px, label 17 px / 700, padding `0 16px 0 10px`, gap 12 px.
 
-| Button | Background / text | Left mark | Label | Link |
-|---|---|---|---|---|
-| WhatsApp | `whatsapp` / `whatsapp-foreground`, `#188842` with white text (owner's decisions, 2026-10-30 and 2026-11-01; the tokens below keep the design's values) | white logo, no plate | "WhatsApp" | `https://wa.me/37493310039`, title = phone |
-| Mail | `gmail` / white | 40 px envelope, red fill, white 2.5 px outline | mailbox name "mikhail.aleksandrov.job" (part before `@`, may wrap at dots on desktop) | `mailto:` |
-| LinkedIn | `linkedin` / white | 36 px white plate, "in" glyph in `linkedin` | "LinkedIn" | profile URL |
-| Download CV | `primary` / `primary-foreground` | download icon | "Download CV" + mono "PDF" on the right | `/cv/Mikhail_Aleksandrov_CV.pdf` with `download` |
+**WhatsApp, Mail and LinkedIn** are identical and themed:
 
-Each button has an arrow-up-right icon on the right (CV: the "PDF" mark) and an `aria-label` from messages. Brand colors are the same in both themes. Icons are generic glyphs, not official logos; swap in brand-kit SVGs (or `simple-icons`) if wanted.
+- Surface: `bg-card`, a 1 px `card-border` border, label in `text-foreground`.
+- Left: a 36 × 36 px box (no background) holding a 26 px outline icon in `text-brand` (chat bubble, envelope, "in" square).
+- Right: an arrow-up-right icon, 18 px, in `text-brand`.
+- Hover: the border turns `brand`, and nothing moves (owner's decision, 2026-11-02; the design also lifts the button 2 px with a soft shadow and nudges the arrow). Focus: the site's one 3 px ring, see the accessibility checklist; the design's 2 px `brand` outline offset by 3 px is not used (Claude's call, 2026-11-02).
+
+| Button | Label | Link |
+|---|---|---|
+| WhatsApp | "WhatsApp" | `https://wa.me/37493310039`, `title` = phone |
+| Mail | mailbox name "mikhail.aleksandrov.job" (the part before `@`, 16 px, 15 px from `lg`; may wrap at the dots on desktop) | `mailto:` |
+| LinkedIn | "LinkedIn" | profile URL |
+
+**Download CV** is the primary action:
+
+- `bg-primary text-primary-foreground` (border in the same color).
+- A download icon on the left, "Download CV", and a mono "PDF" mark on the right.
+- Link: `/cv/Mikhail_Aleksandrov_CV.pdf` with `download`.
+
+Every button has an `aria-label` from messages.
+
+Contrast (WCAG AA needs 4.5:1 for text and 3:1 for icons):
+
+| Element | Dark | Light |
+|---|---|---|
+| Label | 14.2:1 | 18.2:1 |
+| Icon and arrow (`brand` on card) | 12.7:1 | 6.7:1 |
+
+The icons are generic glyphs, not official logos.
 
 ### About
 
 - Label "About", then the lead paragraph: 17 px mobile, 20 px desktop.
 - "A few results I'm proud of:" in 600 weight, followed by three bullet items. Each bullet is an 8 px square, radius 2 px, in `deco`.
-- Mobile: a secondary pill button "Read more" linking to `/about`.
-- Desktop: the extra paragraph from `content.ts` is shown instead, in `foreground-soft`, 16 px / 1.6.
+- The text comes from one rich-text field (`profile.about`, edited in the admin): the lead paragraph, a bold line and a bullet list. Render it with the shared `<RichText>` component. Here `<ul>` items use the 8 px `deco` squares, and `<strong>` paragraphs are 600 weight.
+- "Read more" linking to `/about`, on both mobile and desktop: the shared text link with an arrow, not the design's secondary pill button (owner's decision, 2026-11-02).
 
 ### Experience
 
@@ -119,7 +152,7 @@ Each button has an arrow-up-right icon on the right (CV: the "PDF" mark) and an 
   - 3–5 skill tags as chips;
   - "Learn more →" link at the bottom (`mt-auto`).
 - Link style, shared with "Read more →" in the blog: `text-brand`, 600 weight, underline in `deco`, 2 px thick, offset 5 px.
-- Desktop: a 4-column grid with equal-height cards, then a primary pill "All experience" aligned right below the grid. "Learn more" links go to `/[locale]/projects#<company-id>` (the Projects page holds the full story of every job); "All experience" goes to `/[locale]/projects`.
+- Desktop: a 3-column grid with equal-height cards, then a primary pill "All experience" aligned right below the grid. "Learn more" links go to `/[locale]/projects#<company-id>` (the Projects page holds the full story of every job); "All experience" goes to `/[locale]/projects`.
 - Mobile: a **carousel** (see below), then a full-width primary pill "All experience". The section header has no link.
 
 ### My top skills (static)
@@ -142,7 +175,7 @@ A short list of skills marked `top` in the main skills list, without a limit (ow
   - title (h3): 17–19 px mobile, 18 px desktop; the featured card uses 22 px;
   - excerpt: 2–3 sentences, 15 px / 1.55, `foreground-soft`;
   - tag chips **under the text** (several per post);
-  - "Read more →" link.
+  - "Read more →" link; it opens the post in a new tab, with ↗ instead of → (owner, 2026-11-04; [[2026-11-04-post-page-design]]).
 - Desktop: a 4-column grid, then a primary pill "All posts" aligned right.
   - The first post spans 2 columns: a 220 px wide cover on the left, content on the right.
   - The other two posts are single-column cards without a cover.
@@ -175,23 +208,23 @@ The owner simplified the design's motion on 2026-11-01: one wipe on load, all at
 - Touch targets ≥ 44 px for all buttons and carousel arrows.
 - Visible focus: `ring` color, 3 px, as an outline on links and a box shadow on buttons, which keep an outline in forced colors mode.
 - Icon-only buttons have labels; decorative icons `aria-hidden`.
-- Contrast checked: `brand` on card is 6.7:1 in light and 12.7:1 in dark. Muted text is ≥ 5.5:1. Text on the contact buttons is ≥ 4.5:1. Yellow is never used for text.
+- Contrast checked: `brand` on card is 6.7:1 in light and 12.7:1 in dark. Muted text is ≥ 5.5:1. Contact buttons: label ≥ 14:1, icons ≥ 6.7:1 (see above). Yellow is never used for text.
 - `lang` and `hreflang` come from the locale segment. Mobile menus trap focus (Sheet / Menu do this).
 
 ## Data and content
 
 - Until Stage 3, read from `src/content/site.ts`. Keep component props in the shapes defined there, so swapping in Drizzle queries later doesn't touch the UI.
-- The Data Model needs these additions; record them in [[Data Model]] when Stage 3 starts:
-  - `experience`: `image`, a tag relation to `skills` (many-to-many), and `description` limited to 3 sentences (plain text is enough on the home page).
+- The Data Model needs these additions; record them in [[Content Model]] when Stage 3 starts:
+  - `experience`: `image`, a relation to `skills` (many-to-many), `description` (the short description, up to 3 sentences, plain text), and `body` (rich text, Projects page).
   - `posts`: `cover`, `tags` (a `tags` table plus `post_tags`).
   - `skills`: `top boolean default false` (drives "My top skills", done 2026-11-01).
-  - `posts`: `topic_id`, see [[Data Model]] (done 2026-11-01).
-- Owner TODOs (marked in `content.ts`): the photo file, the CV PDF, the Omega-R description, the experience tag lists, real skill levels (currently only 5 are set; the rest are placeholder 6), which skills are `top`, and real posts.
+  - `posts`: `topic_id`, see [[Content Model]] (done 2026-11-01).
+  - `profile`: `about` as rich text.
+- Owner TODOs (marked in `content.ts`): the photo file, the CV PDF, the experience tag lists, real skill levels (currently only 5 are set; the rest are placeholder 6), which skills are `top`, and real posts.
 
 ## Open questions (add to [[Open Questions]])
 
 - The mobile menu (Sheet) contents and the tablet layout were not designed. Proposed defaults are above.
-- Should the hero chips come from `topSkills` or stay a hand-picked list?
 
 ## Kickoff prompt for the Claude Code session
 

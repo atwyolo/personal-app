@@ -24,7 +24,6 @@ describe("getLocaleAlternates", () => {
 
     expect(alternates.canonical).toBe("/de/blog/hello");
     expect(alternates.languages.ja).toBe("/ja/blog/hello");
-    // The proxy turns an unprefixed path into the visitor's locale.
     expect(alternates.languages["x-default"]).toBe("/blog/hello");
   });
 });

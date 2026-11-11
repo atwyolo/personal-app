@@ -4,10 +4,10 @@ import { describe, expect, it } from "vitest";
 import messages from "../../../messages/en.json";
 import { SkillRow } from "./SkillRow";
 
-const renderRow = (level: number) =>
+const renderRow = (level: number, layout?: "home" | "list") =>
   render(
     <NextIntlClientProvider locale="en" messages={messages}>
-      <SkillRow skill={{ name: "React", level }} />
+      <SkillRow skill={{ name: "React", level }} layout={layout} />
     </NextIntlClientProvider>,
   );
 
@@ -37,5 +37,19 @@ describe("SkillRow", () => {
 
     expect(meter.querySelectorAll(".bg-brand")).toHaveLength(level);
     expect(meter.querySelectorAll(".bg-placeholder")).toHaveLength(10 - level);
+  });
+
+  it("keeps Home's grid by default", () => {
+    renderRow(9);
+
+    expect(screen.getByRole("meter")).toHaveClass("lg:grid-cols-[150px_minmax(0,1fr)_44px]");
+  });
+
+  it("puts the name and the level on one line in the list layout", () => {
+    renderRow(9, "list");
+
+    const meter = screen.getByRole("meter");
+    expect(meter).toHaveClass("grid-cols-[minmax(0,1fr)_auto]", "lg:grid-cols-[132px_minmax(0,1fr)_40px]");
+    expect(screen.getByText("9/10")).toHaveClass("row-start-1");
   });
 });

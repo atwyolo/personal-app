@@ -11,7 +11,6 @@ const stubAnimations = (animations: { animationName: string; finished: Promise<u
 const flushPromises = () => new Promise((resolve) => setTimeout(resolve));
 
 describe("RevealOnce", () => {
-  // A fresh module per test: it remembers a played wipe, the way a page does until a reload.
   let RevealOnce: FC;
 
   beforeEach(async () => {
@@ -70,7 +69,6 @@ describe("RevealOnce", () => {
 
     await waitFor(() => expect(root.dataset.revealed).toBe(""));
 
-    // The remounted layout loses the mark, and the new wipes have to be stopped before the paint.
     unmount();
     delete root.dataset.revealed;
     stubAnimations([{ animationName: "wipe", finished: new Promise(() => {}) }]);

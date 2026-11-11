@@ -1,0 +1,39 @@
+# Every pull request into develop must raise the version in package.json, see docs/decisions/ADR-0013 Version Tracking.md.
+name: Version check
+
+on:
+  pull_request:
+    branches: [develop]
+    # `edited` covers a pull request retargeted to develop after it was opened.
+    types: [opened, synchronize, reopened, edited]
+
+permissions:
+  contents: read
+
+jobs:
+  version:
+    name: Version is raised
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      # A pull_request run checks out GitHub's trial merge of the branch into develop.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Compare with develop
+        # An explicit shell adds pipefail: a failed read stops the step instead of leaving an empty version.
+        shell: bash
+        run: |
+          # Fresh develop, not the merge's parent: a re-run must see a version merged after this run's merge was built.
+          git fetch --depth=1 origin "$GITHUB_BASE_REF"
+          base=$(git show FETCH_HEAD:package.json | jq -r .version)
+          head=$(jq -r .version package.json)
+
+          # -p compares prereleases too, -v keeps the value from being read as a command line flag.
+          if ! npx --yes semver@7.8.5 -p --range ">$base" -v "$head" > /dev/null; then
+            echo "::error file=package.json::Version $head must be higher than $base in develop. Run: npm version <major|minor|patch> --no-git-tag-version"
+            exit 1
+          fi
+
+          echo "Version raised: $base -> $head"

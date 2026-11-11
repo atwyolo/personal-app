@@ -1,26 +1,36 @@
 ---
 tags: [architecture]
-updated: 2026-11-01
+updated: 2026-11-04
 ---
 
 # Rendering Strategy
 
-Deliberately mix rendering modes so each one is learned in practice. Every page file states its mode in a one-line comment.
+The table is the one place that states each route's mode (the code has no comments, owner's rule of 2026-11-04). Since 2026-11-04 all content comes from files ([[ADR-0015 Content in Files]]), so every route is static: new content arrives with a deploy, and `cacheLife("max")` re-renders a page in the background at most every 30 days.
 
 | Route | Mode | Why |
 |---|---|---|
-| `/[locale]` (home) | static, DB-backed: `"use cache"` + `cacheLife("max")` + `cacheTag` per entity; admin calls `updateTag` | content changes rarely; built once per locale, refreshed only when edited |
-| `/[locale]/about` | static | same |
-| `/[locale]/projects` | ISR (`revalidate`) + on-demand `revalidateTag` from admin | DB-backed, but edits are rare |
-| `/[locale]/blog` | ISR | list of posts |
-| `/[locale]/blog/[slug]` | static params + ISR; view counter via Server Action | post body is static, counter is a mutation |
-| `/[locale]/contact` | dynamic (Server Action) | form submission |
-| `/admin/**` | dynamic, no caching | authenticated, always fresh |
+| `/[locale]` (home) | static: each block reads its own `"use cache"` + `cacheLife("max")` getter from `src/content/` | the content is in the repository; it changes with a deploy |
+| `/[locale]/about` | static, as home | same |
+| `/[locale]/experience` | static, as home: the same `getExperience` as Home's cards | one read per locale serves both pages |
+| `/[locale]/skills` | static, as home: `getSkills`, handed to a client explorer that only filters | the full list is in the HTML, so the page reads without JavaScript |
+| `/robots.txt`, `/sitemap.xml` (`app/robots.ts`, `app/sitemap.ts`) | static (`○`), no revalidation | built from `siteUrl` and the locale list; allow everything (a crawler that may not load a page never sees its `noindex`) and list the 32 pages with their `hreflang` alternates |
+| `/favicon.ico` (`app/favicon.ico/route.ts`) | static (`○`): the icon's bytes, fetched at build time in a `"use cache"` helper and revalidated with the pages (30 days; a failed refetch keeps the old file) | with Cache Components a `fetch` in a `GET` stops the prerender, the cached helper brings it back (2026-11-11) |
+| `/_not-found` (`app/global-not-found.tsx`) | dynamic (`ƒ`): the whole document inside `<Suspense>`, rendered per request in the locale next-intl's Proxy puts in a header | a server-rendered 404 with status 404, in the URL's language, header included ([[ADR-0018 Global Not Found]]) |
 
-The project runs with `cacheComponents: true`, so "ISR" means cached functions with tags, not a route-level `revalidate` export.
+The project runs with `cacheComponents: true`. Content is read with `fs.readFileSync`, which Cache Components treat as predictable (prerendered with the page); the getters stay `"use cache"` functions so that several blocks share one read per locale and Experience can read the clock for a running job. There are no cache tags. `cacheLife("max")` means: `stale` 5 minutes in the browser's router, `revalidate` 30 days (the first visit after that gets the cached page and triggers a background re-render), `expire` one year (after a year without visits the next one waits for a fresh render); a deploy resets all of it. The files in a deployment never change, so a re-render differs only where the clock matters, the duration of a running job (owner's choice over a never-revalidating profile, 2026-11-04).
+
+**Runtime reads.** A render at request time runs in a Vercel function that holds only traced files: the 404 of an unknown path (whose header shows the profile name and whose title comes from `meta.md`) and the 30-day background revalidation of every page. `outputFileTracingIncludes: { "/**": ["./messages/**/*.md"] }` in `next.config.ts` adds the Markdown files to every server route; the JSON messages are traced because `load-messages.ts` imports them.
 
 `cacheComponents` also keeps a left route in the DOM: `<Activity>` hides it with `display: none`. Its state survives, and a CSS animation on it restarts when the visitor comes back, which is why [[2026-10-30-home-motion]] needs `RevealOnce`. A locator such as `h1` can match the hidden page too.
 
-Notes to expand: streaming with `Suspense` on the blog list, `loading.tsx` / `error.tsx` per segment.
+`experimental.inlineCss` puts the CSS of a first load into a `<style>` tag instead of a render-blocking `<link>`, on every route. See [[ADR-0011 Inline CSS]].
 
-Related: [[ADR-0001 Framework and Rendering]]
+Metadata comes from `messages/<locale>/meta.md` through `"use cache"` getters (`src/content/meta.ts`): the root layout reads the site-wide part (default title, icons, `noindex` while hidden) and each page its own, so metadata stays in the static shell. `/favicon.ico` is a route handler on the same cached read plus a cached `fetch` of the icon; under Cache Components a `GET` that reads only cached data is prerendered too. The security headers of [[ADR-0019 Security Headers]] come from `headers()` in `next.config.ts` and change no route's mode.
+
+Until 2026-11-04 the blog list was a Partial Prerender and the post page used `ensureStatic = "navigation"`; both left with the blog ([[2026-11-04-content-in-files-design]]).
+
+**Error boundaries** (2026-11-12, [[2026-11-12-error-page-design]]). `src/app/[locale]/error.tsx` catches an exception in a page and renders the Error page inside the root layout, whose header a `:has()` rule in `globals.css` hides while `[data-error-page]` is in the DOM. An exception in the root layout itself (the header and its menus, `ThemeColorSync`) goes to `src/app/global-error.tsx`, which renders its own document: `error.tsx` never wraps the layout of its own segment. Every route is prerendered, so a server render error fails the build and a failing background revalidation keeps the old page: in practice both boundaries show for client exceptions, after a 200, without a `digest`. `global-error.tsx` ships in the initial JavaScript of every page, which is why it imports a small dictionary and not the messages files.
+
+No `loading.tsx` and no Suspense streaming: every page is static, there is nothing to wait for.
+
+Related: [[ADR-0001 Framework and Rendering]], [[Content Model]]

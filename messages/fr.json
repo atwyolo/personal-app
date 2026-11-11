@@ -1,1 +1,102 @@
-{}
+{
+  "Pages": {
+    "Common": {
+      "back": "Retour",
+      "newTab": "(s’ouvre dans un nouvel onglet)",
+      "Header": {
+        "navLabel": "Navigation principale",
+        "nav": {
+          "home": "Accueil",
+          "about": "À propos",
+          "experience": "Expérience",
+          "skills": "Compétences"
+        },
+        "openMenu": "Ouvrir le menu",
+        "closeMenu": "Fermer le menu"
+      },
+      "LocaleMenu": {
+        "label": "Langue",
+        "triggerAria": "Langue : {code}"
+      },
+      "ThemeMenu": {
+        "label": "Thème",
+        "dark": "Sombre",
+        "light": "Clair",
+        "system": "Système",
+        "systemNow": "actuellement {theme, select, dark {sombre} other {clair}}"
+      },
+      "Contacts": {
+        "label": "Contacts",
+        "whatsappAria": "WhatsApp : {phone}",
+        "mailAria": "E-mail : {email}",
+        "linkedinAria": "Profil LinkedIn",
+        "downloadCv": "Télécharger le CV"
+      },
+      "Carousel": {
+        "previous": "Précédent",
+        "next": "Suivant",
+        "slide": "{current} sur {total}",
+        "roleCarousel": "carrousel",
+        "roleSlide": "diapositive"
+      },
+      "SkillRow": {
+        "levelAria": "{name} : niveau {level} sur 10"
+      }
+    },
+    "Home": {
+      "about": {
+        "label": "À propos",
+        "readMore": "Lire la suite"
+      },
+      "experience": {
+        "label": "Expérience",
+        "duration": "{years, plural, one {# an} other {# ans}}",
+        "present": "aujourd’hui",
+        "learnMore": "En savoir plus",
+        "all": "Toute l’expérience"
+      },
+      "skills": {
+        "label": "Compétences clés",
+        "showAll": "Voir les {total} compétences"
+      }
+    },
+    "About": {
+      "title": "À propos de moi",
+      "intro": "Un court entretien avec moi-même : les questions que les recruteurs posent le plus souvent, avec des réponses détaillées.",
+      "questionsNav": "Questions"
+    },
+    "Skills": {
+      "title": "Compétences",
+      "intro": "Tout ce avec quoi je travaille, noté de 1 à 10. Recherche et filtre par domaine.",
+      "countAll": "{total, plural, one {# compétence} other {# compétences}}",
+      "countFiltered": "{shown} sur {total}",
+      "search": "Rechercher une compétence",
+      "domain": "Domaine",
+      "all": "Toutes",
+      "noMatch": "Aucune compétence ne correspond à « {query} »."
+    },
+    "Experience": {
+      "labelWithoutYears": "Projets",
+      "label": "Projets · {from} — {to}",
+      "navLabel": "Employeurs",
+      "skills": "Compétences",
+      "duration": "{years, plural, one {# an} other {# ans}}",
+      "present": "aujourd’hui"
+    },
+    "NotFound": {
+      "label": "Erreur 404 · Page introuvable",
+      "title": "Cette page s’est égarée",
+      "text": "Le lien est peut-être rompu, ou la page a été déplacée. Tout le reste est là où vous l’avez laissé.",
+      "home": "Retour à l’accueil"
+    },
+    "Error": {
+      "metaTitle": "Une erreur est survenue — Mikhail Aleksandrov",
+      "label": "Erreur 500 · Une erreur est survenue",
+      "title": "Quelque chose a cassé de mon côté",
+      "text": "Ce n’est pas de votre faute. Rechargez la page et, si le problème persiste, réessayez dans quelques minutes.",
+      "errorId": "ID de l’erreur :",
+      "reload": "Recharger la page",
+      "reloading": "Rechargement…"
+    }
+  }
+}

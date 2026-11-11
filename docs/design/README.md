@@ -1,49 +1,93 @@
 ---
 tags: [design, handoff]
-updated: 2026-11-01
+updated: 2026-11-04
 ---
 
 # Design handoff
 
-Approved designs for the public site, ready to implement. Every page is mobile-first, has dark and light themes, and is localized through next-intl (copy in English; other locales fall back to `en`).
+These are the approved designs of the site's four pages. The Blog, Post, Contact and Admin handoffs were deleted on 2026-11-04 with those pages ([[2026-11-04-content-in-files-design]]); git history keeps them.
+
+**The handoffs define the look only.** Where a handoff prescribes behaviour, data shapes, rendering, libraries or URLs, the project rules (`CLAUDE.md`, ADRs, specs) win, and a handoff's choice changes the application's logic only when there is a reason for it (owner's rule, 2026-11-03).
+
+- Every public page is mobile-first and has dark and light themes.
+- Pages are localized through next-intl. Copy is in English; other locales fall back to `en`.
 
 ## Pages and order
 
 | # | Page | Route | Spec | Rendering |
 |---|---|---|---|---|
-| 1 | Home | `/[locale]` | [[Home Page Handoff]] | static |
-| 2 | Projects (work experience) | `/[locale]/projects` | [[Projects Page Handoff]] | static now, ISR once it reads the DB |
-| 3 | About | `/[locale]/about` | [[About Page Handoff]] | static |
-| 4 | Skills | `/[locale]/skills` | [[Skills Page Handoff]] | static now, ISR once it reads the DB |
-| 5 | Blog list | `/[locale]/blog` | [[Blog Page Handoff]] | ISR |
+| 1 | Home | `/[locale]` | [[Home Page Handoff]] | static, from the content files |
+| 2 | Experience (work history) | `/[locale]/experience` | [[Experience Page Handoff]] | static, from the content files |
+| 3 | About | `/[locale]/about` | [[About Page Handoff]] | static, from the content files |
+| 4 | Skills | `/[locale]/skills` | [[Skills Page Handoff]] | static, from the content files |
+| 5 | Not found (404) | any unknown URL | [[Not Found Page Handoff]] | rendered per request through `global-not-found.tsx` ([[ADR-0018 Global Not Found]]) |
 
-Contact and the post page (`/blog/[slug]`) are not designed yet. Admin uses stock shadcn components.
+All four pages are built. Content shapes and rendering follow [[Content Model]] and [[Rendering Strategy]], not the handoffs' admin-oriented notes below.
 
-Implement Home first: it introduces the tokens, the header with the locale and theme menus, tiles, chips and buttons that every other page reuses.
+## What changed since the 2026-11-01 package
+
+- **New pages:** Contact, Blog post (with a typography reference board) and Admin.
+- **Home: contact buttons now use theme colors.** WhatsApp, Mail and LinkedIn are identical card-style buttons with icons in `brand`; Download CV stays the filled primary button. There are no brand-color tokens any more.- **Home: About block** is one rich-text field. The desktop-only extra paragraph is gone; desktop shows a "Read more" button like mobile.
+- **"‹ Back" link** on every inner page. It is an accent text link, the same everywhere; see Site-wide rules.
+- **Content shapes follow the admin.** `shared/content.ts` was updated:
+  - Experience: `description` plus a rich-text `body` and skills. The `lead`, `context`, `stats` and `achievements` fields were removed.
+  - About pairs: `answerTitle` plus a rich-text `answerBody`, and any number of pairs.
+  - Skills: a new `main` flag; `featured` ("Top") has no limit.
+  - Skill domains and blog topics are editable lists.
+  - Contact form: `message` is required, and the old optional subject is gone.
+- **Messages:** new namespaces `Common`, `ContactPage` and `Post`.
+- **Tokens:** `success` was added; `destructive` is set to the design's error red.
 
 ## Shared files (`shared/`)
 
 | File | Use |
 |---|---|
 | `tokens.css` | Colors for both themes, radii, fonts, and the reveal animation. Merge into `src/app/globals.css`. |
-| `content.ts` | All copy and data for every page, typed. Move to `src/content/site.ts`; it is the static source until Stage 3 (DB). |
+| `content.ts` | All copy and data for every page, typed. Move to `src/content/site.ts`; it is the static source until Stage 3 (DB). Field names match the admin forms. |
 | `messages.en.json` | UI strings for next-intl, one namespace per page. Merge into `messages/en.json`. |
 
-Each page folder has `screens/` (PNG renders) and `prototype.dc.html` (the prototype source, only for looking up exact values; it does not run outside the design tool; its top toolbar is prototype-only).
+### What each page folder holds
 
-Screens per page: `desktop-dark-1…5.png` and `phone-dark-1…5.png` are the same page scrolled from top (1) to bottom (5); `*-light-1.png` shows the light theme. Home has full-page renders instead.
+- **`prototype.dc.html`:** the prototype source. Use it only to look up exact values. It does not run outside the design tool, and its top toolbar is prototype-only.
+- **`screens/`:** PNG renders.
+  - `desktop-dark-1…5.png` and `phone-dark-1…5.png` show the page scrolled from top (1) to bottom (5).
+  - `*-light-1.png` shows the light theme.
+  - Home has full-page renders instead.
+  - The photo tile is blank in all renders because uploaded images do not load in the renderer.
 
 ## Site-wide rules
 
-- **Header**, sticky on every page. Nav: Home · About · Projects · Skills · Blog · Contact. The active item is `text-brand` with a `deco` underline. Some prototype screens predate the Skills item; the six-item nav is correct.
+- **Header**, sticky on every page.
+  - Nav: Home · About · Experience · Skills (Blog and Contact removed on 2026-11-04).
+  - The active item is `text-brand` with a `deco` underline.
+  - The prototype screens show the older six-item nav.
 - **No footer** on any page. Pages end with their last section.
-- **Section labels** are mono, uppercase, 11–12 px, `muted-foreground`. Page heroes: mono label, an h1 at 56 px desktop / 36 px phone, and a one-line intro.
-- **Sticky side panels** (Skills, Blog) sit at `top: 20px` inside the content column on desktop. On phone they become normal blocks above the list; Blog adds the collapsing behaviour described in its spec.
-- **Chips:** filter chips are pills, 36 px tall, mono 12 px. Active filter: `bg-selected text-selected-foreground`. Tag chips: `brand` text on a `card-border` outline; an active tag is filled with `brand`.
+- **"‹ Back" link**, the first element in the content of every inner page (Experience, About, Skills).
+  - A chevron-left icon (16 px) and "Back".
+  - `text-brand`, 600 weight, 15 px, underlined with a 2 px `deco` line offset 5 px. Min height 32 px, and 30 px below it on every page (owner's decision of 2026-11-02).
+  - On hover, the chevron moves 3 px left.
+  - It is a plain link to `/`, never a step in the history: the visitor must not leave the site through it (owner's decision of 2026-11-02).
+  - On Experience (desktop) it sits at the top of the sticky aside. On phone it sits in a row above the sticky progress bar.
+- **Section labels** are mono, uppercase, 11–12 px, `muted-foreground`.
+- **Page heroes:** a mono label, an h1 at 56 px desktop / 36 px phone, and a one-line intro.
+- **Sticky side panels** (Skills) sit at `top: 20px` inside the content column on desktop. On phone they become normal blocks above the list.
+- **Chips:**
+  - Filter chips are pills, 36 px tall, mono 12 px. An active filter is `bg-selected text-selected-foreground`.
+  - Tag chips are `brand` text on a `card-border` outline.
 - **Links** like "Read more →" / "Learn more →" are `text-brand`, 600 weight, with a 2 px `deco` underline offset 5 px.
-- **Anchors:** every work place has an id (`glovo`, `sony`, `epam`, `omega-r`); Home links to `/projects#<id>`. Anchored sections need `scroll-margin-top` equal to the header height (plus any sticky bar).
-- **Motion** respects `prefers-reduced-motion`: reveals and progress animations are skipped, content is visible immediately.
+- **Contact buttons** (Home) are themed:
+  - `bg-card`, a 1 px `card-border` border and `text-foreground`.
+  - The icon is in `brand`, and the arrow-up-right is in `brand`.
+  - On hover, the border turns `brand`.
+  - Download CV is the filled `primary` button.
+- **Anchors:** every work place has an id (`glovo`, `sony`, `epam`), and Home links to `/experience#<id>`. Anchored sections need `scroll-margin-top` equal to the header height (plus any sticky bar).
+- **Motion** respects `prefers-reduced-motion`: reveals and progress animations are skipped, and content is visible immediately.
 - **All text is server-rendered.** Filters and scroll effects are small client components layered on top. With JavaScript off, every page still reads as a plain article or list.
+- **Rich text** is Markdown in the content files, rendered on the server by `src/shared/ui/Markdown.tsx` (since 2026-11-04; the handoff's Tiptap HTML no longer applies).
+
+## Open questions
+
+- **"Main" skills.** The admin has a "Main" flag next to "Top". The proposal is that it drives the hero chips on Home (the admin no longer edits hero tags). Note that "Express", currently a hero chip, is not in the skills list.
 
 ## Kickoff prompt (one page at a time)
 
