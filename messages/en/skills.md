@@ -1,50 +1,76 @@
 ---
 domains:
-  - {key: core, label: Core}
-  - {key: frameworks, label: Frameworks}
-  - {key: frontend, label: Frontend}
+  - {key: languages, label: Languages}
+  - {key: frameworks, label: Frameworks & State}
+  - {key: build, label: Build tools}
+  - {key: styling, label: Styling}
+  - {key: testing, label: Testing}
+  - {key: backend, label: Backend & APIs}
+  - {key: devops, label: DevOps}
+  - {key: ai, label: AI tools}
   - {key: tools, label: Tools}
 skills:
-  - {name: React, level: 9, domain: frameworks, main: true, top: true, sort: 0}
-  - {name: Next.js, level: 9, domain: frameworks, main: true, top: true, sort: 2}
-  - {name: TypeScript, level: 8, domain: core, main: true, top: true, sort: 4}
-  - {name: Redux Toolkit, level: 8, domain: frontend, top: true, sort: 6}
-  - {name: Nest.js, level: 7, domain: frameworks, main: true, top: true, sort: 3}
-  - {name: Redux, level: 6, domain: frontend, main: true, sort: 1}
-  - {name: Express, level: 6, domain: frameworks, main: true, sort: 5}
-  - {name: CSS-in-JS, level: 6, domain: frontend, sort: 100}
-  - {name: CSS3, level: 6, domain: core, sort: 100}
-  - {name: Chrome DevTools, level: 6, domain: tools, sort: 100}
-  - {name: Claude Code, level: 6, domain: tools, sort: 100}
-  - {name: Cypress, level: 6, domain: frontend, sort: 100}
-  - {name: Docker, level: 6, domain: tools, sort: 100}
-  - {name: Docker Compose, level: 6, domain: tools, sort: 100}
+  - {name: TypeScript, level: 10, domain: languages, main: true, top: true, sort: 0}
+  - {name: JavaScript, level: 10, domain: languages, main: true, top: true, sort: 1}
+  - {name: React, level: 10, domain: frameworks, main: true, top: true, sort: 3}
+  - {name: Next.js, level: 10, domain: frameworks, main: true, top: true, sort: 4}
+  - {name: Redux, level: 10, domain: frameworks, main: true, top: true, sort: 5}
+  - {name: GraphQL, level: 8, domain: backend, main: true, top: true, sort: 6}
+  - {name: Node.js, level: 6, domain: backend, main: true, top: true, sort: 7}
+  - {name: HTML5, level: 10, domain: languages, sort: 8}
+  - {name: CSS3, level: 6, domain: languages, sort: 9}
+  - {name: Redux Toolkit, level: 10, domain: frameworks, sort: 100}
+  - {name: RTK Query, level: 10, domain: frameworks, sort: 100}
+  - {name: Apollo Client, level: 8, domain: frameworks, sort: 100}
+  - {name: React Hook Form, level: 10, domain: frameworks, sort: 100}
+  - {name: Formik, level: 8, domain: frameworks, sort: 100}
+  - {name: Webpack, level: 8, domain: build, sort: 100}
+  - {name: Babel, level: 8, domain: build, sort: 100}
+  - {name: Vite, level: 8, domain: build, sort: 100}
+  - {name: Zod, level: 10, domain: frameworks, sort: 100}
+  - {name: Yup, level: 10, domain: frameworks, sort: 100}
+  - {name: Tailwind CSS, level: 10, domain: styling, sort: 100}
+  - {name: SASS, level: 10, domain: styling, sort: 100}
+  - {name: SCSS, level: 10, domain: styling, sort: 100}
+  - {name: CSS-in-JS, level: 10, domain: styling, sort: 100}
+  - {name: Material UI, level: 8, domain: styling, sort: 100}
+  - {name: Ant Design, level: 6, domain: styling, sort: 100}
+  - {name: Mantine, level: 6, domain: styling, sort: 100}
+  - {name: Storybook, level: 9, domain: styling, sort: 100}
+  - {name: Jest, level: 8, domain: testing, sort: 100}
+  - {name: Vitest, level: 9, domain: testing, sort: 100}
+  - {name: React Testing Library, level: 10, domain: testing, sort: 100}
+  - {name: Cypress, level: 8, domain: testing, sort: 100}
+  - {name: Playwright, level: 10, domain: testing, sort: 100}
+  - {name: NestJS, level: 7, domain: backend, sort: 100}
+  - {name: Express, level: 8, domain: backend, sort: 100}
+  - {name: REST API, level: 7, domain: backend, sort: 100}
+  - {name: WebSockets, level: 9, domain: backend, sort: 100}
+  - {name: Socket.io, level: 8, domain: backend, sort: 100}
+  - {name: PostgreSQL, level: 6, domain: backend, sort: 100}
+  - {name: MongoDB, level: 6, domain: backend, sort: 100}
+  - {name: Swagger, level: 7, domain: backend, sort: 100}
+  - {name: CI/CD, level: 7, domain: devops, sort: 100}
+  - {name: GitHub Actions, level: 8, domain: devops, sort: 100}
+  - {name: Jenkins, level: 7, domain: devops, sort: 100}
+  - {name: Docker, level: 8, domain: devops, sort: 100}
+  - {name: Kubernetes, level: 6, domain: devops, sort: 100}
+  - {name: AWS, level: 6, domain: devops, sort: 100}
+  - {name: Sentry, level: 8, domain: devops, sort: 100}
+  - {name: Git, level: 10, domain: devops, sort: 100}
+  - {name: GrowthBook, level: 8, domain: tools, sort: 100}
+  - {name: Claude Code, level: 10, domain: ai, sort: 100}
+  - {name: Cursor, level: 10, domain: ai, sort: 100}
+  - {name: MCP, level: 8, domain: ai, sort: 100}
+  - {name: Context7, level: 10, domain: ai, sort: 100}
+  - {name: 21st.dev, level: 10, domain: ai, sort: 100}
+  - {name: Superpowers, level: 10, domain: ai, sort: 100}
+  - {name: Obsidian, level: 10, domain: ai, sort: 100}
+  - {name: Strix, level: 10, domain: ai, sort: 100}
   - {name: Figma, level: 6, domain: tools, sort: 100}
-  - {name: Formik, level: 6, domain: frontend, sort: 100}
-  - {name: Git, level: 6, domain: tools, sort: 100}
-  - {name: GraphQL, level: 6, domain: frontend, top: true, sort: 100}
-  - {name: HTML5, level: 6, domain: core, sort: 100}
-  - {name: JavaScript, level: 6, domain: core, sort: 100}
-  - {name: Jest, level: 6, domain: frontend, top: true, sort: 100}
-  - {name: Jira, level: 6, domain: tools, sort: 100}
-  - {name: Kubernetes, level: 6, domain: tools, sort: 100}
-  - {name: Lodash, level: 6, domain: frontend, sort: 100}
-  - {name: Mantine, level: 6, domain: frontend, sort: 100}
-  - {name: Material UI, level: 6, domain: frontend, sort: 100}
-  - {name: OpenLens, level: 6, domain: tools, sort: 100}
-  - {name: Postman, level: 6, domain: tools, sort: 100}
-  - {name: RTK Query, level: 6, domain: frontend, sort: 100}
-  - {name: React Hook Form, level: 6, domain: frontend, sort: 100}
-  - {name: React Native, level: 6, domain: frameworks, sort: 100}
-  - {name: React Testing Library, level: 6, domain: frontend, sort: 100}
-  - {name: SASS, level: 6, domain: core, sort: 100}
-  - {name: Socket.io, level: 6, domain: frontend, sort: 100}
-  - {name: Swagger, level: 6, domain: tools, sort: 100}
-  - {name: Tailwind, level: 6, domain: frontend, top: true, sort: 100}
-  - {name: WebSocket, level: 6, domain: frontend, sort: 100}
-  - {name: WebStorm, level: 6, domain: tools, sort: 100}
+  - {name: Jira, level: 8, domain: tools, sort: 100}
+  - {name: OpenLens, level: 8, domain: tools, sort: 100}
+  - {name: Postman, level: 10, domain: tools, sort: 100}
+  - {name: WebStorm, level: 10, domain: tools, sort: 100}
   - {name: Xcode, level: 6, domain: tools, sort: 100}
-  - {name: Yup, level: 6, domain: frontend, sort: 100}
-  - {name: Zod, level: 6, domain: frontend, sort: 100}
-  - {name: styled-components, level: 6, domain: frontend, sort: 100}
 ---

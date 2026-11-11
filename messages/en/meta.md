@@ -2,10 +2,10 @@
 Common:
   siteName: Mikhail Aleksandrov
   defaultTitle: Mikhail Aleksandrov
-  iconIcoUrl: null
-  iconSvgUrl: null
-  iconPngUrl: null
-  appleTouchIconUrl: null
+  iconIcoUrl: https://5iyco5bcxydlbyja.public.blob.vercel-storage.com/favicon/favicon.ico
+  iconSvgUrl: https://5iyco5bcxydlbyja.public.blob.vercel-storage.com/favicon/favicon.svg
+  iconPngUrl: https://5iyco5bcxydlbyja.public.blob.vercel-storage.com/favicon/favicon-96x96.png
+  appleTouchIconUrl: https://5iyco5bcxydlbyja.public.blob.vercel-storage.com/favicon/apple-touch-icon.png
   ogPlaceholderUrl: null
   hiddenFromSearch: true
 Home:
