@@ -1,1 +1,91 @@
-{}
+{
+  "Pages": {
+    "Common": {
+      "back": "Назад",
+      "newTab": "(откроется в новой вкладке)",
+      "Header": {
+        "navLabel": "Основная навигация",
+        "nav": {
+          "home": "Главная",
+          "about": "Обо мне",
+          "experience": "Опыт",
+          "skills": "Навыки"
+        },
+        "openMenu": "Открыть меню",
+        "closeMenu": "Закрыть меню"
+      },
+      "LocaleMenu": {
+        "label": "Язык",
+        "triggerAria": "Язык: {code}"
+      },
+      "ThemeMenu": {
+        "label": "Тема",
+        "dark": "Тёмная",
+        "light": "Светлая",
+        "system": "Системная",
+        "systemNow": "сейчас {theme, select, dark {тёмная} other {светлая}}"
+      },
+      "Contacts": {
+        "label": "Контакты",
+        "whatsappAria": "WhatsApp: {phone}",
+        "mailAria": "Почта: {email}",
+        "linkedinAria": "Профиль в LinkedIn",
+        "downloadCv": "Скачать резюме",
+        "downloadCvAria": "Скачать резюме в PDF"
+      },
+      "Carousel": {
+        "previous": "Предыдущий",
+        "next": "Следующий",
+        "slide": "{current} из {total}",
+        "roleCarousel": "карусель",
+        "roleSlide": "слайд"
+      },
+      "SkillRow": {
+        "levelAria": "{name}: уровень {level} из 10"
+      }
+    },
+    "Home": {
+      "about": {
+        "label": "Обо мне",
+        "readMore": "Читать дальше"
+      },
+      "experience": {
+        "label": "Опыт",
+        "duration": "{years, plural, one {# год} few {# года} many {# лет} other {# года}}",
+        "present": "настоящее время",
+        "learnMore": "Подробнее",
+        "all": "Весь опыт"
+      },
+      "skills": {
+        "label": "Ключевые навыки",
+        "showAll": "Показать все навыки ({total})"
+      }
+    },
+    "About": {
+      "title": "Обо мне",
+      "intro": "Короткое интервью с самим собой: вопросы, которые рекрутеры задают чаще всего, и развёрнутые ответы на них.",
+      "questionsNav": "Вопросы"
+    },
+    "Skills": {
+      "title": "Навыки",
+      "intro": "Всё, с чем я работаю, с оценкой от 1 до 10. Поиск по названию и фильтр по области.",
+      "countAll": "{total, plural, one {# навык} few {# навыка} many {# навыков} other {# навыка}}",
+      "countFiltered": "{shown} из {total}",
+      "search": "Поиск навыков",
+      "domain": "Область",
+      "all": "Все",
+      "noMatch": "Нет навыков по запросу «{query}»."
+    },
+    "Experience": {
+      "labelWithoutYears": "Проекты",
+      "label": "Проекты · {from} — {to}",
+      "navLabel": "Места работы",
+      "skills": "Навыки",
+      "duration": "{years, plural, one {# год} few {# года} many {# лет} other {# года}}",
+      "present": "настоящее время"
+    },
+    "NotFound": {
+      "message": "Такой страницы не существует."
+    }
+  }
+}

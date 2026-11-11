@@ -1,9 +1,9 @@
 ---
 sort: 4
-linkText: What I'm looking for
+linkText: Next
 questionTitle: What I'm looking for
 questionMessage: What are you looking for next?
-answerTitle: "[One sentence: the role, team and product you want next.]"
+answerTitle: Looking for new challenges and great people.
 ---
 
-\[2–3 sentences: role, format (remote or relocation), domains that interest you.\]
+I’m now looking for a senior frontend role, ideally one that also lets me grow in full-stack development. I want to work on a product with real users, where I can own key parts of the architecture, improve performance and quality, and help other engineers grow. I’m also keen to keep growing in AI, from building LLM-powered features to bringing agentic AI workflows into everyday development.

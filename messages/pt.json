@@ -1,1 +1,91 @@
-{}
+{
+  "Pages": {
+    "Common": {
+      "back": "Voltar",
+      "newTab": "(abre em uma nova aba)",
+      "Header": {
+        "navLabel": "Navegação principal",
+        "nav": {
+          "home": "Início",
+          "about": "Sobre mim",
+          "experience": "Experiência",
+          "skills": "Habilidades"
+        },
+        "openMenu": "Abrir menu",
+        "closeMenu": "Fechar menu"
+      },
+      "LocaleMenu": {
+        "label": "Idioma",
+        "triggerAria": "Idioma: {code}"
+      },
+      "ThemeMenu": {
+        "label": "Tema",
+        "dark": "Escuro",
+        "light": "Claro",
+        "system": "Sistema",
+        "systemNow": "agora {theme, select, dark {escuro} other {claro}}"
+      },
+      "Contacts": {
+        "label": "Contato",
+        "whatsappAria": "WhatsApp: {phone}",
+        "mailAria": "E-mail: {email}",
+        "linkedinAria": "Perfil no LinkedIn",
+        "downloadCv": "Baixar CV",
+        "downloadCvAria": "Baixar CV em PDF"
+      },
+      "Carousel": {
+        "previous": "Anterior",
+        "next": "Próximo",
+        "slide": "{current} de {total}",
+        "roleCarousel": "carrossel",
+        "roleSlide": "slide"
+      },
+      "SkillRow": {
+        "levelAria": "{name}: nível {level} de 10"
+      }
+    },
+    "Home": {
+      "about": {
+        "label": "Sobre mim",
+        "readMore": "Ler mais"
+      },
+      "experience": {
+        "label": "Experiência",
+        "duration": "{years, plural, one {# ano} other {# anos}}",
+        "present": "o momento",
+        "learnMore": "Saiba mais",
+        "all": "Toda a experiência"
+      },
+      "skills": {
+        "label": "Principais habilidades",
+        "showAll": "Ver todas as {total} habilidades"
+      }
+    },
+    "About": {
+      "title": "Sobre mim",
+      "intro": "Uma breve entrevista comigo mesmo: as perguntas que os recrutadores mais fazem, respondidas a fundo.",
+      "questionsNav": "Perguntas"
+    },
+    "Skills": {
+      "title": "Habilidades",
+      "intro": "Tudo com o que trabalho, avaliado de 1 a 10. Busca e filtro por área.",
+      "countAll": "{total, plural, one {# habilidade} other {# habilidades}}",
+      "countFiltered": "{shown} de {total}",
+      "search": "Buscar habilidades",
+      "domain": "Área",
+      "all": "Todas",
+      "noMatch": "Nenhuma habilidade corresponde a “{query}”."
+    },
+    "Experience": {
+      "labelWithoutYears": "Projetos",
+      "label": "Projetos · {from} — {to}",
+      "navLabel": "Empresas",
+      "skills": "Habilidades",
+      "duration": "{years, plural, one {# ano} other {# anos}}",
+      "present": "o momento"
+    },
+    "NotFound": {
+      "message": "Esta página não existe."
+    }
+  }
+}

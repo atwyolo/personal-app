@@ -1,0 +1,11 @@
+---
+domains:
+  - {key: languages, label: Języki}
+  - {key: frameworks, label: Frameworki i stan}
+  - {key: build, label: Narzędzia do budowania}
+  - {key: styling, label: Stylowanie}
+  - {key: testing, label: Testowanie}
+  - {key: backend, label: Backend i API}
+  - {key: ai, label: Narzędzia AI}
+  - {key: tools, label: Narzędzia}
+---

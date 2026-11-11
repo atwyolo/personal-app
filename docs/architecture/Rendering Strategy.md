@@ -23,7 +23,7 @@ The project runs with `cacheComponents: true`. Content is read with `fs.readFile
 
 `experimental.inlineCss` puts the CSS of a first load into a `<style>` tag instead of a render-blocking `<link>`, on every route. See [[ADR-0011 Inline CSS]].
 
-Metadata comes from `Meta` in the merged messages through `"use cache"` getters (`src/content/meta.ts`): the root layout reads the site-wide part (default title, icons, `noindex` while hidden) and each page its own, so metadata stays in the static shell. `/favicon.ico` is a route handler on the same cached read; under Cache Components a `GET` that reads only cached data is prerendered too.
+Metadata comes from `messages/<locale>/meta.md` through `"use cache"` getters (`src/content/meta.ts`): the root layout reads the site-wide part (default title, icons, `noindex` while hidden) and each page its own, so metadata stays in the static shell. `/favicon.ico` is a route handler on the same cached read; under Cache Components a `GET` that reads only cached data is prerendered too.
 
 Until 2026-11-04 the blog list was a Partial Prerender and the post page used `ensureStatic = "navigation"`; both left with the blog ([[2026-11-04-content-in-files-design]]).
 

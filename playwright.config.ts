@@ -22,7 +22,7 @@ export default defineConfig({
   webServer: {
     command: `npm run build && npm run start -- --port ${port}`,
     url: baseURL,
-    env: { VERCEL_GIT_COMMIT_SHA: BUILD_COMMIT, PORT: String(port) },
+    env: { VERCEL_GIT_COMMIT_SHA: BUILD_COMMIT, PORT: String(port), CONTENT_ROOT: "e2e/content" },
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,
   },

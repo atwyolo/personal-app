@@ -3,6 +3,7 @@ import { expect, test } from "./fixtures";
 import { locales } from "@/shared/lib/locales";
 
 import { version } from "../package.json";
+import { messagesFor } from "./messages";
 import { readPageMeta, readSiteMeta } from "./meta-content";
 
 const pages = [
@@ -56,6 +57,21 @@ test("the home page carries the app version", async ({ page }) => {
 
 test.describe("404 page", () => {
   test.use({ allowedConsoleErrors: [/status of 404/] });
+
+  test("shows the sentence from the messages file", async ({ page }) => {
+    await page.goto("/en/no-such-page");
+
+    await expect(page.getByRole("main").getByRole("paragraph")).toHaveText(messagesFor("en")("Pages.NotFound.message"));
+  });
+
+  for (const locale of ["ru", "de"] as const) {
+    test(`shows the sentence in the language of /${locale}`, async ({ page }) => {
+      await page.goto(`/${locale}/no-such-page`);
+
+      await expect(page.locator("html")).toHaveAttribute("lang", locale);
+      await expect(page.getByRole("main").getByRole("paragraph")).toHaveText(messagesFor(locale)("Pages.NotFound.message"));
+    });
+  }
 
   test("carries the app version", async ({ page }) => {
     await page.goto("/en/no-such-page");

@@ -1,18 +1,14 @@
 ---
 name: Mikhail Aleksandrov
-headline: Senior Frontend Software Engineer, 8+ years
-jobTitle: Senior Frontend Software Engineer
+headline: Senior Frontend Engineer | 6+ years | Generative AI & LLM Integration
+jobTitle: Senior Frontend Engineer
 photoUrl: https://5iyco5bcxydlbyja.public.blob.vercel-storage.com/rXcYu8eejMYRp7vIq0LflWxtPtHx6xAZ8_nOpxiKeG2h_8qFJQ_tAMvrtAiLqsoEJN5xM3MOjWnY74ct052qnkve.jpg
-cvUrl: https://5iyco5bcxydlbyja.public.blob.vercel-storage.com/Mikhail_Aleksandrov_Frontend.pdf?download=1
-whatsappPhone: "+37493310039"
+cvUrl: https://5iyco5bcxydlbyja.public.blob.vercel-storage.com/CV/Mikhail_Aleksandrov_Senior_Frontend_Engineer_CV.pdf?download=1
+whatsappPhone: "+995591065948"
 email: mikhail.aleksandrov.job@gmail.com
 linkedinUrl: https://www.linkedin.com/in/mikhail-aleksandrov-job
 ---
 
-I'm a Senior Frontend Engineer with 8+ years of commercial experience in React and Next.js, most recently at Glovo, Sony PlayStation and EPAM.
+I’m a Senior Frontend Engineer with 6+ years of experience building scalable, reusable, and modular component architectures using TypeScript, React, and Next.js, with a strong understanding of SSR, SSG, and performance optimization.
 
-**A few results I'm proud of:**
-
-- At EPAM, I helped migrate an e-commerce store from PHP to Next.js, which raised conversion by 12.4% and made pages load 37% faster.
-- At Glovo, I introduced unit testing that cut production defects by 23%, and shipped an offline mode that increased average session time by 17%.
-- At Sony PlayStation, I helped build an in-game notification system from scratch, hired and onboarded 3 developers, and brought test coverage to 95%.
+Hand me the repo and a ticket, and I’ll bring back the pull request.

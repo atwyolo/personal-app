@@ -1,6 +1,7 @@
 import type { Page } from "@playwright/test";
 
 import { expect, test } from "./fixtures";
+import { messagesFor } from "./messages";
 
 const getSection = (page: Page) => page.getByRole("region", { name: "My top skills" });
 const getRows = (page: Page) => getSection(page).getByRole("meter");
@@ -30,13 +31,15 @@ test("describes every row to a screen reader", async ({ page }) => {
 });
 
 test("counts every skill in the link to the full list", async ({ page }) => {
+  const t = messagesFor("de");
   await page.goto("/de");
 
-  const link = getSection(page).getByRole("link", { name: /^Show all \d+ skills$/ });
-  await expect(link).toHaveAttribute("href", "/de/skills");
-
+  const section = page.getByRole("region", { name: t("Pages.Home.skills.label") });
+  const link = section.locator('a[href="/de/skills"]');
   const total = Number((await link.textContent())?.match(/\d+/)?.[0]);
-  expect(total).toBeGreaterThan(await getRows(page).count());
+
+  await expect(link).toHaveText(t("Pages.Home.skills.showAll", { total }));
+  expect(total).toBeGreaterThan(await section.getByRole("meter").count());
 });
 
 test("styles the link as the primary pill", async ({ page }) => {

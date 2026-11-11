@@ -1,6 +1,7 @@
 import type { Page } from "@playwright/test";
 
 import { expect, test } from "./fixtures";
+import { messagesFor } from "./messages";
 
 const getCarousel = (page: Page) => page.getByRole("group", { name: "Experience" });
 const getTrack = (page: Page) => getCarousel(page).getByRole("group", { name: "1 of 3" }).locator("..");
@@ -84,11 +85,12 @@ test.describe("when an image fails to load", () => {
 });
 
 test("keeps the current locale in the links", async ({ page }) => {
+  const t = messagesFor("de");
   await page.goto("/de");
 
-  const section = page.getByRole("region", { name: "Experience" });
-  await expect(section.getByRole("link", { name: "Learn more" }).first()).toHaveAttribute("href", "/de/experience#glovo");
-  await expect(section.getByRole("link", { name: "All experience" })).toHaveAttribute("href", "/de/experience");
+  const section = page.getByRole("region", { name: t("Pages.Home.experience.label") });
+  await expect(section.getByRole("link", { name: t("Pages.Home.experience.learnMore") }).first()).toHaveAttribute("href", "/de/experience#glovo");
+  await expect(section.getByRole("link", { name: t("Pages.Home.experience.all") })).toHaveAttribute("href", "/de/experience");
 });
 
 test("styles all experience as the primary pill", async ({ page }) => {

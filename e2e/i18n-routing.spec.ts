@@ -1,4 +1,5 @@
 import { expect, test } from "./fixtures";
+import { messagesFor } from "./messages";
 
 import { locales } from "@/shared/lib/locales";
 
@@ -76,7 +77,7 @@ test.describe("locale menu", () => {
 
     await expect(page).toHaveURL(/\/de$/);
     await expect(page.locator("html")).toHaveAttribute("lang", "de");
-    await expect(page.getByRole("banner").getByRole("button", { name: "Language" })).toHaveText("DE");
+    await expect(page.getByRole("banner").getByRole("button", { name: messagesFor("de")("Pages.Common.LocaleMenu.label") })).toHaveText("DE");
 
     await expect.poll(async () => (await context.cookies()).find((c) => c.name === "NEXT_LOCALE")?.value).toBe("de");
     const cookie = (await context.cookies()).find((c) => c.name === "NEXT_LOCALE");
