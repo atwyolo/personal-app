@@ -10,3 +10,5 @@ linkedinUrl: https://www.linkedin.com/in/mikhail-aleksandrov-job
 ---
 
 I’m a Senior Frontend Engineer with 6+ years of experience building scalable, reusable, and modular component architectures using TypeScript, React, and Next.js, with a strong understanding of SSR, SSG, and performance optimization.
+
+Hand me the repo and a ticket, and I’ll bring back the pull request.

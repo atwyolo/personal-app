@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { listSlugs, readContentFile } from "./read";
+import { listSlugs, readContentFile, resolveContentRoot } from "./read";
 import { writeContentTree } from "./test-tree";
 
 describe("readContentFile", () => {
@@ -85,5 +85,19 @@ describe("listSlugs", () => {
     const root = writeContentTree({ "en/about/who.md": "", "ru/about/wh0.md": "" });
 
     expect(() => listSlugs(root, "about")).toThrow(/ru\/about\/wh0\.md.*no English counterpart/);
+  });
+});
+
+describe("resolveContentRoot", () => {
+  it("is the messages folder when nothing is configured", () => {
+    expect(resolveContentRoot(undefined, "/repo")).toBe("/repo/messages");
+  });
+
+  it("treats an empty value as not configured", () => {
+    expect(resolveContentRoot("", "/repo")).toBe("/repo/messages");
+  });
+
+  it("resolves a configured folder against the working directory", () => {
+    expect(resolveContentRoot("e2e/content", "/repo")).toBe("/repo/e2e/content");
   });
 });

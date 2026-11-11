@@ -8,6 +8,8 @@ answerTitle: I'm a Senior Frontend Engineer with 6+ years of commercial experien
 
 I’m a Senior Frontend Engineer with 6+ years of experience building scalable, reusable, and modular component architectures using TypeScript, React, and Next.js, with a strong understanding of SSR, SSG, and performance optimization.
 
+Hand me the repo and a ticket, and I’ll bring back the pull request.
+
 I have hands-on experience introducing AI tools into team development, including Claude Code, Superpowers, Obsidian, Context7, 21st.dev, and Strix. I aim to keep growing in this area, applying Generative AI and LLM integration to improve development workflows and product capabilities.
 
 **My strengths:**

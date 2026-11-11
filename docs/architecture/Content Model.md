@@ -10,6 +10,8 @@ All content lives in `messages/` since 2026-11-04 ([[ADR-0015 Content in Files]]
 ## Conventions
 
 - **English is complete, other locales are partial.** Every file and every required field exists in `en`. Another locale holds only what it translates; anything it leaves out, or sets to `null` or an empty string, comes from English. A missing locale file means the English file.
+- **Every locale translates the content** (2026-11-11, [[2026-11-11-content-translations-design]]): `meta.md`, `profile.md`, `about/*.md` and `experience/*.md` hold only translated fields; `skills.md` holds only the domain labels, the skill names stay English. URLs, the phone, the email, dates, `sort`, the `skills` lists and `company` live in `en` alone, so a change there reaches every language; `ru` alone sets `name`, `jobTitle`, `role` and its own `cvUrl`.
+- **Tests never read this content** ([[ADR-0017 Test Content Fixtures]]): `contentRoot` is `CONTENT_ROOT` when set, and Playwright builds from the frozen fixtures in `e2e/content/`. Broken content fails `npm run build` through the schemas and the link check, never a test.
 - **Store facts, not formatted strings:** dates as `"YYYY-MM-DD"`, the phone as E.164. Display strings (periods, durations, `wa.me` links) are computed at render time with `Intl` / next-intl.
 - **Files live in Vercel Blob** (public store), uploaded by hand. Content holds absolute `https://` URLs only.
 - **No alt-text fields:** each image uses an existing text as alt (the name, the company, the page title).

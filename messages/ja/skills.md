@@ -1,0 +1,11 @@
+---
+domains:
+  - {key: languages, label: 言語}
+  - {key: frameworks, label: フレームワーク・状態管理}
+  - {key: build, label: ビルドツール}
+  - {key: styling, label: スタイリング}
+  - {key: testing, label: テスト}
+  - {key: backend, label: バックエンド・API}
+  - {key: ai, label: AIツール}
+  - {key: tools, label: ツール}
+---

@@ -13,7 +13,10 @@ export interface ContentFile {
   file: string;
 }
 
-export const contentRoot = path.join(process.cwd(), "messages");
+export const resolveContentRoot = (configured: string | undefined, cwd: string): string =>
+  configured ? path.resolve(cwd, configured) : path.join(cwd, "messages");
+
+export const contentRoot = resolveContentRoot(process.env.CONTENT_ROOT, process.cwd());
 
 const FRONTMATTER = /^---[ \t]*\r?\n([\s\S]*?)^---[ \t]*(?:\r?\n|$)/m;
 

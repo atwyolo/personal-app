@@ -1,6 +1,6 @@
 ---
 tags: [moc]
-updated: 2026-11-10
+updated: 2026-11-11
 ---
 
 # Home
@@ -34,6 +34,7 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[ADR-0014 Metadata in the Database]] — superseded by ADR-0015
 - [[ADR-0015 Content in Files]] — no database: content in `messages/` (JSON + Markdown); amended by ADR-0016
 - [[ADR-0016 Metadata in Markdown]] — `Meta` moved to `meta.md`, JSON holds interface strings only
+- [[ADR-0017 Test Content Fixtures]] — e2e tests build from frozen content in `e2e/content/`; no test reads `messages/`
 
 ## Specs
 - [[2026-10-29-home-page-design]] — home page architecture, done 2026-11-02
@@ -46,6 +47,7 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[2026-11-04-content-in-files-design]] — no database: content in `messages/` (JSON + Markdown), blog, contact and admin removed, done 2026-11-04
 - [[2026-11-10-meta-in-markdown-design]] — metadata in `meta.md`, recursive per-field merge, done 2026-11-10
 - [[2026-11-10-ui-translations-design]] — interface translated into all seven locales, 404 included, guarded by a translation test, done 2026-11-10
+- [[2026-11-11-content-translations-design]] — tests on frozen fixtures, content translated into seven locales, done 2026-11-11
 
 ## Plans
 - [[2026-10-30-home-experience]] — Experience block, done; deferred items listed there
@@ -61,6 +63,7 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[2026-11-04-content-in-files]] — content in files, done; Neon deleted 2026-11-04
 - [[2026-11-10-meta-in-markdown]] — metadata in Markdown, done
 - [[2026-11-10-ui-translations]] — UI translations, done
+- [[2026-11-11-content-translations]] — content translations and test fixtures, done
 
 ## Journal
 - [[2026-10-26]] — kickoff: decisions, scaffold
@@ -73,6 +76,7 @@ Map of content for the `personal` site project. Open this folder as an Obsidian 
 - [[2026-11-03]] — About page closed: chips, Back link, reveal, JSON-LD; Projects page closed; Stage 3 done; metadata tables; Skills page; Blog decisions before the spec
 - [[2026-11-04]] — Blog list and Post page built; then the foundation changed: content in files, blog removed, Projects → Experience
 - [[2026-11-10]] — metadata moved to Markdown; the interface translated into seven languages
+- [[2026-11-11]] — e2e tests on frozen fixtures; the content translated into seven languages
 
 ## Templates
 - [[ADR Template]] · [[Journal Template]]

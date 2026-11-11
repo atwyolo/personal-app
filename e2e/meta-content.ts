@@ -30,7 +30,7 @@ type MetaFile = Record<string, unknown>;
 const FRONTMATTER = /^---[ \t]*\r?\n([\s\S]*?)^---[ \t]*(?:\r?\n|$)/m;
 
 const read = (locale: Locale): MetaFile | undefined => {
-  const file = path.join(process.cwd(), "messages", locale, "meta.md");
+  const file = path.join(process.cwd(), "e2e", "content", locale, "meta.md");
   if (!existsSync(file)) return undefined;
 
   const match = FRONTMATTER.exec(readFileSync(file, "utf8"));
@@ -41,7 +41,7 @@ const read = (locale: Locale): MetaFile | undefined => {
 
 const meta = (locale: Locale): MetaFile => {
   const en = read("en");
-  if (!en) throw new Error("messages/en/meta.md is missing.");
+  if (!en) throw new Error("e2e/content/en/meta.md is missing.");
 
   return locale === "en" ? en : mergeFields(en, read(locale));
 };
