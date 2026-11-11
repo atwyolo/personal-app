@@ -7,7 +7,7 @@ Common:
   iconPngUrl: https://5iyco5bcxydlbyja.public.blob.vercel-storage.com/favicon/favicon-96x96.png
   appleTouchIconUrl: https://5iyco5bcxydlbyja.public.blob.vercel-storage.com/favicon/apple-touch-icon.png
   ogPlaceholderUrl: https://5iyco5bcxydlbyja.public.blob.vercel-storage.com/OG/en/og-home.png
-  hiddenFromSearch: true
+  hiddenFromSearch: false
 Home:
   title: Mikhail Aleksandrov — Senior Frontend Engineer, 6+ years
   description: I’m a Senior Frontend Engineer with 6+ years of experience building scalable, reusable, and modular component architectures using TypeScript, React, and Next.js, with a strong understanding of SSR, SSG, and performance optimization.
