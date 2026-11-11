@@ -6,7 +6,7 @@ date: 2026-11-11
 
 # Launch Plan
 
-The work left before the site opens to search engines: Stage 8 of [[Roadmap]] plus the findings of the measurements below. **Sections 1 and 2 are done** (2026-11-12): the owner's answers are in [[2026-11-11-launch-polish-design]], the work and its rulings in [[2026-11-11-launch-polish]], the numbers in [[2026-11-12]]. Section 3 is next.
+The work left before the site opens to search engines: Stage 8 of [[Roadmap]] plus the findings of the measurements below. **Sections 1 and 2 are done** (2026-11-12): the owner's answers are in [[2026-11-11-launch-polish-design]], the work and its rulings in [[2026-11-11-launch-polish]], the numbers in [[2026-11-12]]. Section 3: production checked on 2026-11-12 (`1.5.0+3cb36c0`), `hiddenFromSearch` set to `false` in `1.5.1`; Search Console is the owner's.
 
 Related: [[Roadmap]], [[Open Questions]], [[Rendering Strategy]], [[ADR-0018 Global Not Found]].
 
@@ -77,3 +77,9 @@ The goal: 100 in all four categories on mobile and desktop for every page; SEO r
 ## Later
 
 Content of `Later / optional` in [[Roadmap]] (a Markdown CV in a separate repository, analytics) and the deferred minors listed in the plans stay out of this launch.
+
+## Production check (2026-11-12, `1.5.0+3cb36c0`, still `noindex`)
+
+- `/favicon.ico` 200, 2,439 bytes identical to the Blob file; the six security headers and HSTS on pages and on the icon; `NEXT_LOCALE` a session cookie; `robots.txt` allows everything and names the sitemap; `sitemap.xml` lists 32 URLs on `https://www.mikhail-aleksandrov.com`.
+- 32 pages: status 200, no console error, `og:image` on each; `/ru/does-not-exist` answers 404 in Russian.
+- Lighthouse 12.8.2, five runs per page and preset: SEO fails only `is-crawlable` (the intended `noindex`) on all 16 pairs; Accessibility and Best Practices 100; Performance 100 on desktop, mobile `/en` 96, `/ru` 97, `/en/experience` and `/ru/experience` 98, the rest 100.
